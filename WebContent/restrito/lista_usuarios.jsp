@@ -56,6 +56,7 @@
 							var opc_tipo_acesso = datalin[cx].opc_tipo_acesso;
 							var opc_ativo_usuario = datalin[cx].opc_ativo_usuario;
 							var nivel_usuario = datalin[cx].nivel_usuario;
+							var dhd_atualizacao = datalin[cx].dhd_atualizacao;
 							
 							var acesso_real = "";
 							if("1" == opc_tipo_acesso){
@@ -84,6 +85,7 @@
 							arrayRow.push(acesso_real);
 							arrayRow.push(nivel_nome);
 							arrayRow.push(opc_ativo_usuario);
+							arrayRow.push(dhd_atualizacao);
 							arrayRow.push("<i class='fas fa-search' onclick='carregaUsuario(\""+id_usuario+"\")'> </i>");
 							table.row.add(arrayRow).draw();
 						}
@@ -170,6 +172,7 @@
 									                <th>Tipo Acesso</th>
 									                <th>Nível Usuário</th>
 									                <th>Ativo</th>
+									                <th>Data</th>
 									                <th>Editar</th>
 									            </tr>
 									        </thead>

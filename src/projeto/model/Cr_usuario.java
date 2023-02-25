@@ -414,90 +414,17 @@ public class Cr_usuario {
 
 		return arrayRetorno;
 	}
-	
 
-	public static JSONArray arrayUsuarios(Object[] params, Object[] values) {
-		JSONArray arrayUsuarios = new JSONArray();
-		String sql = " select " +
-					 " cr_id_usuario, " +
-					 " cr_codigo_usuario, " +
-					 " cr_senha_usuario, " +
-					 " cr_nome_completo, " +
-					 " cr_email_usuario " +
-					 " from cr_usuario ";
-		
-		if(params.length > 0 && values.length > 0) {
-			for(int ob = 0; ob < params.length; ob++) {
-				sql += " and "+params[ob]+" = ?";
-			}
-		}
-		
-		sql+=		" order by cr_id_usuario ";
-		try {
-			Connection c = ProjetoDatabase.getConnection();
-			System.out.println("SQL arrayUsuarios()\n"+sql);
-			PreparedStatement p = c.prepareStatement(sql);
-			if(params.length > 0 && values.length > 0) {
-				for(int ob = 0, pind=1; ob < values.length; ob++, pind++) {
-					p.setObject(pind, values[ob]);
-				}
-			}
-			
-			ResultSet r = p.executeQuery();
-			ResultSetMetaData rsmd = r.getMetaData();
-			int cols =	rsmd.getColumnCount();
-			while(r.next()) {
-				JSONObject jsonObj = new JSONObject();
-				for(int xc = 1;xc<=cols;xc++){
-					if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
-						java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
-						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
-					}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
-						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
-					}else if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
-						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dataHoraMinutoSegundoBr(r.getString(xc)):"");
-					}else{
-						jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));	
-					}
-				}
-				arrayUsuarios.put(jsonObj);
-			}
-			if(null!=r) {
-				r.close();
-				r=null;
-			}
-			if(null!=p) {
-				p.close();
-				p=null;
-			}
-			if(null!=c) {
-				c.close();
-				c=null;
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return arrayUsuarios;
-	}
-	
 	public Cr_usuario() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Cr_usuario cru = new Cr_usuario();
-		
-		JSONArray retornolistar = new JSONArray();
-		
-		
-		retornolistar = cru.listarJSON(args, args);
-		
-		System.out.println("Retorno da lista de Cr_usuario :: "+retornolistar);
+		//Cr_usuario cru = new Cr_usuario();		
+		//JSONArray retornolistar = new JSONArray();			
+		//retornolistar = cru.listarJSON(args, args);		
+		//System.out.println("Retorno da lista de Cr_usuario :: "+retornolistar);
 			
 	}
 	
