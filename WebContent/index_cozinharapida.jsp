@@ -41,8 +41,15 @@
 		
 		<style>		
 		h1 {	
+			font-weight: 800;
+			font-family: 'Open Sans', sans-serif;
+			font-size: 80px;
+		}	
+		
+		h3 {	
 			font-weight: bold;
 			font-family: 'Open Sans', sans-serif;
+			color: #FFFFFF;
 		}	
 	
 		font {
@@ -74,15 +81,36 @@
 			font-size: 15px;
 		}
 		
+		body {
+			background: url('imagens/fast_kitchen_login.png') no-repeat center center fixed; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+		
+		.login {
+			background-color: #636f61;
+			margin: 0px;
+		    height: 100vh;
+		    display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+		}
+		
 		</style>
 	</head>
-
-	<body style="background-color: #636f61; margin: 0px;">	
+	 <!-- style="background-color: #636f61; margin: 0px;" Pintando o Fundo do Body de verde aqui-->
+	<body>	
 		<form action="restrito/lista_usuarios.jsp">
-		<div class="d-flex justify-content-center">
-			<div class="container">
+		<!-- <div class="d-flex justify-content-center"> -->
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 login"  align="center">
 				<font style="font-size: 15px">						
-				<h1>Bem Vindo de Volta!</h1>
+				<h1>Bem-vindo<br/> de volta!</h1>
+				<br>			
+				<h3>Acesse sua conta ou crie uma nova!</h3>
 				<br>									
 					<label for="cod_usuario"><strong>Usuário </strong><i class="fas fa-user"></i></label> 
 					<input type="text" class="form-control form-control-lg rounded-50" name="cod_usuario" id="cod_usuario" style="color: white; background: rgba(0,0,0,0.5);  border-radius: 10px;"/>									
@@ -95,7 +123,7 @@
 					</button>														
 				</font>				
 			</div>
-		</div>
+		<!-- </div> -->
 		</form>
 	</body>
 </html>
