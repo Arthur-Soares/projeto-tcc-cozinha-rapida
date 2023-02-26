@@ -61,14 +61,9 @@
 			font-weight: bold;
 			font-family: 'Open Sans', sans-serif;
 			color: #FFFFFF;
-		}	
-	
-		font {
-			color: #323232;
-			font-family: 'Open Sans', sans-serif;				
-		}
+		}			
 		
-		.container{
+		.container {
 			width: 100vw;
 			height: 100vh;			
 			display: flex;
@@ -78,7 +73,7 @@
 			text-align: center;
 		}
 		
-		#btnLogin{	
+		#btnLogin {	
 			border: 5px solid;					
 			border-color: #FFFFFF; 
 			outline: none;
@@ -92,7 +87,7 @@
 			font-size: 15px;
 		}
 		
-		#btnCadastro{	
+		#btnCadastro {	
 			border: none;						
 			color: #FFFFFF;
 			background: #636f61;
@@ -103,7 +98,7 @@
 			font-size: 15px;
 		}
 					
-		#btnSalvarDados{	
+		#btnSalvarDados {	
 			border: none;						
 			color: #FFFFFF;
 			background: #636f61;
@@ -115,11 +110,13 @@
 		}
 		
 		body {
-			background: url('imagens/fast_kitchen_login.png') no-repeat center center fixed; 
+			background: url('imagens/fast_kitchen_login_dark.png') no-repeat center center fixed; 
 			-webkit-background-size: cover;
 			-moz-background-size: cover;
 			-o-background-size: cover;
 			background-size: cover;
+			color: #323232;
+			font-family: 'Open Sans', sans-serif;	
 		}
 		
 		.login {
@@ -132,6 +129,18 @@
 			align-items: center;
 			text-align: center;
 			float: left;
+		}
+		
+		.div_cadastro_sucesso {
+			background-color: #636f61;
+			margin: 0px;
+		    height: 100vh;
+		    display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			float: center;
 		}
 		
 		.cadastro {			
@@ -182,46 +191,181 @@
 	</head>	 
 		
 	<script type="text/javascript">
+		//Chamada para utilizar o Jquery
 		jQuery.extend({
 	 	   postJSON: function( url, data, callback) {
 	 	      return jQuery.post(url, data, callback, "json");
 	 	   }
 	 	});
-				
+		
+		//Inicia assim que a tela abre
 		$(document).ready(function() {	
 			var div_login_cadastro = $('.div_login_cadastro');
 		    var div_cadastro_dados = $('.div_cadastro_dados');
-		    var div_cadastro_dados_dois = $('.div_cadastro_dados_dois');		    
+		    var div_cadastro_dados_dois = $('.div_cadastro_dados_dois');		
+		    var div_cadastro_sucesso = $('.div_cadastro_sucesso');		
 		    
 		    div_login_cadastro.show();
 		    div_cadastro_dados.hide();				  			
-		    div_cadastro_dados_dois.hide();				  			
+		    div_cadastro_dados_dois.hide();	
+		    div_cadastro_sucesso.hide();	
 		});
-										
-		function cadastrarUm(){   									    
+		
+		/* Ao clicar no botão CADASTRAR essa função chama a primeira tela de cadastro de dados para o usuário preencher.
+		 * Para passar para a próxima tela são validados:
+		 * - Se o campo de Email não está em Branco;
+		 * - Se as senhas digitadas pelo usuário são iguais;
+		 * Caso essas duas funções sejam verdadeiras ele irá para a próxima tela.
+		 */
+		function cadastrarUm(){   					
+			var cr_email_usuario = $("#cr_email_usuario").val();
+			var cr_senha_usuario = $("#cr_senha_usuario").val();
+			var cr_senha_usuario_confirm = $("#cr_senha_usuario_confirm").val();					
+			
+			if(cr_email_usuario == ""){
+				alert('Email em Branco!');
+				$("#cr_email_usuario").focus();
+				return false;
+			}
+			
+			if(cr_senha_usuario != cr_senha_usuario_confirm){
+				alert('Senhas diferentes!');				
+				$("#cr_senha_usuario_confirm").focus();
+				return false;
+			}
+			
 		    $(".div_login_cadastro").slideUp(200);
 		    $(".div_cadastro_dados").slideDown(200);		   
 		}
 		
+		//Volta para a tela inicial de Login e Cadastro
+		function voltarLogin(){   								
+		    $(".div_cadastro_dados").slideUp(200);
+		    $(".div_login_cadastro").slideDown(200);		   
+		}
+		
+		//Volta para a primeira tela de preenchimento de dados onde se encontra: Nome, CPF e Telefone 
 		function voltarUm(){   									    
 		    $(".div_cadastro_dados_dois").toggle('slide');
 		    $(".div_cadastro_dados").toggle('slide');		   
 		}
 		
+		//Chama a segunda tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes ao endereço
 		function cadastrarDois(){   									    
 		    $(".div_cadastro_dados").toggle('slide');
 		    $(".div_cadastro_dados_dois").toggle('slide');		   
+		}
+		
+		//Volta para a tela inicial de Login e Cadastro ao cadastrar Conta
+		function voltarLoginSucesso(){   								
+		    $(".div_cadastro_sucesso").toggle('slide');
+		    $(".div_login_cadastro").toggle('slide');	
+		    $("#cr_email_usuario_login").focus();
+		}
+		
+		/* Função que ao clicar no olho ao lado dos inputs das senhas transforma o tipo dela de PASSWORD para TEXT assim tornando
+		 * possivel visualizar o que foi digitado nos campos, caso seja clicado novamente faz o inverso.
+		 */
+		function mostraSenha(input){
+			var input = document.querySelector(input);
+			
+		    if(input.getAttribute('type') == 'password') {
+		    	input.setAttribute('type', 'text');
+		    }else{
+		    	input.setAttribute('type', 'password');
+		    }
+		}
+		
+		//Função que salva todos os dados de cadastro digitados pelo usuário no banco de dados
+		function salvarRegistro(){
+			
+			var arrayJSON = $('#login_cadastro').serializeArray();
+			$.postJSON("./jsonservlet",arrayJSON,
+				function(data,status){
+					if(data.id_usuario!="0" && data.id_usuario != ""){
+						$("#cr_id_usuario").val(data.id_usuario);																		
+						$(".div_cadastro_dados_dois").slideUp(200);
+					    $(".div_cadastro_sucesso").slideDown(200);	
+					}else{
+						alert("Problema ao salvar registro!");	
+					}
+				}
+			);			
+		}
+		
+		//Função que pesquisa o CEP, é chamada assim que o usuário clica fora do campo CEP
+		function pesquisaCEP() {
+			var cr_cep_usuario = $("#cr_cep_usuario").val();
+			var cr_endereco_usuario = $("#cr_endereco_usuario").val();
+			var cr_nrmcasa_usuario = $("#cr_nrmcasa_usuario").val();
+			var cr_endcomplemento_usuario = $("#cr_endcomplemento_usuario").val();
+			var cr_pontoreferencia_usuario = $("#cr_pontoreferencia_usuario").val();						
+
+			//Nova variável "cep" somente com dígitos.
+			var cep = cr_cep_usuario.replace(/\D/g, '');
+			//Verifica se campo cep possui valor informado.
+			if (cep != "") {
+				//Expressão regular para validar o CEP.
+				var validacep = /^[0-9]{8}$/;
+				//Valida o formato do CEP.
+				if(validacep.test(cep)) {
+					//Preenche os campos com "..." enquanto consulta webservice.
+					$("#cr_endereco_usuario").val("...");				 					
+					//Cria um elemento javascript.
+					var script = document.createElement('script');
+					//Sincroniza com o callback.
+					script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=retornoCEP';
+					//Insere script no documento e carrega o conteúdo.
+					document.body.appendChild(script);
+				} else {
+					//cep é inválido.
+					limpaCamposCEP();
+					alert("Formato de CEP inválido.");
+				}
+			} else {
+				//cep sem valor, limpa formulário.
+				limpaCamposCEP();
+				alert("Digite o CEP antes de pesquisar!");
+				return false;
+			}
+		}
+		
+		/* Pega o conteudo retornado pelo pesquisaCEP e retorna na tela, neste caso só iremos retornar o endereço
+		 * pois será o unico dados que iremos utilizar
+		 */		
+		function retornoCEP(conteudo) {				
+			var cr_endereco_usuario = $("#cr_endereco_usuario").val();	 
+			
+			if (!("erro" in conteudo)) {
+				//Atualiza os campos com os valores.
+				 $("#cr_endereco_usuario").val(conteudo.logradouro);					 								
+			} else {
+				//CEP não Encontrado.
+				limpaCamposCEP();
+				alert("CEP não encontrado!");
+			}
+		}	      
+		
+		//Função que Limpa os campos do CEP
+		function limpaCamposCEP() {			
+			$("#cr_cep_usuario").val("");
+			$("#cr_endereco_usuario").val("");
+			$("#cr_nrmcasa_usuario").val("");
+			$("#cr_endcomplemento_usuario").val("");
+			$("#cr_pontoreferencia_usuario").val("");			
 		}
 		
 	</script>
 		
 	<body>	
 		<form id="login_cadastro" name="login_cadastro" method="post" action="restrito/lista_usuarios.jsp">	
+			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
+			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>
 			
 			<div class="div_login_cadastro">
 				<!-- DIV LOGIN -->
 				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 login">
-					<font style="font-size: 15px">						
+					<font style="font-size: 0px">						
 					<h1>Bem-vindo<br/> de volta!</h1>
 					<br>			
 					<h3>Acesse sua conta ou crie uma nova!</h3>
@@ -229,15 +373,20 @@
 					
 					<div class="row mt-3">
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cod_usuario" style="font-size: 24px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cod_usuario" id="cod_usuario" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;"/> 
+							<label for="cr_email_usuario_login" style="font-size: 24px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" id="cr_email_usuario_login" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3">					
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="pwd_usuario" style="font-size: 24px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 
-						<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px;"/>
+							<label for="cr_senha_usuario_login" style="font-size: 24px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
+							<div class="input-group">																			  															 
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;"/>															    
+						    	<div class="input-group-append">
+						     	 	<div class="input-group-text" id="eye_password" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+						    	</div>
+						  	</div>
 						</div>	
 					</div>	
 					<br/>
@@ -258,22 +407,32 @@
 					
 					<div class="row mt-3">
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cod_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cod_usuario" id="cod_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
-					<div class="row mt-3">					
+					<div class="row mt-3">										
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
-						</div>	
+							<label for="cr_senha_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
+							<div class="input-group">																			  															 
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario" id="cr_senha_usuario" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
+						    	<div class="input-group-append">
+						     	 	<div class="input-group-text" id="eye_password" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+						    	</div>
+						  	</div>
+						</div>
 					</div>
 					
-					<div class="row mt-3">					
+					<div class="row mt-3">											
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Confirme a Senha</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_senha_usuario_confirm" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Confirme a Senha</strong></label> 																			
+							<div class="input-group">																			  															 
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
+						    	<div class="input-group-append">
+						     	 	<div class="input-group-text" id="eye_password" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_confirm');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+						    	</div>
+						  	</div>
 						</div>	
 					</div>	
 					<br/>
@@ -289,6 +448,11 @@
 			<div class="div_cadastro_dados">
 				<!-- DIV CADASTRO CONTA -->
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<div class="row justify-content-md-left">															
+						<button type="button" class="btn btn-lg float-center" style="position: absolute; color: #FFFFFF; font-size: 30px; margin-top: -30px; margin-left: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLogin();">
+							<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+						</button>						
+					</div>
 					<font style="font-size: 15px">										
 					<br>								
 						<h2>Precisamos de mais alguns dados, ok?</h2>					
@@ -296,22 +460,22 @@
 					
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cod_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Nome</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cod_usuario" id="cod_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Nome</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" style="height: 60px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_telefone_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" id="cr_telefone_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>						
 					<br/>
@@ -320,19 +484,23 @@
 						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px;" onclick="cadastrarDois();"></button>	
 					</div>
 					<br/>
-					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="cadastrarDois();">
+					<div class="row mt-3 justify-content-md-center">																					
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:5%; padding-right:5%;" onclick="cadastrarDois();">
 							<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
 						</button>	
 					</div>														
 					</font>				
 				</div>				
-			</div>		
-			
+			</div>			
 			
 			<div class="div_cadastro_dados_dois">
 				<!-- DIV CADASTRO CONTA PARTE DOIS -->
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<div class="row justify-content-md-left">															
+						<button type="button" class="btn btn-lg float-center" style="position: absolute; color: #FFFFFF; font-size: 30px; margin-top: -30px; margin-left: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarUm();">
+							<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+						</button>						
+					</div>
 					<font style="font-size: 15px">	
 					<br>								
 						<h2>Precisamos de mais alguns dados, ok?</h2>					
@@ -340,33 +508,33 @@
 					
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cod_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cod_usuario" id="cod_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<label for="cr_cep_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
 						</div>					
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_endereco_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>
 						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_nrmcasa_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>		
 					</div>		
 																		
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_endcomplemento_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>	
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="pwd_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Ponto de Refêrencia</strong></label> 
-							<input type="password" class="form-control form-control-lg rounded-50" name="pwd_usuario" id="pwd_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Ponto de Refêrencia</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" id="cr_pontoreferencia_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>	
 					<br/>
@@ -376,13 +544,30 @@
 					</div>
 					<br/>
 					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="cadastrarDados();">
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
 							<strong>Salvar Cadastro</strong> 
 						</button>	
 					</div>														
 					</font>				
 				</div>
-			</div>				
+			</div>	
+			
+			<div class="div_cadastro_sucesso">
+				<!-- DIV CADASTRO CONTA PARTE DOIS -->
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
+					<font style="font-size: 15px">	
+					<br>								
+						<h2>Sua conta foi criada com sucesso!</h2>					
+					<br>					
+					<br/>			
+					<div class="row mt-3 justify-content-md-center">															
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;"  onclick="voltarLoginSucesso();">
+							<strong>Entrar</strong>
+						</button>	
+					</div>													
+					</font>				
+				</div>
+			</div>					
 		</form>
 	</body>
 </html>

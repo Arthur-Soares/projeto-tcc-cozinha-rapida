@@ -27,7 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
-
+import projeto.model.Cr_usuario;
 import projeto.model.R1usuario;
 
 import projeto.util.AppSecrets;
@@ -71,11 +71,12 @@ public class JsonServlet extends HttpServlet {
 			//System.out.println(name+" x=x '"+value+"'");
 			mapParams.put(name, value);
 		}
+		
 		if("salva_usuario".equals(opcServlet)) {
-			R1usuario r1u = new R1usuario(mapParams);
-			int id_usuario = r1u.salvaRegistro();
+			Cr_usuario cru = new Cr_usuario(mapParams);
+			int id_usuario = cru.salva_registro();
 			jsonObj= new JSONObject();
-			jsonObj = R1usuario.jsonUsuarioParam("id_usuario", id_usuario);
+			jsonObj.put("id_usuario", id_usuario);
 			out = response.getWriter();
     		out.print(jsonObj);
 		}else if("find_usuario".equals(opcServlet)) {
