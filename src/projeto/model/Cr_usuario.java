@@ -84,7 +84,7 @@ public class Cr_usuario {
 								" cr_endcomplemento_usuario, " +
 								" cr_pontoreferencia_usuario " +
 							    " ) VALUES " +
-							    " (?,?,?,?,?,?,?,?,?,?) ";
+							    " (?,MD5(?),?,?,?,?,?,?,?,?) ";
 
 	public String UPD_PADRAO =	" UPDATE cr_usuario SET " +
 								//" cr_id_usuario = ?, " +

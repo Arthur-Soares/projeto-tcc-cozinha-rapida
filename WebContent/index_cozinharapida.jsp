@@ -47,32 +47,23 @@
 		h1 {	
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;
-			font-size: 80px;
+			font-size: 40px;
 		}	
 		
 		h2 {
 			color: #FFFFFF;
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;
-			font-size: 60px;
+			font-size: 40px;
 		}
 		
 		h3 {	
 			font-weight: bold;
 			font-family: 'Open Sans', sans-serif;
 			color: #FFFFFF;
+			font-size: 20px;
 		}			
-		
-		.container {
-			width: 100vw;
-			height: 100vh;			
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;
-			text-align: center;
-		}
-		
+
 		#btnLogin {	
 			border: 5px solid;					
 			border-color: #FFFFFF; 
@@ -373,25 +364,25 @@
 					
 					<div class="row mt-3">
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cr_email_usuario_login" style="font-size: 24px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" id="cr_email_usuario_login" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;"/> 
+							<label for="cr_email_usuario_login" style="font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" id="cr_email_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3">					
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cr_senha_usuario_login" style="font-size: 24px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
+							<label for="cr_senha_usuario_login" style="font-size: 15px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
 							<div class="input-group">																			  															 
-								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;"/>															    
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;"/>															    
 						    	<div class="input-group-append">
-						     	 	<div class="input-group-text" id="eye_password" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+						     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 						    	</div>
 						  	</div>
 						</div>	
 					</div>	
 					<br/>
 					<div class="row mt-3 justify-content-md-center">															
-						<button type="submit" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;">
+						<button type="submit" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;">
 							<strong>Entrar</strong>
 						</button>	
 					</div>														
@@ -405,39 +396,39 @@
 					<h2>Crie sua conta</h2>
 					<br>
 					
-					<div class="row mt-3">
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+					<div class="row mt-3 justify-content-md-center">
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" style="height: 50px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
-					<div class="row mt-3">										
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cr_senha_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
+					<div class="row mt-3 justify-content-md-center">										
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+							<label for="cr_senha_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
 							<div class="input-group">																			  															 
-								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario" id="cr_senha_usuario" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario" id="cr_senha_usuario" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
 						    	<div class="input-group-append">
-						     	 	<div class="input-group-text" id="eye_password" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+						     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 						    	</div>
 						  	</div>
 						</div>
 					</div>
 					
-					<div class="row mt-3">											
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<label for="cr_senha_usuario_confirm" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Confirme a Senha</strong></label> 																			
+					<div class="row mt-3 justify-content-md-center">											
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+							<label for="cr_senha_usuario_confirm" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Confirme a Senha</strong></label> 																			
 							<div class="input-group">																			  															 
-								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
 						    	<div class="input-group-append">
-						     	 	<div class="input-group-text" id="eye_password" style="height: 60px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_confirm');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+						     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_confirm');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 						    	</div>
 						  	</div>
 						</div>	
 					</div>	
 					<br/>
 					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnCadastro" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="cadastrarUm();">
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnCadastro" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="cadastrarUm();">
 							<strong>Cadastrar</strong> 
 						</button>	
 					</div>														
@@ -460,22 +451,22 @@
 					
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Nome</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" style="height: 60px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nome</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" style="height: 50px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" style="height: 50px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_telefone_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" id="cr_telefone_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_telefone_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" id="cr_telefone_usuario" style="height: 50px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>						
 					<br/>
@@ -485,7 +476,7 @@
 					</div>
 					<br/>
 					<div class="row mt-3 justify-content-md-center">																					
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:5%; padding-right:5%;" onclick="cadastrarDois();">
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:5%; padding-right:5%;" onclick="cadastrarDois();">
 							<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
 						</button>	
 					</div>														
@@ -508,33 +499,33 @@
 					
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_cep_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" style="height: 60px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
+							<label for="cr_cep_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" style="height: 50px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
 						</div>					
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-							<label for="cr_endereco_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_endereco_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" style="height: 50px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>
 						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
-							<label for="cr_nrmcasa_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_nrmcasa_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" style="height: 50px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>		
 					</div>		
 																		
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_endcomplemento_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_endcomplemento_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" style="height: 50px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>	
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 24px;  float: left; font-weight: bold;"><strong>Ponto de Refêrencia</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" id="cr_pontoreferencia_usuario" style="height: 60px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
+							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Ponto de Refêrencia</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" id="cr_pontoreferencia_usuario" style="height: 50px; color:black; background: #CCCCCC; font-weight: bold; opacity: 0.8; border-radius: 10px;"/>
 						</div>	
 					</div>	
 					<br/>
@@ -544,7 +535,7 @@
 					</div>
 					<br/>
 					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
 							<strong>Salvar Cadastro</strong> 
 						</button>	
 					</div>														
@@ -561,7 +552,7 @@
 					<br>					
 					<br/>			
 					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 24px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;"  onclick="voltarLoginSucesso();">
+						<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;"  onclick="voltarLoginSucesso();">
 							<strong>Entrar</strong>
 						</button>	
 					</div>													
