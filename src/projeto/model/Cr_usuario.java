@@ -315,7 +315,7 @@ public class Cr_usuario {
 				if(this.cr_id_usuario != 0) {
 					idRetorno = this.cr_id_usuario;
 				}else {
-					String sqlMax = "select max(cr_id_usuario) from cr_usuario ";
+					String sqlMax = " select max(cr_id_usuario) from cr_usuario ";
 					Statement st = c.createStatement();
 					ResultSet rs = st.executeQuery(sqlMax);
 					if(rs.next()) {
@@ -348,7 +348,7 @@ public class Cr_usuario {
 	 * 
 	 * @return retorna e trata os dados do select padrão para que seja possível exibir a informação na consulta.
 	 */
-	public JSONArray listarJSON(Object[] params, Object[] values) {
+	public static JSONArray listarJSON(Object[] params, Object[] values) {
 		JSONArray arrayRetorno = new JSONArray();
 		String sql = SEL_PADRAO;
 		if(params.length > 0 && values.length > 0) {
@@ -413,6 +413,42 @@ public class Cr_usuario {
 		}
 
 		return arrayRetorno;
+	}
+	
+	/**
+	 * Essa classe recebe o Id do usuario como parametro verifica se o Id é diferente de 0, caso seja é apagado da tabela no banco.
+	 * @return
+	 */
+	public static int valida_login(String cr_email_usuario, String cr_senha_usuario) {
+		int idRetorno = 0;
+		
+		String loginSql = "select cr_id_usuario from cr_usuario where cr_email_usuario = '"+cr_email_usuario+"' and cr_senha_usuario = MD5('"+cr_senha_usuario+"') ";
+		
+		try {
+			Connection c = ProjetoDatabase.getConnection(); // c = Connection.
+			Statement st = c.createStatement();
+			ResultSet rs = st.executeQuery(loginSql);
+	
+			if(rs.next()) {
+				idRetorno = null!=rs.getObject(1)?rs.getInt(1):0;				
+			}
+			if(null!=rs) {
+				rs.close();
+				rs=null;
+			}
+			if(null!=st) {
+				st.close();
+				st=null;
+			}			
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			idRetorno = -1;
+		}		
+		return idRetorno;
 	}
 
 	public Cr_usuario() {
