@@ -34,7 +34,6 @@ CREATE TABLE cr_usuario
    cr_pontoreferencia_usuario varchar(200) NOT NULL
 );
 
-
 */
 
 /**
@@ -97,7 +96,7 @@ public class Cr_usuario {
 								" cr_endereco_usuario = ?, " +
 								" cr_nrmcasa_usuario = ?, " +
 								" cr_endcomplemento_usuario = ?, " +
-								" cr_pontoreferencia_usuario = ?, " +
+								" cr_pontoreferencia_usuario = ? " +
 								" WHERE cr_id_usuario = ? ";
 	
 	public String DEL_PADRAO = " DELETE FROM cr_usuario WHERE cr_id_usuario = ?";
@@ -244,30 +243,29 @@ public class Cr_usuario {
 	 * Essa classe recebe o Id do usuario como parametro verifica se o Id é diferente de 0, caso seja é apagado da tabela no banco.
 	 * @return
 	 */
-	public int apaga_registro() {
+	public int apaga_registro(int id_usuario) {
 		int idRetorno = 0;
-		if(this.cr_id_usuario != 0) {
-			String delSql = DEL_PADRAO;
-			try {
-				Connection c = ProjetoDatabase.getConnection(); // c = Connection.
-				PreparedStatement ps = c.prepareStatement(delSql);					
-				ps.setInt(1, this.cr_id_usuario);	
-				ps.executeUpdate();
-				if(null!=ps) {
-					ps.close();
-					ps=null;
-				}			
-				if(null!=c) {
-					c.close();
-					c=null;
-				}
-			}catch(Exception e) {
-				e.printStackTrace();
-				idRetorno = -1;
+		
+		String delSql = DEL_PADRAO;
+		System.out.println("Classe: Cr_usuario - Método: apaga_registro DELETE :: "+delSql);
+		try {
+			Connection c = ProjetoDatabase.getConnection(); // c = Connection.
+			PreparedStatement ps = c.prepareStatement(delSql);			
+			ps.setInt(1, id_usuario);	
+			ps.executeUpdate();
+			if(null!=ps) {
+				ps.close();
+				ps=null;
+			}			
+			if(null!=c) {
+				c.close();
+				c=null;
 			}
-		}else {
+		}catch(Exception e) {
+			e.printStackTrace();
 			idRetorno = -1;
 		}
+		
 		return idRetorno;
 	}
 	

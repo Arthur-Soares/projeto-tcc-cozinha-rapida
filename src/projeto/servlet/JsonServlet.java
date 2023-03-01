@@ -79,10 +79,16 @@ public class JsonServlet extends HttpServlet {
 			jsonObj.put("id_usuario", id_usuario);
 			out = response.getWriter();
     		out.print(jsonObj);
-		}else if("find_usuario".equals(opcServlet)) {
+		}else if("apaga_usuario".equals(opcServlet)) {
 			int id_usuario = null!=request.getParameter("id_usuario")?Cast.toInt(request.getParameter("id_usuario")):0;
-			jsonObj= new JSONObject();
-			jsonObj = R1usuario.jsonUsuarioParam("id_usuario", id_usuario);
+			Cr_usuario cru = new Cr_usuario();
+			int retorno_login = cru.apaga_registro(id_usuario);
+			jsonObj = new JSONObject();	
+			if(retorno_login == -1) {
+				jsonObj.put("ERRO", "Erro ao apagar usuário!");
+			}else{
+				jsonObj.put("ERRO", "");
+			}			
 			out = response.getWriter();
     		out.print(jsonObj);
 		}else if("find_login".equals(opcServlet)) {
@@ -91,34 +97,29 @@ public class JsonServlet extends HttpServlet {
 			int retorno_login = Cr_usuario.valida_login(cr_email_usuario_login, cr_senha_usuario_login);			
 			JSONObject jsonRet = new JSONObject();
 			
-			if(retorno_login != 0) {
+			if(retorno_login == -1) {
+				jsonRet.put("ERRO", "Erro ao Verificar Login!");
+			}else if(retorno_login != 0) {
 				jsonRet.put("ERRO", "");
 			}else {
-				jsonRet.put("ERRO", "Usuário ou senha invalidos!");
+				jsonRet.put("ERRO", "Usuário ou senha inválidos!");
 			}
 			
 			out = response.getWriter();
     		out.print(jsonRet);
-		}
-		
-		else if("find_login".equals(opcServlet)) {
-			String codigo_usuario = null!=request.getParameter("codigo_usuario")?request.getParameter("codigo_usuario"):"";
-			System.out.println("find_login :: '"+codigo_usuario+"'");
-			R1usuario r1u = R1usuario.listUsuarioParam("codigo_usuario", codigo_usuario); 
-			JSONObject jsonRet = new JSONObject();
-			if(r1u.getId_usuario() == 0) {
-				jsonRet.put("ERRO", "");
-			}else {
-				jsonRet.put("ERRO", "Usuário (ID:'"+r1u.getId_usuario()+"') já cadastrado com este login.");
-			}
-			out = response.getWriter();
-    		out.print(jsonRet);
-		}
-		else if("list_usuarios".equals(opcServlet)) {	
+		}else if("list_usuarios".equals(opcServlet)) {	
 			jsonArray = Cr_usuario.listarJSON(new Object[0], new Object[0]);
 			out = response.getWriter();
     		out.print(jsonArray);
-		}else if("atualiza_senha".equals(opcServlet)) {			
+		}else if("find_usuario".equals(opcServlet)) { 
+			int cr_id_usuario = null!=request.getParameter("cr_id_usuario")?Cast.toInt(request.getParameter("cr_id_usuario")):0; 
+			params[0]="cr_id_usuario";
+			values[0]= cr_id_usuario;
+			jsonArray = Cr_usuario.listarJSON(params,values); 
+			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			out = response.getWriter();
+			out.print(jsonObj);
+	   }else if("atualiza_senha".equals(opcServlet)) {			
 			int id_usuario = userLogado.getId_usuario();		
 			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";
 			int retornasenha = R1usuario.atualizaSenha(id_usuario, senha);

@@ -63,6 +63,31 @@
 	</head>
 
 	<script type="text/javascript">
+		//Chamada para utilizar o Jquery
+		jQuery.extend({
+	 	   postJSON: function( url, data, callback) {
+	 	      return jQuery.post(url, data, callback, "json");
+	 	   }
+	 	});	
+		
+		//Inicia assim que a tela abre
+		$(document).ready(function() {
+			var dtable = $('#table_usuarios').DataTable(
+				{
+					responsive: true,
+		            "language": {
+		               url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json'
+		            },
+		            //"order": [[ 0, 'desc' ]],
+		            searching: true, 
+		            paging: true, 
+		            info: false
+				}
+			); 
+			carregaListaUsuarios('');
+			$("#div_loading").hide();				
+		});
+		
 		function carregaListaUsuarios(crep){
 			var table = $('#table_usuarios').DataTable();
 			table.clear().draw();
@@ -83,56 +108,49 @@
 							arrayRow.push(cr_email_usuario);
 							arrayRow.push(cr_cep_usuario);
 							arrayRow.push(cr_endereco_usuario);							
-							arrayRow.push("<i class='fas fa-edit' onclick='carregaUsuario(\""+id_usuario+"\")'> </i>");
-							arrayRow.push("<i class='fas fa-trash' onclick='carregaUsuario(\""+id_usuario+"\")'> </i>");
+							arrayRow.push("<i class='fas fa-edit' onclick='carregaUsuario(\""+cr_id_usuario+"\")'> </i>");
+							arrayRow.push("<i class='fas fa-trash' onclick='apagaUsuario(\""+cr_id_usuario+"\")'> </i>");
 							table.row.add(arrayRow).draw();
 						}
 					}
 				}
 			);
-		}
-		 
+		}		 
 		
-		function carregaUsuario(idusu){
-			if("" == idusu){
-				alert("Não há ID vinculado a este registro.")				
+		function carregaUsuario(cr_id_usuario){
+			if("" == cr_id_usuario){				
+				$("#cr_id_usuario").val(0);
 			}else{
-				$("#id_usuario").val(idusu)
+				$("#cr_id_usuario").val(cr_id_usuario);
 				$("#frmusuario").submit();
 			}
 		}
 		
+		function apagaUsuario(id_usuario){												
+			if(confirm("Deseja apagar esse Usuário?")){			
+				$.postJSON("../jsonservlet",{opc_servlet:'apaga_usuario',id_usuario:id_usuario},
+					function(data,status){
+						if(data.ERRO == ""){						
+						   alert("Usuário deletado com sucesso!");
+						   carregaListaUsuarios();
+						}else{
+							alert(data.ERRO);
+							return false;
+						}
+					}
+				);
+			}
+		}	
 		
-		
- 		$(document).ready(function() {
-			var dtable = $('#table_usuarios').DataTable(
-				{
-					responsive: true,
-		            "language": {
-		               url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json'
-		            },
-		            //"order": [[ 0, 'desc' ]],
-		            searching: true, 
-		            paging: true, 
-		            info: false
-				}
-			); 
-			carregaListaUsuarios('');
-			$("#div_loading").hide();
-		});
-
-
-		jQuery.extend({
-	 	   postJSON: function( url, data, callback) {
-	 	      return jQuery.post(url, data, callback, "json");
-	 	   }
-	 	});
-		
+		function voltaLogin(){							
+			$("#frmlogin").submit();			
+		}
 	</script>
 
-	<body>									
-		<form id="frmusuario" name="frmusuario" method="post" action="usuarios.jsp">
-			<input type="hidden" id="id_usuario" name="id_usuario" value="0"/>
+	<body>		
+		<form id="frmlogin" name="frmlogin" method="post" action="../index_cozinharapida.jsp"></form>							
+		<form id="frmusuario" name="frmusuario" method="post" action="cr_cadastro_usuario.jsp">
+			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario"/>
 			<div id="div_tela">
 				<div class="row">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
@@ -145,12 +163,7 @@
 											Lista de Usuários
 										</h1>
 									</div>
-								</div>															
-								<div class="row mt-3 justify-content-md-center">																					
-									<button type="submit" class="btn btn-success btn-lg float-center" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
-										<strong><i class="fas fa-plus"></i> Novo Usuário</strong> 
-									</button>	
-								</div>	
+								</div>																							
 								<br>
 								<div class="row">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -170,7 +183,11 @@
 									</div>
 								</div>
 								<br>
-								
+								<div class="row mt-3 justify-content-md-center">																															
+									<button type="button" class="btn btn-danger btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltaLogin();">
+										<strong>Sair</strong> 
+									</button>
+								</div>
 							</div>
 						</div>
 						<br>
