@@ -8,7 +8,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
-		<title>Cozinha Rápida - Lista Usuários</title>
+		<title>Cozinha Rápida - Lista Receitas</title>
 		<link href="../css/bootstrap.min.css" rel="stylesheet">
 		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
 		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
@@ -72,7 +72,7 @@
 		
 		//Inicia assim que a tela abre
 		$(document).ready(function() {
-			var dtable = $('#table_usuarios').DataTable(
+			var dtable = $('#table_receitas').DataTable(
 				{
 					responsive: true,
 		            "language": {
@@ -84,32 +84,27 @@
 		            info: false
 				}
 			); 
-			carregaListaUsuarios('');
+			carregaListaReceitas('');
 			$("#div_loading").hide();				
 		});
 		
-		function carregaListaUsuarios(crep){
-			var table = $('#table_usuarios').DataTable();
+		function carregaListaReceitas(crep){
+			var table = $('#table_receitas').DataTable();
 			table.clear().draw();
-			$.postJSON("../jsonservlet",{opc_servlet:'list_usuarios'},
+			$.postJSON("../jsonservlet",{opc_servlet:'list_receitas'},
 				function(datalin,statuslin){
 					if(datalin.length > 0){
 						for(var cx=0;cx<datalin.length;cx++){
-							var cr_id_usuario = datalin[cx].cr_id_usuario;
-							var cr_email_usuario = datalin[cx].cr_email_usuario;
-							var cr_nome_completo_usuario = datalin[cx].cr_nome_completo_usuario;
-							var cr_cpf_usuario = datalin[cx].cr_cpf_usuario;
-							var cr_cep_usuario = datalin[cx].cr_cep_usuario;
-							var cr_endereco_usuario = datalin[cx].cr_endereco_usuario;							
+							var cr_id_receita = datalin[cx].cr_id_receita;
+							var cr_titulo_receita = datalin[cx].cr_titulo_receita;
+							var cr_desc_receita = datalin[cx].cr_desc_receita;
+													
 													
 							var arrayRow = [];
-			                arrayRow.push(cr_cpf_usuario);
-							arrayRow.push(cr_nome_completo_usuario);
-							arrayRow.push(cr_email_usuario);
-							arrayRow.push(cr_cep_usuario);
-							arrayRow.push(cr_endereco_usuario);							
-							arrayRow.push("<i class='fas fa-edit' onclick='carregaUsuario(\""+cr_id_usuario+"\")'> </i>");
-							arrayRow.push("<i class='fas fa-trash' onclick='apagaUsuario(\""+cr_id_usuario+"\")'> </i>");
+			                arrayRow.push(cr_id_receita);
+							arrayRow.push(cr_titulo_receita);
+							arrayRow.push("<i class='fas fa-edit' onclick='carregaReceita(\""+cr_id_receita+"\")'> </i>");
+							arrayRow.push("<i class='fas fa-trash' onclick='apagaReceita(\""+cr_id_receita+"\")'> </i>");
 							table.row.add(arrayRow).draw();
 						}
 					}
@@ -117,22 +112,22 @@
 			);
 		}		 
 		
-		function carregaUsuario(cr_id_usuario){
-			if("" == cr_id_usuario){				
-				$("#cr_id_usuario").val(0);
+		function carregaReceita(cr_id_receita){
+			if("" == cr_id_receita){				
+				$("#cr_id_receita").val(0);
 			}else{
-				$("#cr_id_usuario").val(cr_id_usuario);
-				$("#frmusuario").submit();
+				$("#cr_id_receita").val(cr_id_receita);
+				$("#frmreceita").submit();
 			}
 		}
 		
-		function apagaUsuario(id_usuario){												
-			if(confirm("Deseja apagar esse Usuário?")){			
-				$.postJSON("../jsonservlet",{opc_servlet:'apaga_usuario',id_usuario:id_usuario},
+		function apagaReceita(id_receita){												
+			if(confirm("Deseja apagar esta Receita?")){			
+				$.postJSON("../jsonservlet",{opc_servlet:'apaga_receita',id_receita:id_receita},
 					function(data,status){
 						if(data.ERRO == ""){						
-						   alert("Usuário deletado com sucesso!");
-						   carregaListaUsuarios();
+						   alert("Receita deletada com sucesso!");
+						   carregaListaReceitas();
 						}else{
 							alert(data.ERRO);
 							return false;
@@ -146,17 +141,17 @@
 			$("#frmlogin").submit();			
 		}
 		
-		function listaReceita(){	
+		function novaReceita(){	
+			$("#cr_id_receita").val("");
 			$("#frmreceita").submit();		
 		}
 		
 	</script>
 
 	<body>		
-		<form id="frmreceita" name="frmreceita" method="post" action="cr_lista_receitas.jsp"></form>
 		<form id="frmlogin" name="frmlogin" method="post" action="../index_cozinharapida.jsp"></form>							
-		<form id="frmusuario" name="frmusuario" method="post" action="cr_cadastro_usuario.jsp">
-			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario"/>
+		<form id="frmreceita" name="frmreceita" method="post" action="cr_cadastro_receita.jsp">
+			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 			<div id="div_tela">
 				<div class="row">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
@@ -166,26 +161,23 @@
 								<div class="row mt-3">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
 										<h1>
-											Lista de Usuários
+											Lista de Receitas
 										</h1>
 									</div>
 								</div>																							
 								<br>
 								<div class="row mt-3 justify-content-md-center">																															
-									<button type="button" class="btn btn-success btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="listaReceita();">
-										<strong>Lista de Receitas</strong> 
+									<button type="button" class="btn btn-success btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="novaReceita();">
+										<strong>Nova Receita</strong> 
 									</button>
 								</div>
 								<div class="row mt-3">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-										<table id="table_usuarios" class="table table-striped table-bordered" style="width:100%">
+										<table id="table_receitas" class="table table-striped table-bordered" style="width:100%">
 									        <thead class="thead-dark">
 									            <tr>											                
-									                <th>CPF</th>
-									                <th width="20%">Nome</th>
-									                <th width="20%">Email</th>
-									                <th>CEP</th>											                											                
-									                <th width="20%">Endereço</th>
+									                <th>ID</th>
+									                <th width="60%">Titulo</th>
 									                <th>Editar</th>
 									                <th>Excluir</th>
 									            </tr>

@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
+import projeto.model.Cr_receita;
 import projeto.model.Cr_usuario;
 import projeto.model.R1usuario;
 
@@ -126,7 +127,38 @@ public class JsonServlet extends HttpServlet {
 			out = response.getWriter();
 			jsonObj.put("retorno",retornasenha);
         	out.print(jsonObj);    		
-		}else{
+		}else if("list_receitas".equals(opcServlet)) {	
+			jsonArray = Cr_receita.listarJSON(new Object[0], new Object[0]);
+			out = response.getWriter();
+    		out.print(jsonArray);
+		}else if("apaga_receita".equals(opcServlet)) {
+			int id_receita = null!=request.getParameter("id_receita")?Cast.toInt(request.getParameter("id_receita")):0;
+			Cr_receita crr = new Cr_receita();
+			int retorno_receita = crr.apaga_registro(id_receita);
+			jsonObj = new JSONObject();	
+			if(retorno_receita == -1) {
+				jsonObj.put("ERRO", "Erro ao apagar receita!");
+			}else{
+				jsonObj.put("ERRO", "");
+			}			
+			out = response.getWriter();
+    		out.print(jsonObj);
+		}else if("salva_receita".equals(opcServlet)) {
+			Cr_receita crr = new Cr_receita(mapParams);
+			int id_receita = crr.salva_registro();
+			jsonObj= new JSONObject();
+			jsonObj.put("id_receita", id_receita);
+			out = response.getWriter();
+    		out.print(jsonObj);
+		}else if("find_receita".equals(opcServlet)) { 
+			int cr_id_receita = null!=request.getParameter("cr_id_receita")?Cast.toInt(request.getParameter("cr_id_receita")):0; 
+			params[0]="cr_id_receita";
+			values[0]= cr_id_receita;
+			jsonArray = Cr_receita.listarJSON(params,values); 
+			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			out = response.getWriter();
+			out.print(jsonObj);
+	   }else{
 			out.print(jsonArray);
 		}
     }
