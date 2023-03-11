@@ -5,6 +5,9 @@
 		<title>Cozinha Rápida - Acesso restrito</title>
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="fontawesome/css/all.min.css" rel="stylesheet">
+		<meta http-equiv="Content-Type" content="text/html; charset:iso-88590-1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
@@ -45,6 +48,7 @@
 		
 		<style>		
 		h1 {	
+			color: #945d60;
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;
 			font-size: 40px;
@@ -420,7 +424,13 @@
 			}
 			
 			if(cr_senha_usuario_login == ""){
-				alert('Digite a Senha!');
+				//alert('Digite a Senha!');				
+				BootstrapDialog.alert({
+				title: 'Problema ao tentar acesso.',
+			    message:'Digite a Senha!',
+			    type: BootstrapDialog.TYPE_SUCCESS,
+			    buttonLabel: 'Ok'
+				});
 				$("#cr_senha_usuario_login").focus();
 				return false;
 			}			
@@ -447,42 +457,45 @@
 			<!-- DIV LOGIN -->
 			<div class="div_login">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 login">
-					<font style="font-size: 0px">						
-						<h1>Bem-vindo<br/> de volta!</h1>
-						<br>			
-						<h3>Acesse sua conta ou crie uma nova!</h3>
-						<br>
-						
-						<div class="row mt-3">
-							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-								<label for="cr_email_usuario_login" style="font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-								<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" id="cr_email_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;"/> 
-							</div>					
-						</div>
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12 col-12 d-flex justify-content-center card" style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: 50px;">				
+						<font style="font-size: 0px">						
+							<h1>Bem-vindo<br/> de volta!</h1>
+							<br>			
+							<h3>Acesse sua conta ou crie uma nova!</h3>
+							<br>
 							
-						<div class="row mt-3">					
-							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-								<label for="cr_senha_usuario_login" style="font-size: 15px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
-								<div class="input-group">																			  															 
-									<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;"/>															    
-							    	<div class="input-group-append">
-							     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
-							    	</div>
-							  	</div>
-							</div>	
-						</div>	
-						<br/>
-						<div class="row mt-3 justify-content-md-center" style="text-align: center;">															
-							<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="validaLogin();">
-								<strong>Entrar</strong>
-							</button>	
-						</div>					
-						<div class="row mt-3 justify-content-md-center" style="padding-top:5%;">																											
-							<button type="button" class="btn btn-success btn-lg float-center" id="btnCadastrar" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastro();">
-								<strong>Cadastrar-se</strong>
-							</button>						
-						</div>														
-					</font>				
+							<div class="row mt-3">														
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center form-group">
+									<label for="cr_email_usuario_login" style="color: #FFFFFF; font-size: 15px;  float: center; font-weight: bold;"><strong>Email</strong></label> 
+									<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" id="cr_email_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;" placeholder="Digite seu Email..."/> 
+								</div>
+							</div>					
+							
+							<div class="row mt-3">				
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center form-group">
+									<label for="cr_senha_usuario_login" style="color: #FFFFFF; font-size: 15px;  float: center; font-weight: bold;"><strong>Senha</strong></label> 																			
+									<div class="input-group">																			  															 
+										<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;" placeholder="Digite sua Senha..."/>															    
+								    	<div class="input-group-append">
+								     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
+								    	</div>
+								  	</div>
+								</div>
+							</div>
+															
+							<br/>
+							<div class="row mt-3 justify-content-md-center" style="text-align: center;">															
+								<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="validaLogin();">
+									<strong>Entrar</strong>
+								</button>	
+							</div>					
+							<div class="row mt-3 justify-content-md-center" style="padding-top:2%;">																											
+								<button type="button" class="btn btn-success btn-lg float-center" id="btnCadastrar" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastro();">
+									<strong>Cadastrar-se</strong>
+								</button>						
+							</div>														
+						</font>
+					</div>				
 				</div>				
 			</div>	
 			
