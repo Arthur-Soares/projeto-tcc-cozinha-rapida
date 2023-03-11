@@ -14,7 +14,16 @@
 		<script type="text/javascript" src="./js/bootstrap-autocomplete.js"></script>
 		<script type="text/javascript" src="./js/popper.js"></script>
 		<script src="./js/bootstrap-datepicker.min.js"></script>
-		<script src="./js/bootstrap-datepicker.pt-BR.min.js"></script>		
+		<script src="./js/bootstrap-datepicker.pt-BR.min.js"></script>		 
+		<link href="./js/bootstrap.min.css"rel="stylesheet">
+		<link href="./js/bootstrap-dialog.min.css" rel="stylesheet">
+		<link href="./js/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<script src="./js/jquery.js"></script>
+		<script type="text/javascript" src="./js/jquery.mask.min.js"></script>
+	    <script src="./js/bootstrap.min.js"></script>
+	    <script src="./js/bootstrap-dialog.min.js"></script>
+		<!--	
+		
 		<!-- 
 		Font Awesome Free 5.3.1 by @fontawesome - (https://fontawesome.com)
 		Bootstrap v4.1.3 (https://getbootstrap.com/)
@@ -250,15 +259,33 @@
 		}
 			 		
 		//Chama a segunda tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes ao endereço
-		function chamaCadastroDois(){   									    
-		    $(".div_cadastro").toggle('slide');
-		    $(".div_cadastro_dois").toggle('slide');		   
+		function chamaCadastroDois(){   		
+			var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
+			var cr_cpf_usuario = $("#cr_cpf_usuario").val();
+			var cr_telefone_usuario = $("#cr_telefone_usuario").val();					
+			
+			if(cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == ""){
+				alert('Preencha todos os campos!');
+				return false;					
+			}else{
+				$(".div_cadastro").toggle('slide');
+			    $(".div_cadastro_dois").toggle('slide');
+			}						   
 		}
 	
 		//Chama a terceira tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes a Email e Senha
 		function chamaCadastroTres(){   									    
-		    $(".div_cadastro_dois").toggle('slide');
-		    $(".div_cadastro_tres").toggle('slide');		   
+			var cr_cep_usuario = $("#cr_cep_usuario").val();
+			var cr_nrmcasa_usuario = $("#cr_nrmcasa_usuario").val();
+			var cr_endereco_usuario = $("#cr_endereco_usuario").val();					
+			
+			if(cr_cep_usuario == "" || cr_nrmcasa_usuario == "" || cr_endereco_usuario == ""){
+				alert('Preencha todos os campos!');
+				return false;					
+			}else{
+			    $(".div_cadastro_dois").toggle('slide');
+			    $(".div_cadastro_tres").toggle('slide');		  
+			}
 		}
 					
 		//Volta para a primeira tela de preenchimento de dados onde se encontra: Nome, CPF e Telefone 
@@ -311,7 +338,11 @@
 				$("#cr_email_usuario").focus();
 				return false;
 			}
-			
+			if(cr_senha_usuario == ""){
+				alert('Preencha sua senha');				
+				$("#cr_senha_usuario").focus();
+				return false;
+			}
 			if(cr_senha_usuario != cr_senha_usuario_confirm){
 				alert('Senhas diferentes!');				
 				$("#cr_senha_usuario_confirm").focus();
@@ -424,13 +455,7 @@
 			}
 			
 			if(cr_senha_usuario_login == ""){
-				//alert('Digite a Senha!');				
-				BootstrapDialog.alert({
-				title: 'Problema ao tentar acesso.',
-			    message:'Digite a Senha!',
-			    type: BootstrapDialog.TYPE_SUCCESS,
-			    buttonLabel: 'Ok'
-				});
+				alert('Digite a Senha!');				
 				$("#cr_senha_usuario_login").focus();
 				return false;
 			}			
@@ -447,6 +472,49 @@
 			);			
 		}
 		
+		function lettersOnly(evt) {
+		    evt = (evt) ? evt : event;
+		    var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :
+		        ((evt.which) ? evt.which : 0));
+		    if (charCode > 31 && (charCode < 65 || charCode > 90) &&
+		        (charCode < 97 || charCode > 122)) {
+		        alert("Por gentileza, apenas letras.");
+		        return false;
+		    }
+		    return true;
+		}
+	
+		function formatarCPF() {
+		  const cpfInput = document.getElementById('cr_cpf_usuario');
+		  let cr_cpf_usuario = cpfInput.value.replace(/\D/g, '');
+		  cr_cpf_usuario = cr_cpf_usuario.substring(0, 11);
+		  cr_cpf_usuario = cr_cpf_usuario.replace(/(\d{3})(\d)/, "$1.$2");
+		  cr_cpf_usuario = cr_cpf_usuario.replace(/(\d{3})(\d)/, "$1.$2");
+		  cr_cpf_usuario = cr_cpf_usuario.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+		  cpfInput.value = cr_cpf_usuario;
+		}
+		
+		function validacaoEmail() {			  
+			  var email = $("#cr_email_usuario").val();			  
+			  var usuario = email.substring(0, email.indexOf("@"));
+			  var dominio = email.substring(email.indexOf("@")+ 1, email.length);
+
+			  if ((usuario.length >=1) &&
+			      (dominio.length >=3) &&
+			      (usuario.search("@")==-1) &&
+			      (dominio.search("@")==-1) &&
+			      (usuario.search(" ")==-1) &&
+			      (dominio.search(" ")==-1) &&
+			      (dominio.search(".")!=-1) &&
+			      (dominio.indexOf(".") >=1)&&
+			      (dominio.lastIndexOf(".") < dominio.length - 1)) {
+			    // email válido			   
+			  } else {
+			    // email inválido
+			    alert('Por favor, insira um email válido.');
+			  }
+			}
+		
 	</script>
 		
 	<body>	
@@ -457,7 +525,7 @@
 			<!-- DIV LOGIN -->
 			<div class="div_login">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 login">
-					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12 col-12 d-flex justify-content-center card" style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: 50px;">				
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12 col-12 d-flex justify-content-center card" style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: auto;">				
 						<font style="font-size: 0px">						
 							<h1>Bem-vindo<br/> de volta!</h1>
 							<br>			
@@ -467,7 +535,7 @@
 							<div class="row mt-3">														
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center form-group">
 									<label for="cr_email_usuario_login" style="color: #FFFFFF; font-size: 15px;  float: center; font-weight: bold;"><strong>Email</strong></label> 
-									<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" id="cr_email_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;" placeholder="Digite seu Email..."/> 
+									<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario_login" placeholder = "Entre com seu E-mail" id="cr_email_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC;  border-radius: 10px;" placeholder="Digite seu Email..."/> 
 								</div>
 							</div>					
 							
@@ -475,7 +543,7 @@
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center form-group">
 									<label for="cr_senha_usuario_login" style="color: #FFFFFF; font-size: 15px;  float: center; font-weight: bold;"><strong>Senha</strong></label> 																			
 									<div class="input-group">																			  															 
-										<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;" placeholder="Digite sua Senha..."/>															    
+										<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" placeholder = "Digite a senha" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;" placeholder="Digite sua Senha..."/>															    
 								    	<div class="input-group-append">
 								     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 								    	</div>
@@ -515,21 +583,21 @@
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nome</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
+							<input type="text" onkeypress="return lettersOnly(event);" class="form-control form-control-lg rounded-50" maxlength="255" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" placeholder="Digite seu Nome" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" placeholder="Digite seu CPF" maxlength="14" oninput="formatarCPF()" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_telefone_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" id="cr_telefone_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" placeholder="Digite seu Telefone + DD" maxlength="16" id="cr_telefone_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>						
 					<br/>
@@ -564,32 +632,32 @@
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 							<label for="cr_cep_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" style="font-size: 15px; height: 50px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" placeholder = "Digite seu CEP (Sem traços)" maxlength="20" onkeypress="$(this).mask('00000-000')" style="font-size: 15px; height: 50px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
 						</div>					
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_endereco_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" placeholder = "Endereço" maxlength="200" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;" readonly/>
 						</div>
 						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
 							<label for="cr_nrmcasa_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" placeholder = "Nº" maxlength="5" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>		
 					</div>		
 																		
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 							<label for="cr_endcomplemento_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" placeholder = "Complemento" maxlength="200" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>	
 					
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Ponto de Refêrencia</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" id="cr_pontoreferencia_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Ponto de Referência</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" placeholder = "Ponto de Referência" id="cr_pontoreferencia_usuario" maxlength="200"  style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>	
 					<br/>
@@ -623,7 +691,7 @@
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<input type="email" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" onchange="validacaoEmail()" placeholder = "Digite seu E-mail" style="font-size: 15px; height: 50px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
@@ -631,7 +699,7 @@
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_senha_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Senha</strong></label> 																			
 							<div class="input-group">																			  															 
-								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario" id="cr_senha_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario" id="cr_senha_usuario" placeholder = "Digite a Senha" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
 						    	<div class="input-group-append">
 						     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 						    	</div>
@@ -643,7 +711,7 @@
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_senha_usuario_confirm" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Confirme a Senha</strong></label> 																			
 							<div class="input-group">																			  															 
-								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
+								<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" placeholder = "Confirmar Senha..." style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 10px 0px 0px 10px;"/>																							   
 						    	<div class="input-group-append">
 						     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_confirm');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 						    	</div>
