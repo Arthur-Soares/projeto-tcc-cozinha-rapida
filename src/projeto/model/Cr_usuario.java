@@ -34,12 +34,16 @@ CREATE TABLE cr_usuario
    cr_pontoreferencia_usuario varchar(200) NOT NULL
 );
 
+ALTER TABLE cr_usuario
+ADD COLUMN cr_nivel_usuario varchar(1) DEFAULT ''
+
 */
 
 /**
  * 
  * @author Davi Maia Da Silva Sobrinho
- * A classe Cr_usuario é responsável por parametrizar a tabela cr_usuario 
+ * Este é o início da definição de uma classe Java chamada "Cr_usuario". 
+ * Ela possui várias variáveis ​​de instância (também conhecidas como campos) que armazenam informações sobre um usuário, incluindo o ID do usuário, e-mail, senha, nome completo, CPF, telefone, CEP, endereço, número da casa, complemento de endereço, ponto de referência e nível de acesso. 
  */
 
 public class Cr_usuario {
@@ -54,6 +58,8 @@ public class Cr_usuario {
 	String cr_nrmcasa_usuario = "";
 	String cr_endcomplemento_usuario = "";
 	String cr_pontoreferencia_usuario = "";
+	String cr_nivel_usuario = "";
+	
 	
 	public static String SEL_PADRAO =   " SELECT " +
 										" cr_id_usuario, " +
@@ -66,7 +72,8 @@ public class Cr_usuario {
 										" cr_endereco_usuario, " +
 										" cr_nrmcasa_usuario, " +
 										" cr_endcomplemento_usuario, " +
-										" cr_pontoreferencia_usuario " +
+										" cr_pontoreferencia_usuario, " +
+										" cr_nivel_usuario " +
 										" FROM cr_usuario "+ 
 										" where 1=1 "; 
 
@@ -81,9 +88,10 @@ public class Cr_usuario {
 								" cr_endereco_usuario, " +
 								" cr_nrmcasa_usuario, " +
 								" cr_endcomplemento_usuario, " +
-								" cr_pontoreferencia_usuario " +
+								" cr_pontoreferencia_usuario, " +
+								" cr_nivel_usuario " +
 							    " ) VALUES " +
-							    " (?,MD5(?),?,?,?,?,?,?,?,?) ";
+							    " (?,MD5(?),?,?,?,?,?,?,?,?,?) ";
 
 	public String UPD_PADRAO =	" UPDATE cr_usuario SET " +
 								//" cr_id_usuario = ?, " +
@@ -96,7 +104,8 @@ public class Cr_usuario {
 								" cr_endereco_usuario = ?, " +
 								" cr_nrmcasa_usuario = ?, " +
 								" cr_endcomplemento_usuario = ?, " +
-								" cr_pontoreferencia_usuario = ? " +
+								" cr_pontoreferencia_usuario = ?, " +
+								" cr_nivel_usuario = ? " +
 								" WHERE cr_id_usuario = ? ";
 	
 	public String DEL_PADRAO = " DELETE FROM cr_usuario WHERE cr_id_usuario = ?";
@@ -189,8 +198,23 @@ public class Cr_usuario {
 		this.cr_pontoreferencia_usuario = cr_pontoreferencia_usuario;
 	}
 
+	public String getCr_nivel_usuario() {
+		return cr_nivel_usuario;
+	}
+
+	public void setCr_nivel_usuario(String cr_nivel_usuario) {
+		this.cr_nivel_usuario = cr_nivel_usuario;
+	}
+
+	
+	
+	/**
+	 * Este é o construtor da classe "Cr_usuario". Ele recebe como entrada um conjunto de parâmetros que correspondem às 
+	 * variáveis de instância da classe e atribui esses valores aos campos correspondentes. Em outras palavras, ele é 
+	 * usado para criar um objeto "Cr_usuario" com os valores fornecidos para cada um dos campos do objeto.
+	 */
 	public Cr_usuario(int cr_id_usuario, String cr_email_usuario, String cr_senha_usuario, String cr_nome_completo_usuario, String cr_cpf_usuario,
-					  String cr_telefone_usuario, String cr_cep_usuario, String cr_endereco_usuario, String cr_nrmcasa_usuario, String cr_endcomplemento_usuario, String cr_pontoreferencia_usuario) {
+					  String cr_telefone_usuario, String cr_cep_usuario, String cr_endereco_usuario, String cr_nrmcasa_usuario, String cr_endcomplemento_usuario, String cr_pontoreferencia_usuario, String cr_nivel_usuario) {
 		super();
 		this.cr_id_usuario = cr_id_usuario;
 		this.cr_email_usuario = cr_email_usuario;
@@ -203,6 +227,7 @@ public class Cr_usuario {
 		this.cr_nrmcasa_usuario = cr_nrmcasa_usuario;
 		this.cr_endcomplemento_usuario = cr_endcomplemento_usuario;
 		this.cr_pontoreferencia_usuario = cr_pontoreferencia_usuario;
+		this.cr_nivel_usuario = cr_nivel_usuario;
 		
 	}
 	
@@ -219,7 +244,9 @@ public class Cr_usuario {
 		this.cr_endereco_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;	
 		this.cr_nrmcasa_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;	
 		this.cr_endcomplemento_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;	
-		this.cr_pontoreferencia_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";
+		this.cr_pontoreferencia_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_nivel_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";
+		
 		
 	}
 
@@ -237,10 +264,13 @@ public class Cr_usuario {
 		this.cr_nrmcasa_usuario = mapParams.containsKey("cr_nrmcasa_usuario")?mapParams.get("cr_nrmcasa_usuario").trim():"";
 		this.cr_endcomplemento_usuario = mapParams.containsKey("cr_endcomplemento_usuario")?mapParams.get("cr_endcomplemento_usuario").trim():"";
 		this.cr_pontoreferencia_usuario = mapParams.containsKey("cr_pontoreferencia_usuario")?mapParams.get("cr_pontoreferencia_usuario").trim():"";
+		this.cr_nivel_usuario = mapParams.containsKey("cr_nivel_usuario")?mapParams.get("cr_nivel_usuario").trim():"";
+		
 	}
 
 	/**
-	 * Essa classe recebe o Id do usuario como parametro verifica se o Id é diferente de 0, caso seja é apagado da tabela no banco.
+	 * Este é um método Java que deleta um registro de um banco de dados usando o ID de usuário fornecido como entrada. 
+	 * Ele retorna 0 se a operação for bem-sucedida e -1 se ocorrer algum erro, e imprime a exceção correspondente.
 	 * @return
 	 */
 	public int apaga_registro(int id_usuario) {
@@ -271,6 +301,13 @@ public class Cr_usuario {
 	
 	/**
 	 * @author Davi Maia Da Silva Sobrinho
+	 * 
+	 * Este método "salva_registro()" salva os dados de um objeto "Cr_usuario" em um banco de dados. 
+	 * Ele faz isso abrindo uma conexão com o banco de dados e, em seguida, construindo e executando uma declaração SQL 
+	 * adequada para inserir ou atualizar os dados do objeto na tabela "cr_usuario".
+     * Se o objeto já existe no banco de dados, ele é atualizado usando a declaração SQL de atualização, caso contrário, 
+     * a declaração SQL de inserção é usada para adicionar um novo registro ao banco de dados. 
+     * Quando os dados são adicionados com sucesso, o método retorna o ID do usuário adicionado ou atualizado.
 	 * @return o metodo salva_registro é responsavel por inserir ou alterar o registro na tabela cr_usuario
 	 */
 	public int salva_registro() {
@@ -296,7 +333,8 @@ public class Cr_usuario {
 				pins.setString(icol, this.cr_endereco_usuario);icol++;
 				pins.setString(icol, this.cr_nrmcasa_usuario);icol++;
 				pins.setString(icol, this.cr_endcomplemento_usuario);icol++;
-				pins.setString(icol, this.cr_pontoreferencia_usuario);
+				pins.setString(icol, this.cr_pontoreferencia_usuario);icol++;
+				pins.setString(icol, this.cr_nivel_usuario);
 								
 				if(this.getCr_id_usuario() != 0) {
 					icol++;
@@ -342,8 +380,11 @@ public class Cr_usuario {
 	}
 	
 	/**
-	 * 
-	 * 
+	 * Este é um código Java que retorna um objeto JSONArray com resultados de uma consulta SQL. 
+	 * O código recebe dois arrays, um com os parâmetros da consulta e outro com os valores desses parâmetros. 
+	 * A consulta é construída dinamicamente usando os parâmetros e seus respectivos valores. 
+	 * Os resultados da consulta são convertidos em objetos JSON e adicionados a um JSONArray que é retornado pelo método. 
+	 * O código também faz algumas formatações nos resultados, como formatar valores numéricos e datas.
 	 * @return retorna e trata os dados do select padrão para que seja possível exibir a informação na consulta.
 	 */
 	public static JSONArray listarJSON(Object[] params, Object[] values) {
@@ -414,7 +455,10 @@ public class Cr_usuario {
 	}
 	
 	/**
-	 * Essa classe recebe o Id do usuario como parametro verifica se o Id é diferente de 0, caso seja é apagado da tabela no banco.
+	 *	A função valida_login recebe um email e uma senha como argumentos e retorna um inteiro que representa o 
+	 *	id do usuário se as credenciais forem válidas ou 0 se forem inválidas. A função constrói uma consulta SQL para 
+	 *	selecionar o id do usuário correspondente ao email e à senha fornecidos. Em seguida, ele executa a consulta 
+	 *	usando um objeto Statement e retorna o resultado. Se ocorrer algum erro, a função retorna -1. 
 	 * @return
 	 */
 	public static int valida_login(String cr_email_usuario, String cr_senha_usuario) {

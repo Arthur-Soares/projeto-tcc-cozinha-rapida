@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
 		<script type="text/javascript" src="./js/bootstrap-autocomplete.js"></script>
 		<script type="text/javascript" src="./js/popper.js"></script>
+		<script type="text/javascript" src="./js/jquery.mask.min.js"></script>
 		<script src="./js/bootstrap-datepicker.min.js"></script>
 		<script src="./js/bootstrap-datepicker.pt-BR.min.js"></script>		 
 		<link href="./js/bootstrap.min.css"rel="stylesheet">
@@ -471,28 +472,168 @@
 				}
 			);			
 		}
+
+		//Aplica a máscara no campo
+		//Função para ser utilizada nos eventos do input para formatação dinâmica
+		function aplica_mascara_cpfcnpj(campo,tammax,teclapres) {
+		    //var tecla = teclapres.keyCode;
+	
+		    /*if ( ( (tecla < 48 || tecla > 57) && (tecla < 96 || tecla > 105) && tecla != 46 && tecla != 8) ){
+		        return false;
+		    }*/
+	
+		    var vr = campo.value;
+		    vr = vr.replace( /\//g, "" );
+		    vr = vr.replace( /-/g, "" );
+		    vr = vr.replace( /\./g, "" );
+		    var tam = vr.length;
+	
+		    if ( tam <= 2 ) {
+		        campo.value = vr;
+		    }
+		    if ( (tam > 2) && (tam <= 5) ) {
+		        campo.value = vr.substr( 0, tam - 2 ) + '-' + vr.substr( tam - 2, tam );
+		    }
+		    if ( (tam >= 6) && (tam <= 8) ) {
+		        campo.value = vr.substr( 0, tam - 5 ) + '.' + vr.substr( tam - 5, 3 ) + '-' + vr.substr( tam - 2, tam );
+		    }
+		    if ( (tam >= 9) && (tam <= 11) ) {
+		        campo.value = vr.substr( 0, tam - 8 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + '-' + vr.substr( tam - 2, tam );
+		    }
+		    if ( (tam == 12) ) {
+		        campo.value = vr.substr( tam - 12, 3 ) + '.' + vr.substr( tam - 9, 3 ) + '/' + vr.substr( tam - 6, 4 ) + '-' + vr.substr( tam - 2, tam );
+		    }
+		    if ( (tam > 12) && (tam <= 14) ) {
+		        campo.value = vr.substr( 0, tam - 12 ) + '.' + vr.substr( tam - 12, 3 ) + '.' + vr.substr( tam - 9, 3 ) + '/' + vr.substr( tam - 6, 4 ) + '-' + vr.substr( tam - 2, tam );
+		    }
+		}
 		
-		function lettersOnly(evt) {
-		    evt = (evt) ? evt : event;
-		    var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :
-		        ((evt.which) ? evt.which : 0));
-		    if (charCode > 31 && (charCode < 65 || charCode > 90) &&
-		        (charCode < 97 || charCode > 122)) {
-		        alert("Por gentileza, apenas letras.");
+		function retorna_verifica_cpfcnpj(){
+			var cpf_cnpj = $("#cr_cpf_usuario").val();
+			ret = verifica_cpf_cnpj(retira_mascara(cpf_cnpj));		
+			if(!falsidade){
+				alert("CPF/CNPJ inválido!");
+				$("#cr_cpf_usuario").val("");
+				$("#cr_cpf_usuario").focus();
+				return false;
+			}
+		}
+		
+		
+		
+		//Verifica se CPF ou CGC e encaminha para a devida função, no caso do cpf/cgc estar digitado sem mascara
+		function verifica_cpf_cnpj(cpf_cnpj) {
+		    if (cpf_cnpj.length == 11) {
+		        return(verifica_cpf(cpf_cnpj));
+		    } else if (cpf_cnpj.length == 14) {
+		        return(verifica_cnpj(cpf_cnpj));
+		    } else { 
+		        return false;
+		    }		   
+		}
+	
+		//Verifica se o número de CPF informado é válido
+		function verifica_cpf(sequencia) {
+		    if ( Procura_Str(1,sequencia,'00000000000,11111111111,22222222222,33333333333,44444444444,55555555555,66666666666,77777777777,88888888888,99999999999,00000000191,19100000000') > 0 ) {
+		        return false;
+		    }
+		    seq = sequencia;
+		    soma = 0;
+		    multiplicador = 2;
+		    for (f = seq.length - 3;f >= 0;f--) {
+		        soma += seq.substring(f,f + 1) * multiplicador;
+		        multiplicador++;
+		    }
+		    resto = soma % 11;
+		    if (resto == 1 || resto == 0) {
+		        digito = 0;
+		    } else {
+		        digito = 11 - resto;
+		    }
+		    if (digito != seq.substring(seq.length - 2,seq.length - 1)) {
+		        return false;
+		    }
+		    soma = 0;
+		    multiplicador = 2;
+		    for (f = seq.length - 2;f >= 0;f--) {
+		        soma += seq.substring(f,f + 1) * multiplicador;
+		        multiplicador++;
+		    }
+		    resto = soma % 11;
+		    if (resto == 1 || resto == 0) {
+		        digito = 0;
+		    } else {
+		        digito = 11 - resto;
+		    }
+		    if (digito != seq.substring(seq.length - 1,seq.length)) {
 		        return false;
 		    }
 		    return true;
 		}
 	
-		function formatarCPF() {
-		  const cpfInput = document.getElementById('cr_cpf_usuario');
-		  let cr_cpf_usuario = cpfInput.value.replace(/\D/g, '');
-		  cr_cpf_usuario = cr_cpf_usuario.substring(0, 11);
-		  cr_cpf_usuario = cr_cpf_usuario.replace(/(\d{3})(\d)/, "$1.$2");
-		  cr_cpf_usuario = cr_cpf_usuario.replace(/(\d{3})(\d)/, "$1.$2");
-		  cr_cpf_usuario = cr_cpf_usuario.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-		  cpfInput.value = cr_cpf_usuario;
+		//Verifica se o número de CNPJ informado é válido
+		function verifica_cnpj(sequencia) {
+		    seq = sequencia;
+		    soma = 0;
+		    multiplicador = 2;
+		    for (f = seq.length - 3;f >= 0;f-- ) {
+		        soma += seq.substring(f,f + 1) * multiplicador;
+		        if ( multiplicador < 9 ) {
+		            multiplicador++;
+		        } else {
+		            multiplicador = 2;
+		        }
+		    }
+		    resto = soma % 11;
+		    if (resto == 1 || resto == 0) {
+		        digito = 0;
+		    } else {
+		        digito = 11 - resto;
+		    }
+		    if (digito != seq.substring(seq.length - 2,seq.length - 1)) {
+		        return false;
+		    }
+	
+		    soma = 0;
+		    multiplicador = 2;
+		    for (f = seq.length - 2;f >= 0;f--) {
+		        soma += seq.substring(f,f + 1) * multiplicador;
+		        if (multiplicador < 9) {
+		            multiplicador++;
+		        } else {
+		            multiplicador = 2;
+		        }
+		    }
+		    resto = soma % 11;
+		    if (resto == 1 || resto == 0) {
+		        digito = 0;
+		    } else {
+		        digito = 11 - resto;
+		    }
+		    if (digito != seq.substring(seq.length - 1,seq.length)) {
+		        return false;
+		    }
+		    return true;
 		}
+		
+		//Procura uma string dentro de outra string
+		function Procura_Str(param0,param1,param2) {
+		    for (a = param0 - 1;a < param1.length;a++) {
+		        for (b = 1;b < param1.length;b++) {
+		            if (param2 == param1.substring(b - 1,b + param2.length - 1)) {
+		                return a;
+		            }
+		        }
+		    }
+		    return 0;
+		}
+		
+		
+		//Retira a máscara do valor de cpf_cnpj
+		function retira_mascara(cpf_cnpj) {
+		    return cpf_cnpj.replace(/\./g,'').replace(/-/g,'').replace(/\//g,'')
+		}
+	
 		
 		function validacaoEmail() {			  
 			  var email = $("#cr_email_usuario").val();			  
@@ -520,6 +661,7 @@
 	<body>	
 		<form id="login_cadastro" name="login_cadastro" method="post" action="restrito/cr_lista_usuarios.jsp">	
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
+			<input type="hidden" id="cr_nivel_usuario" name="cr_nivel_usuario" value="2"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>
 			
 			<!-- DIV LOGIN -->
@@ -582,15 +724,15 @@
 					
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nome</strong></label> 
-							<input type="text" onkeypress="return lettersOnly(event);" class="form-control form-control-lg rounded-50" maxlength="255" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" placeholder="Digite seu Nome" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
+							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nome de Usuario</strong></label> 
+							<input type="text" class="form-control form-control-lg rounded-50" maxlength="255" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" placeholder="Digite seu Nome" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3 justify-content-md-center">					
 						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
 							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" placeholder="Digite seu CPF" maxlength="14" oninput="formatarCPF()" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" placeholder="Digite seu CPF" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>
 					
