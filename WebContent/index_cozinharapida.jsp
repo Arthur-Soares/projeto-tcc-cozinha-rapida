@@ -39,8 +39,7 @@
 				
 		if("S".equals(opclogoff) || !"".equals(msgIndex)){
 			session.setAttribute("errologin", null);
-			session.setAttribute("projeto.model.Cr_usuario", null);
-			session.setAttribute("opc_acesso", null);
+			session.setAttribute("projeto.model.Cr_usuario", null);			
 		}
 		
 		
@@ -453,24 +452,14 @@
 				alert('Digite o Email!');
 				$("#cr_email_usuario_login").focus();
 				return false;
-			}
-			
-			if(cr_senha_usuario_login == ""){
+			}else if(cr_senha_usuario_login == ""){
 				alert('Digite a Senha!');				
 				$("#cr_senha_usuario_login").focus();
 				return false;
+			}else{
+				$("#login_cadastro").submit();
 			}			
-					
-			$.postJSON("./jsonservlet",{opc_servlet:'find_login',cr_email_usuario_login:cr_email_usuario_login,cr_senha_usuario_login:cr_senha_usuario_login},
-				function(data,status){
-					if(data.ERRO == ""){						
-					    $("#login_cadastro").submit();
-					}else{
-						alert(data.ERRO);
-						return false;
-					}
-				}
-			);			
+						
 		}
 
 		//Aplica a máscara no campo
@@ -659,7 +648,7 @@
 	</script>
 		
 	<body>	
-		<form id="login_cadastro" name="login_cadastro" method="post" action="restrito/cr_lista_usuarios.jsp">	
+		<form id="login_cadastro" name="login_cadastro" method="post" action="loginservlet">	
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
 			<input type="hidden" id="cr_nivel_usuario" name="cr_nivel_usuario" value="2"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>
@@ -685,7 +674,7 @@
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center form-group">
 									<label for="cr_senha_usuario_login" style="color: #FFFFFF; font-size: 15px;  float: center; font-weight: bold;"><strong>Senha</strong></label> 																			
 									<div class="input-group">																			  															 
-										<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" placeholder = "Digite a senha" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;" placeholder="Digite sua Senha..."/>															    
+										<input type="password" class="form-control form-control-lg rounded-50" name="cr_senha_usuario_login" id="cr_senha_usuario_login" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 10px 0px 0px 10px;" placeholder="Digite sua Senha..."/>															    
 								    	<div class="input-group-append">
 								     	 	<div class="input-group-text" id="eye_password" style="height: 50px; color:black; font-weight: bold; background: #CCCCCC; border-radius: 0px 10px 10px 0px;" onclick="mostraSenha('#cr_senha_usuario_login');"><i class="fa fa-eye" aria-hidden="true"></i></div>
 								    	</div>

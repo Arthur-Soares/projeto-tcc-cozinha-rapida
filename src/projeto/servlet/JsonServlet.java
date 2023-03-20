@@ -49,8 +49,7 @@ public class JsonServlet extends HttpServlet {
     	
     	HttpSession session = request.getSession();
     	    	
-    	R1usuario userLogado = null!=session.getAttribute(AppSecrets.USER_KEY)?(R1usuario)session.getAttribute(AppSecrets.USER_KEY):null;
-    	String copc_acesso = null!=session.getAttribute("opc_acesso")?Cast.toString(session.getAttribute("opc_acesso")).trim():"";
+    	Cr_usuario userLogado = null!=session.getAttribute(AppSecrets.USER_KEY)?(Cr_usuario)session.getAttribute(AppSecrets.USER_KEY):null;    	
     	String opcServlet = null!=request.getParameter("opc_servlet")?request.getParameter("opc_servlet"):"";
     	String filtro_q = null != request.getParameter("q") ? request.getParameter("q") : "";
     	JSONArray jsonArray = new JSONArray();
@@ -120,18 +119,18 @@ public class JsonServlet extends HttpServlet {
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
 			out = response.getWriter();
 			out.print(jsonObj);
-	   }else if("atualiza_senha".equals(opcServlet)) {			
-			int id_usuario = userLogado.getId_usuario();		
-			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";
-			int retornasenha = R1usuario.atualizaSenha(id_usuario, senha);
-			out = response.getWriter();
-			jsonObj.put("retorno",retornasenha);
-        	out.print(jsonObj);    		
-		}else if("list_receitas".equals(opcServlet)) {	
+		}//else if("atualiza_senha".equals(opcServlet)) {			
+//			int id_usuario = userLogado.getId_usuario();		
+//			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";
+//			int retornasenha = R1usuario.atualizaSenha(id_usuario, senha);
+//			out = response.getWriter();
+//			jsonObj.put("retorno",retornasenha);
+//        	out.print(jsonObj);    		
+	  	else if("list_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listarJSON(new Object[0], new Object[0]);
 			out = response.getWriter();
     		out.print(jsonArray);
-		}else if("apaga_receita".equals(opcServlet)) {
+	  	}else if("apaga_receita".equals(opcServlet)) {
 			int id_receita = null!=request.getParameter("id_receita")?Cast.toInt(request.getParameter("id_receita")):0;
 			Cr_receita crr = new Cr_receita();
 			int retorno_receita = crr.apaga_registro(id_receita);

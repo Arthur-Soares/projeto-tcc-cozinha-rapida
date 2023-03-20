@@ -492,6 +492,77 @@ public class Cr_usuario {
 		}		
 		return idRetorno;
 	}
+		
+	/**
+	 * Colocar Descrição aqui ARTHUR
+	 * @return
+	 */
+	public static List<Cr_usuario> listUsuarios(Object[] params, Object[] values) {
+		List<Cr_usuario> listaUsuarios = new ArrayList<Cr_usuario>();
+		String sql = SEL_PADRAO;
+	
+		if(params.length > 0 && values.length > 0) {
+			for(int ob = 0; ob < params.length; ob++) {
+				sql += " and "+params[ob]+" = ?";
+			}
+		}
+		
+		sql+= " order by cr_id_usuario ";
+		
+		try {
+			Connection c = ProjetoDatabase.getConnection();
+			PreparedStatement p = c.prepareStatement(sql);
+			if(params.length > 0 && values.length > 0) {
+				for(int ob = 0, pind=1; ob < values.length; ob++, pind++) {
+					p.setObject(pind, values[ob]);
+				}
+			}
+			
+			ResultSet r = p.executeQuery();
+			ResultSetMetaData rsmd = r.getMetaData();
+			while(r.next()) {
+				List linhaDado = new ArrayList();
+				for(int col=1;col<=rsmd.getColumnCount();col++) {
+					linhaDado.add(r.getObject(col));
+				}
+				Cr_usuario r1u = new Cr_usuario(linhaDado);
+				listaUsuarios.add(r1u);
+			}
+			if(null!=r) {
+				r.close();
+				r=null;
+			}
+			if(null!=p) {
+				p.close();
+				p=null;
+			}
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return listaUsuarios;
+	}
+
+	/**
+	 * Colocar Descrição aqui ARTHUR 2
+	 * @return
+	 */
+	public static Cr_usuario listUsuarioParam(String param, Object value) {
+		List<Cr_usuario> listaUsuarios = new ArrayList<Cr_usuario>();
+		Cr_usuario r1u = new Cr_usuario();
+		Object[] params = new Object[1];
+		params[0] = param;
+		Object[] values = new Object[1];
+		values[0] = value;
+		listaUsuarios = Cr_usuario.listUsuarios(params,values);
+		if(listaUsuarios.size() > 0) {
+			r1u = listaUsuarios.get(0);	
+		}
+		return r1u;
+	}
 
 	public Cr_usuario() {
 		// TODO Auto-generated constructor stub

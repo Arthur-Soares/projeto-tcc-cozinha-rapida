@@ -14,7 +14,16 @@
 		<servlet-name>jsonservlet</servlet-name>
 		<url-pattern>/jsonservlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>loginservlet</servlet-name>
+		<servlet-class>projeto.servlet.LoginServlet</servlet-class>
+	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>loginservlet</servlet-name>
+		<url-pattern>/loginservlet</url-pattern>
+	</servlet-mapping>
 
 	<jsp-config>
 	    <jsp-property-group>
@@ -24,6 +33,6 @@
 	</jsp-config>
 	
 	<welcome-file-list>
-		<welcome-file>index_cozinharapida.jsp</welcome-file>
+		<welcome-file>home_cozinharapida.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

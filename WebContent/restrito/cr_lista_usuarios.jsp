@@ -1,6 +1,7 @@
 <%@page import="projeto.util.MenuUtils"%>
 <%@page import="projeto.util.Cast"%>
 <%@page import="projeto.util.AppSecrets"%>
+<%@page import="projeto.model.Cr_usuario"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -25,7 +26,24 @@
 		<script src="../js/datatables/dataTables.fixedHeader.min.js"></script>
 		<script src="../js/datatables/dataTables.responsive.min.js"></script>
 		<script src="../js/datatables/responsive.bootstrap.min.js"></script>
-
+		<%
+		Cr_usuario cru = null!=session.getAttribute(AppSecrets.USER_KEY)?(Cr_usuario)session.getAttribute(AppSecrets.USER_KEY):null;
+		int cuserid = null!=cru?cru.getCr_id_usuario():0;
+		String cuseradmin = null!=cru?cru.getCr_nivel_usuario():"";
+		String cusername = null!=cru?cru.getCr_nome_completo_usuario():"";
+		String redir = null!=request.getParameter("redir")?request.getParameter("redir"):"";
+		String opclogoff = null!=request.getParameter("logoff")?request.getParameter("logoff"):"";
+		//logoff=S
+		String msgIndex = null != session.getAttribute("errologin") ? (String) session.getAttribute("errologin") : "";
+		
+		//System.out.println("VENDO O ID DO USUÁRIO :: "+cuserid);
+				
+		if("S".equals(opclogoff) || !"".equals(msgIndex)){
+			session.setAttribute("errologin", null);
+			session.setAttribute("projeto.model.Cr_usuario", null);			
+		}
+				
+		%>
 		<link rel="stylesheet" href="../css/datatables/dataTables.bootstrap4.min.css">
 		<link rel="stylesheet" href="../css/datatables/fixedHeader.bootstrap4.min.css">
 		<link rel="stylesheet" href="../css/datatables/responsive.bootstrap.min.css">
@@ -152,15 +170,18 @@
 		
 	</script>
 
-	<body>		
+	<body>	
+	
+		<%=MenuUtils.buildMenu("usuario", cru)%>
+			
 		<form id="frmreceita" name="frmreceita" method="post" action="cr_lista_receitas.jsp"></form>
 		<form id="frmlogin" name="frmlogin" method="post" action="../index_cozinharapida.jsp"></form>							
 		<form id="frmusuario" name="frmusuario" method="post" action="cr_cadastro_usuario.jsp">
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario"/>
 			<div id="div_tela">
-				<div class="row">
+				<div class="row mt-3">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
-						<div class="row">
+						<div class="row mt-3">
 							<div class="container rounded col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12 well" align="center">
 								<br>
 								<div class="row mt-3">
@@ -170,12 +191,7 @@
 										</h1>
 									</div>
 								</div>																							
-								<br>
-								<div class="row mt-3 justify-content-md-center">																															
-									<button type="button" class="btn btn-success btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="listaReceita();">
-										<strong>Lista de Receitas</strong> 
-									</button>
-								</div>
+								<br>								
 								<div class="row mt-3">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 										<table id="table_usuarios" class="table table-striped table-bordered" style="width:100%">
@@ -192,13 +208,7 @@
 									        </thead>
 								        </table>
 									</div>
-								</div>
-								<br>
-								<div class="row mt-3 justify-content-md-center">																															
-									<button type="button" class="btn btn-danger btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltaLogin();">
-										<strong>Sair</strong> 
-									</button>
-								</div>
+								</div>						
 							</div>
 						</div>
 						<br>
