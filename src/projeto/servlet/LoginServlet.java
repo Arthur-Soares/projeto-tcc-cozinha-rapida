@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			request.getSession().setAttribute("errologin", i.getMessage());
 			request.getSession().setAttribute(AppSecrets.USER_KEY, null);			
 			
-			response.sendRedirect(AppSecrets.SISTEMA_URL+"index_cozinharapida.jsp");
+			response.sendRedirect(AppSecrets.SISTEMA_URL+"/index_cozinharapida.jsp");
 		}
 	}
 }

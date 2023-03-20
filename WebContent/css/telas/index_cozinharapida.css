@@ -1,0 +1,239 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+ 	 background: url('imagens/fast_kitchen_login_dark.png') no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	color: #323232;
+    font-family: sans-serif;
+    background: #f1f1f1;
+  }
+  
+  .login-box {
+    width: 280px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    background: #222;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .login-box h2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .login-box .user-box {
+    position: relative;
+  }
+  
+  .login-box .user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+  }
+  
+  .login-box .user-box label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: 0.5s;
+  }
+  
+  .login-box .user-box input:focus ~ label,
+  .login-box .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #03a9f4;
+    font-size: 12px;
+  }
+  
+  .login-box a {
+    display: inline-block;
+    background: #03a9f4;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.5s;
+  }
+  
+  .login-box a:hover {
+    background: #fff;
+    color: #222;
+  }
+  .login-box a span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    animation: pulse 2s infinite;
+    opacity: 0;
+  }
+  
+  .login-box a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+  }
+  
+  .login-box a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+  }
+  
+ 
+	#btnLogin {	
+		border: 5px solid;					
+		border-color: #FFFFFF; 
+		outline: none;
+		color: #FFFFFF;
+		background: #fff;
+		border-radius: 40px;
+		transition: 0.2s;
+		cursor: pointer;
+		background: transparent;
+		transition: 0.2s;
+		font-size: 15px;
+	}
+	
+	#btnCadastro {	
+		border: none;						
+		color: #FFFFFF;
+		background: #636f61;
+		border-radius: 40px;
+		transition: 0.2s;
+		cursor: pointer;			
+		transition: 0.2s;
+		font-size: 15px;
+	}
+				
+	#btnSalvarDados {	
+		border: none;						
+		color: #FFFFFF;
+		background: #636f61;
+		border-radius: 40px;
+		transition: 0.2s;
+		cursor: pointer;			
+		transition: 0.2s;
+		font-size: 15px;
+	}
+	
+	.login {
+		background-color: #636f61;
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: left;
+	}
+	
+	.div_cadastro_sucesso {
+		background-color: #636f61;
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: center;
+	}
+	
+	.cadastro {			
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: right;
+	}
+	
+	.div_cadastro_dois{
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: center;
+	}
+	
+	.div_cadastro{
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: center;
+	}
+	
+	.div_cadastro_tres{
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: center;
+	}
+	
+	.conta {			
+		margin: 0px;
+	    height: 100vh;
+	    display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		float: right;
+	}	
+	
+	#btnCadastrar {	
+		border: none;			
+		outline: none;
+		color: #FFFFFF;
+		background: #fff;			
+		transition: 0.2s;
+		cursor: pointer;
+		background: transparent;
+		transition: 0.2s;
+		font-size: 15px;
+	}
+	
+	#btnCadastrar:hover {	 	    
+	    border: 5px solid;					
+		border-color: #FFFFFF;
+		border-radius: 40px;
+	}		
+		

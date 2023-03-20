@@ -72,9 +72,9 @@ public class MenuUtils {
 							"							<a class='nav-link' href='#'><i class='fas fa-shopping-cart fa-lg'></i></a> " +
 							"						</li> ";													
 			if(cru != null && "1".equals(tipo_acesso)) {			        			            	
-				menuHtml += "	<li class='nav-item "+(pagAtual.equals("receita")?"active":"")+"'> " +
-							"		<a class='nav-link' href='/projeto-tcc-cozinha-rapida/restrito/cr_lista_receitas.jsp'><i class='fas fa-receipt'></i> Cadastro de Receitas</a> " +
-							"	</li> ";
+				menuHtml += "						<li class='nav-item "+(pagAtual.equals("receita")?"active":"")+"'> " +
+							"							<a class='nav-link' href='/projeto-tcc-cozinha-rapida/restrito/cr_lista_receitas.jsp'><i class='fas fa-receipt'></i> Cadastro de Receitas</a> " +
+							"						</li> ";
 			}							
 //						    "					<li class='nav-item'> "+
 //						    " 						<a class='nav-link' onclick='return confirm('Deseja sair do ambiente?')' href='/projeto-tcc-cozinha-rapida/index_cozinharapida.jsp?logoff=S'>"+
