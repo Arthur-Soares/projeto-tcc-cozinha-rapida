@@ -56,6 +56,7 @@ public class JsonServlet extends HttpServlet {
     	JSONObject jsonObj = new JSONObject();
 		Object[] params = new Object[1]; 
 		Object[] values = new Object[1];
+		HttpSession s = request.getSession();
 
     	//JSONArray jsonRet = new JSONArray();
     	
@@ -157,10 +158,67 @@ public class JsonServlet extends HttpServlet {
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
 			out = response.getWriter();
 			out.print(jsonObj);
+	   }else if("find_pesquisa_receita".equals(opcServlet)) { 			
+		   	JSONArray jsonRet = new JSONArray();
+		   	String nome_receita = null!=request.getParameter("nome_receita")?request.getParameter("nome_receita"):"";
+		   	
+			if (null != s.getAttribute("_JSON_REC_FIND")) {
+				jsonRet = (JSONArray) s.getAttribute("_JSON_REC_FIND");
+			} else {
+				jsonRet = Cr_receita.alimentaSQLReceitas("");
+			}			
+			s.setAttribute("_JSON_REC_FIND", jsonRet);
+			
+			if (!"".equals(nome_receita) || !"".equals(filtro_q)) {
+				if(!"".equals(nome_receita)) {
+					//System.out.println("xxx Param query filtro_q:: "+nome_receita);
+					jsonRet = filtraReceitasFind(jsonRet, nome_receita);
+				}else {
+					//System.out.println("xxx Param query filtro_q:: "+filtro_q);
+					jsonRet = filtraReceitasFind(jsonRet, filtro_q);
+				}		
+				System.out.println("jsonRet :: "+jsonRet);
+				out.print(jsonRet);
+			} else {
+				out.print(jsonRet);
+			}
+	   }else if("sel_pesquisa_receita".equals(opcServlet)) {
+		   JSONArray jsonRet = new JSONArray();
+		   String nome_receita = null!=request.getParameter("nome_receita")?request.getParameter("nome_receita"):"";
+		   if (null != s.getAttribute("_JSON_REC_SEL")) {
+				jsonRet = (JSONArray) s.getAttribute("_JSON_REC_SEL");
+			} else {
+				jsonRet = Cr_receita.alimentaSQLReceitas("S");
+			}			
+			s.setAttribute("_JSON_REC_SEL", jsonRet);
+			if (!"".equals(nome_receita) || !"".equals(filtro_q)) {
+				if(!"".equals(nome_receita)) {			
+					jsonRet = filtrarSelect(jsonRet, nome_receita);
+				}else {
+					jsonRet = filtrarSelect(jsonRet, filtro_q);
+				}
+				out.print(jsonRet);
+			} else {
+				out.print(jsonRet);
+			}
 	   }else{
 			out.print(jsonArray);
 		}
     }
+    
+    public JSONArray filtraReceitasFind(JSONArray jsonRet, String nome_receita) {
+		JSONArray jsonArray = new JSONArray();
+		for (int i = 0; i < jsonRet.length(); i++) {
+			JSONObject jsonobject = jsonRet.getJSONObject(i);
+			String jsonText = jsonobject.getString("cr_titulo_receita").toUpperCase().trim();
+			if (jsonText.equals(nome_receita.toUpperCase().trim())) {
+				jsonArray.put(jsonobject);
+				break;
+			}
+		}
+		return jsonArray;
+	}
+    
     
     public JSONArray filtrarSelect(JSONArray jsonRet, String query) {
 		JSONArray jsonArray = new JSONArray();

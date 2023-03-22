@@ -96,7 +96,7 @@ public class Cr_usuario {
 	public String UPD_PADRAO =	" UPDATE cr_usuario SET " +
 								//" cr_id_usuario = ?, " +
 								" cr_email_usuario = ?, " +
-								" cr_senha_usuario = ?, " +
+								//" cr_senha_usuario = ?, " +
 								" cr_nome_completo_usuario = ?, " +
 								" cr_cpf_usuario = ?, " +
 								" cr_telefone_usuario = ?, " +
@@ -325,7 +325,9 @@ public class Cr_usuario {
 				PreparedStatement pins = c.prepareStatement(ins);
 				//pins.setInt(icol, this.cr_id_usuario);icol++;
 				pins.setString(icol, this.cr_email_usuario);icol++;
-				pins.setString(icol, this.cr_senha_usuario);icol++;
+				if(this.getCr_id_usuario() == 0) {
+					pins.setString(icol, this.cr_senha_usuario);icol++;
+				}				
 				pins.setString(icol, this.cr_nome_completo_usuario);icol++;
 				pins.setString(icol, this.cr_cpf_usuario);icol++;
 				pins.setString(icol, this.cr_telefone_usuario);icol++;

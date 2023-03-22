@@ -41,12 +41,20 @@ public class MenuUtils {
 							"			</button> " +																				
 							"			<div class='collapse navbar-collapse justify-content-center' id='navbarNav'> "+
 							"				<form class='form-inline ml-auto mr-0'> " +
+							"				   <div class='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12' style='width: 500px;'> "+	
 							"    				<div class='input-group'> " +
-							"      					<input class='form-control' type='search' placeholder='Pesquisar...' style='width: 400px;'>  " +
 							"     					 <div class='input-group-append'> " +
-							"       					<button class='btn btn-dark' type='submit'><i class='fas fa-search'></i></button> " +
+							//"       					<button class='btn btn-dark' type='submit'><i class='fas fa-search'></i></button> " +
+							"       					<span class='input-group-text badge-dark' id='basic-addon1' style='border: none;'><i class='fas fa-search'></i></span> " +
 							"      					</div> " +
+							"							<select class='form-control basicAutoSelect' id='sel_receita' " +
+							"								name='sel_receita' " +
+							"								placeholder='Pesquise uma Receita...' " +
+							"								data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita' " +
+							"								autocomplete='off' style='background:#FFFFFF border: none;'> " +
+							"							</select> "+
 							"    				</div> " +
+							"    			  </div> " +
 							"  				</form> " +	
 							" 				<ul class='navbar-nav ml-auto mr-md-5'> ";
 			if(cru == null) {
@@ -56,7 +64,7 @@ public class MenuUtils {
 			}else {
 				menuHtml +=	"						<li class='nav-item "+(pagAtual.equals("usuario")?"active":"")+" dropdown'><a class='nav-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href=#><i class='fas fa-user'></i> "+nome_usuario+"</a>  " +						   
 			            	"						    <ul class='navbarLinkDropdown dropdown-menu'> "  +
-			            	"							    <li class='nav-item'><a class='dropdown-item' href='/projeto-tcc-cozinha-rapida/restrito/cr_lista_usuarios.jsp'> " +
+			            	"							    <li class='nav-item'><a class='dropdown-item' href='/projeto-tcc-cozinha-rapida/restrito/cr_editar_usuario.jsp'> " +
 			            	"								    <i class='fas fa-edit'></i> Editar Dados</a> " +
 			            	"							    </li> " +
 			            	"							    <li class='nav-item'><a class='dropdown-item' href='/projeto-tcc-cozinha-rapida/restrito/cr_lista_receitas.jsp'> " +

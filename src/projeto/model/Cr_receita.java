@@ -28,18 +28,27 @@ CREATE TABLE cr_receita
    cr_titulo_receita varchar(255) not null,
    cr_desc_receita text
 );
+
 ALTER TABLE cr_receita
 drop column cr_desc_receita;
+
 ALTER TABLE cr_receita
 ADD COLUMN cr_ingrediente_receita varchar(255);
+
 ALTER TABLE cr_receita
 ADD COLUMN cr_modo_preparo_receita text;
+
 ALTER TABLE cr_receita
 ADD COLUMN cr_tempo_preparo_receita varchar(255);
+
 ALTER TABLE cr_receita
 ADD COLUMN cr_rendimento_receita varchar(255);
+
 ALTER TABLE cr_receita
 ADD COLUMN cr_valor_receita decimal(11,2) ;
+
+ALTER TABLE cr_receita
+CHANGE COLUMN cr_ingrediente_receita cr_ingrediente_receita text
 
 /**
  * 
@@ -335,6 +344,76 @@ public class Cr_receita {
 					}
 				}
 				arrayRetorno.put(jsonObj);
+			}
+			if(null!=r) {
+				r.close();
+				r=null;
+			}
+			if(null!=p) {
+				p.close();
+				p=null;
+			}
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return arrayRetorno;
+	}
+	
+	/**
+	 * Retorna SQL de Receitas.
+	 * @author Arthur Soares da Silva
+	 * @param opcaoSelect
+	 * @return
+	 */
+	public static JSONArray alimentaSQLReceitas(String opcaoSelect) {
+		JSONArray arrayRetorno = new JSONArray();
+		String sql = SEL_PADRAO;	
+		
+		System.out.println("Query="+sql);
+		try {
+			Connection c = ProjetoDatabase.getConnection();
+			PreparedStatement p = c.prepareStatement(sql);			
+			ResultSet r = p.executeQuery();
+			ResultSetMetaData rsmd = r.getMetaData();
+			int cols =	rsmd.getColumnCount();
+			while(r.next()) {
+				JSONObject jsonObj = new JSONObject();
+				if("S".equals(opcaoSelect)){
+					String titulo_receita = (null!=r.getObject(2)?r.getString(2).trim():"");
+					String valor_receita = (null!=r.getObject(7)?r.getString(7).trim():"");					
+					jsonObj.put("text", titulo_receita+" R$ "+valor_receita);
+					jsonObj.put("value", (null!=r.getObject(1)?r.getString(1).trim():""));
+					arrayRetorno.put(jsonObj);
+				}else {
+					for(int xc = 1;xc<=cols;xc++){
+						if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
+							try {
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
+							}catch(Exception e) {
+								jsonObj.put(rsmd.getColumnLabel(xc), "");
+							} 
+						}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
+								java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+						}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
+						}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
+						}else{
+							jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
+						}
+					}
+					arrayRetorno.put(jsonObj);
+				}
 			}
 			if(null!=r) {
 				r.close();
