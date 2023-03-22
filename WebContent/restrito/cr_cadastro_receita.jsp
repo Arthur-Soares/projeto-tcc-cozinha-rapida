@@ -24,6 +24,8 @@
 		<script type="text/javascript" src="../js/popper.js"></script>
 		<script src="../js/bootstrap-datepicker.min.js"></script>
 		<script src="../js/bootstrap-datepicker.pt-BR.min.js"></script>
+		<!-- <script src="../js/jquery.maskMoney.min.js" type="text/javascript"></script>         data-thousands="." data-decimal="," data-prefix="R$ "  -->
+		
 		<!-- Data Tables -->
 		<script src="../js/datatables/jquery.dataTables.min.js"></script>
 		<script src="../js/datatables/dataTables.bootstrap4.min.js"></script>
@@ -76,7 +78,8 @@
 	 	});	
 		
 		//Inicia assim que a tela abre
-		$(document).ready(function() {			
+		$(document).ready(function() {	
+			
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
 		});
@@ -85,7 +88,11 @@
 			
 			var cr_id_receita = "";
 			var cr_titulo_receita = "";
-			var cr_desc_receita = "";
+			var cr_ingrediente_receita = "";
+			var cr_modo_preparo_receita = "";
+			var cr_tempo_preparo_receita = "";
+			var cr_rendimento_receita = "";
+			var cr_valor_receita = "";
 			
 			if(""!=idrec && "0"!=idrec){
 				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
@@ -94,19 +101,32 @@
 							cr_id_receita = datalin.cr_id_receita;
 							if(cr_id_receita != "0"){								
 								cr_titulo_receita = datalin.cr_titulo_receita;
-								cr_desc_receita = datalin.cr_desc_receita;
+								cr_ingrediente_receita = datalin.cr_ingrediente_receita;
+								cr_modo_preparo_receita = datalin.cr_modo_preparo_receita;
+								cr_tempo_preparo_receita = datalin.cr_tempo_preparo_receita;
+								cr_rendimento_receita = datalin.cr_rendimento_receita;
+								cr_valor_receita = datalin.cr_valor_receita;
+								
 																
 							}
 						}
 						$("#cr_id_receita").val(cr_id_receita);
 						$("#cr_titulo_receita").val(cr_titulo_receita);
-						$("#cr_desc_receita").val(cr_desc_receita);
+						$("#cr_ingrediente_receita").val(cr_ingrediente_receita);
+						$("#cr_modo_preparo_receita").val(cr_modo_preparo_receita);
+						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
+						$("#cr_rendimento_receita").val(cr_rendimento_receita);
+						$("#cr_valor_receita").val(cr_valor_receita);
 					}
 				);
 			}else{								
 				$("#cr_id_receita").val("");
 				$("#cr_titulo_receita").val("");
-				$("#cr_desc_receita").val("");
+				$("#cr_ingrediente_receita").val("");
+				$("#cr_modo_preparo_receita").val("");
+				$("#cr_tempo_preparo_receita").val("");
+				$("#cr_rendimento_receita").val("");
+				$("#cr_valor_receita").val("");
 					
 			}		
 		}
@@ -167,10 +187,43 @@
 										
 										<div class="row mt-3 justify-content-md-center">
 											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-												<label for="cr_desc_receita" style="font-size: 15px; font-weight: bold;"><strong>Descrição</strong></label> 
-												<textarea type="textarea" class="form-control" name="cr_desc_receita" id="cr_desc_receita" rows="4">
+												<label for="cr_ingrediente_receita" style="font-size: 15px; font-weight: bold;"><strong>Ingredientes</strong></label> 
+												<textarea type="textarea" class="form-control" name="cr_ingrediente_receita" id="cr_ingrediente_receita" rows="4">
 												</textarea> 
 											</div>				
+										</div>
+										
+										
+										<div class="row mt-3 justify-content-md-center">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+												<label for="cr_modo_preparo_receita" style="font-size: 15px; font-weight: bold;"><strong>Modo de preparo</strong></label> 
+												<textarea type="textarea" class="form-control" name="cr_modo_preparo_receita" id="cr_modo_preparo_receita" rows="4">
+												</textarea> 
+											</div>				
+										</div>
+										
+										<div class="row mt-3 justify-content-md-center">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+												<label for="cr_rendimento_receita" style="font-size: 15px; font-weight: bold;"><strong>Rendimento</strong></label> 
+												<textarea type="textarea" class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="4">
+												</textarea> 
+											</div>				
+										</div>
+										
+										
+										<div class="row mt-3 justify-content-md-center">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+												<label for="cr_tempo_preparo_receita" style="font-size: 15px; font-weight: bold;"><strong>Tempo de preparo</strong></label> 
+												<input type="text" class="form-control" name="cr_tempo_preparo_receita" id="cr_tempo_preparo_receita">
+											</div>		
+													
+										</div>
+										
+										<div class="row mt-3 justify-content-md-center">
+										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+												<label for="cr_valor_receita" style="font-size: 15px; font-weight: bold;"><strong>Valor</strong></label> 
+												<input type="text" class="form-control" name="cr_valor_receita"  id="cr_valor_receita" >
+											</div>		
 										</div>
 																																																			
 										<br/>

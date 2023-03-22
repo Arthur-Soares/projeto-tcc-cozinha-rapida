@@ -1,5 +1,6 @@
 package projeto.model;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,13 +20,26 @@ import projeto.util.FormatUtils;
 import projeto.util.ProjetoDatabase;
 
 /*
+ 
+
 CREATE TABLE cr_receita
 (
    cr_id_receita int auto_increment primary key not null,
    cr_titulo_receita varchar(255) not null,
    cr_desc_receita text
 );
-
+ALTER TABLE cr_receita
+drop column cr_desc_receita;
+ALTER TABLE cr_receita
+ADD COLUMN cr_ingrediente_receita varchar(255);
+ALTER TABLE cr_receita
+ADD COLUMN cr_modo_preparo_receita text;
+ALTER TABLE cr_receita
+ADD COLUMN cr_tempo_preparo_receita varchar(255);
+ALTER TABLE cr_receita
+ADD COLUMN cr_rendimento_receita varchar(255);
+ALTER TABLE cr_receita
+ADD COLUMN cr_valor_receita decimal(11,2) ;
 
 /**
  * 
@@ -36,31 +50,87 @@ CREATE TABLE cr_receita
 public class Cr_receita {
 	int cr_id_receita = 0;
 	String cr_titulo_receita = "";
-	String cr_desc_receita = "";
+	String cr_ingrediente_receita = "";
+	String cr_modo_preparo_receita = "";
+	String cr_tempo_preparo_receita = "";
+	String cr_rendimento_receita = "";
+	BigDecimal  cr_valor_receita = BigDecimal.ZERO;
 	
 	
 	public static String SEL_PADRAO =   " SELECT " +
 										" cr_id_receita, " +
 										" cr_titulo_receita, " +
-										" cr_desc_receita " +
+										" cr_ingrediente_receita, " +
+										" cr_modo_preparo_receita, " +
+										" cr_tempo_preparo_receita, " +
+										" cr_rendimento_receita, " +
+										" cr_valor_receita " +
 										" FROM cr_receita "+ 
 										" where 1=1 "; 
 
 	public String INS_PADRAO =  " INSERT INTO cr_receita " +
 							  //" cr_id_receita, " +
 							 	" (cr_titulo_receita, " +
-							 	" cr_desc_receita " +
+							 	" cr_ingrediente_receita, " +
+							 	" cr_modo_preparo_receita, " +
+							 	" cr_tempo_preparo_receita, " +
+							 	" cr_rendimento_receita, " +
+							 	" cr_valor_receita " +
 							    " ) VALUES " +
-							    " (?,?)";
+							    " (?,?,?,?,?,?)";
 
 	public String UPD_PADRAO =	" UPDATE cr_receita SET " +
 								//" cr_id_receita = ?, " +
 								" cr_titulo_receita = ?, " +
-								" cr_desc_receita = ? " +
+								" cr_ingrediente_receita = ?, " +
+								" cr_modo_preparo_receita = ?, " +
+								" cr_tempo_preparo_receita = ?, " +
+								" cr_rendimento_receita = ?, " +
+								" cr_valor_receita = ? " +
 								" WHERE cr_id_receita = ? ";
 	
 	public String DEL_PADRAO = " DELETE FROM cr_receita WHERE cr_id_receita = ?";
 	
+	public String getCr_ingrediente_receita() {
+		return cr_ingrediente_receita;
+	}
+
+	public void setCr_ingrediente_receita(String cr_ingrediente_receita) {
+		this.cr_ingrediente_receita = cr_ingrediente_receita;
+	}
+
+	public String getCr_modo_preparo_receita() {
+		return cr_modo_preparo_receita;
+	}
+
+	public void setCr_modo_preparo_receita(String cr_modo_preparo_receita) {
+		this.cr_modo_preparo_receita = cr_modo_preparo_receita;
+	}
+
+	public String getCr_tempo_preparo_receita() {
+		return cr_tempo_preparo_receita;
+	}
+
+	public void setCr_tempo_preparo_receita(String cr_tempo_preparo_receita) {
+		this.cr_tempo_preparo_receita = cr_tempo_preparo_receita;
+	}
+
+	public String getCr_rendimento_receita() {
+		return cr_rendimento_receita;
+	}
+
+	public void setCr_rendimento_receita(String cr_rendimento_receita) {
+		this.cr_rendimento_receita = cr_rendimento_receita;
+	}
+
+	public BigDecimal getCr_valor_receita() {
+		return cr_valor_receita;
+	}
+
+	public void setCr_valor_receita(BigDecimal cr_valor_receita) {
+		this.cr_valor_receita = cr_valor_receita;
+	}
+
 	public int getCr_id_receita() {
 		return cr_id_receita;
 	}
@@ -77,19 +147,17 @@ public class Cr_receita {
 		this.cr_titulo_receita = cr_titulo_receita;
 	}
 
-	public String getCr_desc_receita() {
-		return cr_desc_receita;
-	}
+	
 
-	public void setCr_desc_receita(String cr_desc_receita) {
-		this.cr_desc_receita = cr_desc_receita;
-	}
-
-	public Cr_receita(int cr_id_receita, String cr_titulo_receita, String cr_desc_receita) {
+	public Cr_receita(int cr_id_receita, String cr_titulo_receita, String cr_ingrediente_receita, String cr_modo_preparo_receita, String cr_tempo_preparo_receita, String cr_rendimento_receita, BigDecimal cr_valor_receita) {
 		super();
 		this.cr_id_receita = cr_id_receita;
 		this.cr_titulo_receita = cr_titulo_receita;
-		this.cr_desc_receita = cr_desc_receita;
+		this.cr_ingrediente_receita = cr_ingrediente_receita;
+		this.cr_modo_preparo_receita = cr_modo_preparo_receita;
+		this.cr_tempo_preparo_receita = cr_tempo_preparo_receita;
+		this.cr_rendimento_receita = cr_rendimento_receita;
+		this.cr_valor_receita = cr_valor_receita;
 		
 	}
 	
@@ -98,18 +166,23 @@ public class Cr_receita {
 		int ind = 0;
 		this.cr_id_receita = listObj.size()>ind?(int)listObj.get(ind):0;ind++;
 		this.cr_titulo_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
-		this.cr_desc_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
-		
-		
+		this.cr_ingrediente_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_modo_preparo_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_tempo_preparo_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_rendimento_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_valor_receita = listObj.size()>ind?(BigDecimal)listObj.get(ind):BigDecimal.ZERO;
 	}
 
 	public Cr_receita(Map<String, String> mapParams) {
 		super();
-		int ind = 0;
+		
 		this.cr_id_receita = mapParams.containsKey("cr_id_receita")?Cast.toInt(mapParams.get("cr_id_receita")):0;
 		this.cr_titulo_receita = mapParams.containsKey("cr_titulo_receita")?mapParams.get("cr_titulo_receita").trim():"";
-		this.cr_desc_receita = mapParams.containsKey("cr_desc_receita")?mapParams.get("cr_desc_receita").trim():"";
-		
+		this.cr_ingrediente_receita = mapParams.containsKey("cr_ingrediente_receita")?mapParams.get("cr_ingrediente_receita").trim():"";
+		this.cr_modo_preparo_receita = mapParams.containsKey("cr_modo_preparo_receita")?mapParams.get("cr_modo_preparo_receita").trim():"";
+		this.cr_tempo_preparo_receita = mapParams.containsKey("cr_tempo_preparo_receita")?mapParams.get("cr_tempo_preparo_receita").trim():"";
+		this.cr_rendimento_receita = mapParams.containsKey("cr_rendimento_receita")?mapParams.get("cr_rendimento_receita").trim():"";
+		this.cr_valor_receita = mapParams.containsKey("cr_valor_receita")?Cast.toBigDecimal((!"".equals(mapParams.get("cr_valor_receita"))?mapParams.get("cr_valor_receita"):0)):BigDecimal.ZERO;
 	}
 
 	/**
@@ -161,7 +234,11 @@ public class Cr_receita {
 				PreparedStatement pins = c.prepareStatement(ins);
 				//pins.setInt(icol, this.cr_id_receita);icol++;
 				pins.setString(icol, this.cr_titulo_receita);icol++;
-				pins.setString(icol, this.cr_desc_receita);
+				pins.setString(icol, this.cr_ingrediente_receita);icol++;
+				pins.setString(icol, this.cr_modo_preparo_receita);icol++;
+				pins.setString(icol, this.cr_tempo_preparo_receita);icol++;
+				pins.setString(icol, this.cr_rendimento_receita);icol++;
+				pins.setBigDecimal(icol, this.cr_valor_receita);
 								
 				if(this.getCr_id_receita() != 0) {
 					icol++;
