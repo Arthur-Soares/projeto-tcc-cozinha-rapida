@@ -83,11 +83,12 @@
 			}	
 			
 			.visual_tit_rec {	
-				font-size: 30px;			
+				font-size: 20px;			
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
 				color: #b1463c;
 			}
+			
 			
 		</style>		
 	</head>
@@ -162,8 +163,81 @@
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_receita"/>
 			
-			<div id="div_tela">
-				<div class="row mt-3">
+			
+			<div class="container" style="margin-top: 10%">
+
+			<div class="row">
+
+				<div class="col-xl-1" style="border: black 1px solid; height: 100px">
+					LOGO</div>
+				<div class="col-xl-6" style="border: black 1px solid; height: 50px">
+					
+								<div class="row mt-3 justify-content-md-left">																									
+									 <div id="cr_titulo_receita" class="visual_tit_rec"></div>
+								</div>	
+						
+						
+				</div>
+				<div class="col-xl-1" style="border: black 1px solid; height: 100px">
+					ICONE</div>
+				<div class="col-xl-2"></div>
+
+			</div>
+
+			<div class="row justify-content-between">
+				<div class="col-xl-8"
+					style="border: black 1px solid; height: 400px;" > <span class="visual_tit_rec"> IMAGEM </span></div>
+				<div class="d-none d-md-block"
+					style="border: black 1px solid; width: 300px">SUGESTÕES1</div>
+
+			</div>
+			<div class="row mt-3 justify-content-between">
+				<div class="col-xl-8"
+					style="border: black 1px solid; height: 400px;">
+					
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="text-align: left;">
+												<label for="cr_ingrediente_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;"><strong>Ingredientes</strong></label> 
+												<textarea disabled type="textarea" class="form-control" name="cr_ingrediente_receita" id="cr_ingrediente_receita" rows="12" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
+												</textarea> 
+											</div>	
+					
+					
+				</div>
+				<div class="d-none d-md-block" style="border: black 1px solid; width: 300px">SUGESTÕES2</div>
+
+			</div>
+
+			<div class="row mt-3 justify-content-between">
+				<div class="col-xl-8"
+					style="border: black 1px solid; height: 400px;">
+					
+					<div class="row mt-3 justify-content-md-center">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="text-align: left;">
+												<label for="cr_modo_preparo_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;"><strong>Modo de preparo</strong></label> 
+												<textarea disabled type="textarea" class="form-control" name="cr_modo_preparo_receita" id="cr_modo_preparo_receita" rows="8" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
+												</textarea> 
+											</div>				
+										</div>
+					
+					</div>
+				<div class="d-none d-md-block" style="border: black 1px solid; width: 300px">SUGESTÕES3</div>
+
+			</div>
+			
+			<div class="row mt-3 justify-content-center">
+			
+				<div class="col-xl-3" style="border: black 1px solid;">RENDIMENTO</div>
+				<div class="col-xl-3" style="border: black 1px solid;">TEMPO</div>
+				<div class="col-xl-3" style="border: black 1px solid;">VALOR</div>
+
+			</div>
+			
+			
+			</div>
+
+		</div>
+			
+			<!-- <div class="row mt-3">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
 						<div class="row mt-3">
 							<div class="container rounded col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12 well" align="center">
@@ -172,7 +246,7 @@
 									 <div id="cr_titulo_receita" class="visual_tit_rec"></div>
 								</div>																						
 								<br>								
-								<!-- DIV CADASTRO CONTA - PRIMEIRA PARTE -->
+								
 								<div class="div_cadastro">								
 									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">																																																															
 										<div class="row mt-3 justify-content-md-center">
@@ -215,7 +289,9 @@
 						</div>
 						<br>
 					</div>
-				</div>
+				</div> -->
+			
+				
 			</div>
 			<div id="div_loading">
 				<div class="row h-100">
@@ -227,5 +303,12 @@
 				</div>
 			</div>
 		</form>		
+		
+		  <footer class="bg-dark text-light">
+    
+    <div class="text-center" style="background-color: #636f61; padding: 20px;margin-top: 5px" >
+      &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
+    </div>
+  </footer>
 	</body>
 </html>
