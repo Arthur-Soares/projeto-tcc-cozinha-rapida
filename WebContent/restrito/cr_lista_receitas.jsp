@@ -103,7 +103,39 @@
 				}
 			); 
 			carregaListaReceitas('');
-			$("#div_loading").hide();				
+			$("#div_loading").hide();	
+			
+			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
+			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
+			//Implementando componente de AUTOCOMPLETE em um <select com o ID = "sel_receita"
+			$('#sel_receita').autoComplete();
+			//O AUTOCOMPLETE contém um evento que é chamado ao selecionarmos uma linha dele = 'autocomplete.select'
+			$('#sel_receita').on('autocomplete.select', function (evt, item) {
+				//ITEM é o item em específico que selecionamos do nosso autocomplete (possui as propriedades relativas a aquela linha)
+				//item.text e item.value
+				//Checa se foi selecionada uma LINHA e se ela EXISTE
+				console.log('Passei evt :: '+evt+' -- item.value :: '+item.value+' -- item.text :: '+item.text);
+				if(item){										
+					//CHAMANDO outra URL para buscar os dados específicos do CLIENTE que selecionamos
+					//$.getJSON( "./jsonservlet?opc_servlet=find_pesquisa_receita&q="+item.value, function( data ) {
+						
+					var cr_id_receita = "";
+					//TENTANDO OUTRA FORMA DE CHAMAR
+					$.getJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
+					 function(datalin,statuslin){						
+						  if(datalin){							  
+							cr_id_receita = datalin.cr_id_receita;
+							console.log('cr_id_receita :: '+cr_id_receita);
+							//alert(datalin.cr_titulo_receita);				
+							$('#sel_receita').val("");
+							$('#cr_id_receita').val(item.value);							
+							$("#frmreceita").submit();
+						  }else{
+							//zeraCamposCli();
+						  }
+					});
+				}				
+			});
 		});
 		
 		function carregaListaReceitas(crep){
@@ -135,7 +167,7 @@
 				$("#cr_id_receita").val(0);
 			}else{
 				$("#cr_id_receita").val(cr_id_receita);
-				$("#frmreceita").submit();
+				$("#frm_tela_receita").submit();
 			}
 		}
 		
@@ -161,17 +193,20 @@
 		
 		function novaReceita(){	
 			$("#cr_id_receita").val("");
-			$("#frmreceita").submit();		
+			$("#frm_tela_receita").submit();		
 		}
 		
 	</script>
 
 	<body>	
 	
-		<%=MenuUtils.buildMenu("receita", cru)%>
-			
+		<%=MenuUtils.buildMenu("receita", cru, "S")%>
+		
+		<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
+			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
+		</form>
 		<form id="frmlogin" name="frmlogin" method="post" action="../index_cozinharapida.jsp"></form>							
-		<form id="frmreceita" name="frmreceita" method="post" action="cr_cadastro_receita.jsp">
+		<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_cadastro_receita.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 			<div id="div_tela">
 				<div class="row mt-3">

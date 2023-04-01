@@ -142,7 +142,8 @@
 						  }
 					});
 				}				
-			});					
+			});		
+					
 		});
 		
 		//Volta para a tela inicial de Login e Cadastro ao cadastrar Conta
@@ -155,7 +156,7 @@
 		
 	<body>	
 		
-		<%=MenuUtils.buildMenu("welcome", cru)%>
+		<%=MenuUtils.buildMenu("welcome", cru, "")%>
 		
 		
 		<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">

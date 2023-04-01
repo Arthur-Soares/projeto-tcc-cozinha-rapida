@@ -270,6 +270,7 @@
 		    div_cadastro_sucesso.hide();	
 		    
 			carregaUsuario('<%=p_cr_id_usuario%>');
+			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
 			//Implementando componente de AUTOCOMPLETE em um <select com o ID = "sel_receita"
@@ -286,7 +287,7 @@
 						
 					var cr_id_receita = "";
 					//TENTANDO OUTRA FORMA DE CHAMAR
-					$.getJSON("./jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
+					$.getJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
 					 function(datalin,statuslin){						
 						  if(datalin){							  
 							cr_id_receita = datalin.cr_id_receita;
@@ -711,9 +712,9 @@
 	</script>
 
 	<body>	
-		<%=MenuUtils.buildMenu("usuario", cru)%>
+		<%=MenuUtils.buildMenu("usuario", cru, "S")%>
 		
-		<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_cadastro_receita.jsp">
+		<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 		</form>
 		<form id="tela_home" name="tela_home" method="post" action="../home_cozinharapida.jsp">
@@ -724,7 +725,8 @@
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>		
 			
 			<!-- DIV CADASTRO CONTA - PRIMEIRA PARTE -->
-			<div class="div_cadastro">			
+			<div class="div_cadastro">
+			<br><br>			
 				<div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">					
 					<font style="font-size: 0px">										
 					<br>								

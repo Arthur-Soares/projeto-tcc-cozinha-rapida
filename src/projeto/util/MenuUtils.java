@@ -10,10 +10,15 @@ import projeto.model.R1usuario;
 
 public class MenuUtils { 
 	
-	public static String buildMenu(String pagAtual, Cr_usuario cru) {			
+	public static String buildMenu(String pagAtual, Cr_usuario cru, String restrito) {			
 		
 		String nome_usuario = "Fazer login";
 		String tipo_acesso = "";
+		String pontos = ".";
+		
+		if(restrito.equals("S")) {
+			pontos = "..";
+		}
 		
 		if(cru != null) {
 			tipo_acesso = cru.getCr_nivel_usuario();
@@ -50,7 +55,7 @@ public class MenuUtils {
 							"							<select class='form-control basicAutoSelect' id='sel_receita' " +
 							"								name='sel_receita' " +
 							"								placeholder='Pesquise uma Receita...' " +
-							"								data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita' " +
+							"								data-url='"+pontos+"/jsonservlet?opc_servlet=sel_pesquisa_receita' " +
 							"								autocomplete='off' style='background:#FFFFFF border: none;'> " +
 							"							</select> "+
 							"    				</div> " +
