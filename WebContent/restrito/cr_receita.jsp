@@ -126,7 +126,10 @@
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
 			//Implementando componente de AUTOCOMPLETE em um <select com o ID = "sel_receita"
-			$('#sel_receita').autoComplete();
+			$('#sel_receita').autoComplete({
+			  // configurações do autocomplete aqui
+			  noResultsText: 'Nenhum resultado encontrado'
+			});
 			//O AUTOCOMPLETE contém um evento que é chamado ao selecionarmos uma linha dele = 'autocomplete.select'
 			$('#sel_receita').on('autocomplete.select', function (evt, item) {
 				//ITEM é o item em específico que selecionamos do nosso autocomplete (possui as propriedades relativas a aquela linha)
