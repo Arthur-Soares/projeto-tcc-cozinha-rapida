@@ -187,7 +187,7 @@
 		function verMenos(){   									    
 		    $(".div_card_receita").slideUp(200);		   
 			$(".div_home").slideDown(200);
-		}
+		}		
 	</script>
 		
 	<body>	
@@ -204,29 +204,171 @@
 			<div class="div_home" style="font-size: 90%;">																
 				<h1>Olá, Bem vindo ao<br/>Cozinha Rápida!</h1>																																								
 			<div class="row justify-content-md-center mt-3  col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12" style="position: absolute; left:50%; top:90%; transform: translate(-50%, -50%);">															
-				<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="verMais();">
+				<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onmouseover="verMais();">
 					<strong>Ver mais</strong><br><i class="fa fa-chevron-down" aria-hidden="true"></i>	
 				</button>								
 			</div>				
 			</div>		
 			<!-- DIV CARD CARROSSEL RECEITA -->
-			<div class="div_card_receita">
-				<!-- <div class="div_ver_menos">															
-					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="verMais();">
-						<i class="fa fa-chevron-up" aria-hidden="true"></i><br><strong>Voltar</strong>	
-					</button>								
-				</div>	 -->
-				<div class="row mt-3 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12" style="position: absolute; left:50%; top:15%; transform: translate(-50%, -50%);">															
-					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="verMenos();">
-						<i class="fa fa-chevron-up" aria-hidden="true"></i><br><strong>Voltar</strong>	
+			<div class="div_card_receita">				
+				<div class="row mt-3 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12" style="position: absolute; left:50%; top:10%; transform: translate(-50%, -50%);">															
+					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onmouseover="verMenos();">
+						<i class="fa fa-chevron-up" aria-hidden="true"></i>
 					</button>						
 				</div>
-				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
-					<font style="font-size: 0px">	
-					<br>								
-						<h2>Card Receitas!</h2>					
-					<br>																								
-					</font>				
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					    <h1><strong>Receitas Mais Pesquisadas</strong></h1>
+						<br>								
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+					  <div class="carousel-inner">
+					    <div class="carousel-item active">
+					      <div class="row justify-content-center">
+							  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+							    <div class="row text-center">
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 1</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 2</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 3</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 4</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+					    </div>
+					    <div class="carousel-item">
+					      <div class="row justify-content-center">
+							  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+							    <div class="row text-center">
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 5</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 6</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 7</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 8</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+					    </div>
+					    <div class="carousel-item">
+					      <div class="row justify-content-center">
+							  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+							    <div class="row text-center">
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 9</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 10</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 11</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title">Card 12</h5>
+							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          </div>
+							        </div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+					    </div>
+					  </div>
+					  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+					 <br><br>
+					  <ol class="carousel-indicators">
+					    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+					  </ol>
+					</div>
 				</div>
 			</div>
 		</form>
