@@ -64,6 +64,7 @@
 		
 		body {
 			background: url('imagens/fast_kitchen_home_menorzinha.png') no-repeat center center fixed; 
+			height: 100%;
 			-webkit-background-size: cover;
 			-moz-background-size: cover;
 			-o-background-size: cover;
@@ -71,9 +72,9 @@
 			font-family: 'Open Sans', sans-serif;			
 		}
 		
-		.div_cadastro_sucesso {			
+		.div_home {			
 			margin: 0px;
-		    height: 90vh;
+		    height: 100vh;
 		    display: flex;
 			flex-direction: row;
 			justify-content: center;
@@ -87,11 +88,29 @@
 		  justify-content: center;
 		}
 		
+		.div_ver_menos {
+		  position: absolute; /* define a posição absoluta */
+		  top: 50%; /* define o topo da div no meio da tela */
+		  left: 50%; /* define a esquerda da div no meio da tela */		  
+		}
+		
 		@media (max-width: 768px) {
 		  .container {
 		    flex-direction: column;
 		    align-items: center;
 		  }
+		}
+		
+		.div_card_receita{
+			background-color: #636f61;
+			margin: 0px;
+		    height: 100vh;
+		    display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			float: center;
 		}
 		
 		</style>
@@ -111,6 +130,14 @@
 			if(logoff == "S"){
 				$("#tela_home").submit();
 			}
+			
+			//ESCONDENDO DIV DO CARD DE RECEITAS
+			var div_home = $('.div_home');
+			div_home.show();
+			var div_card_receita = $('.div_card_receita');
+			div_card_receita.hide();
+			
+			
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
@@ -149,13 +176,18 @@
 			});		
 					
 		});
+				
+		//Chama a div card de receitas mais pesquisadas
+		function verMais(){   									    
+			$(".div_home").slideUp(200);
+		    $(".div_card_receita").slideDown(200);		   
+		}
 		
-		//Volta para a tela inicial de Login e Cadastro ao cadastrar Conta
-		function voltarLoginSucesso(){   								
-		    $(".div_cadastro_sucesso").toggle('slide');
-		    $(".div_login").toggle('slide');	
-		    $("#cr_email_usuario_login").focus();
-		}		
+		//Chama a div card de receitas mais pesquisadas
+		function verMenos(){   									    
+		    $(".div_card_receita").slideUp(200);		   
+			$(".div_home").slideDown(200);
+		}
 	</script>
 		
 	<body>	
@@ -169,14 +201,34 @@
 		<form id="tela_home" name=tela_home method="post" action="home_cozinharapida.jsp">	
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>						
-			<div class="div_cadastro_sucesso" style="font-size: 90%;">																
+			<div class="div_home" style="font-size: 90%;">																
 				<h1>Olá, Bem vindo ao<br/>Cozinha Rápida!</h1>																																								
-			</div>		
-			<div class="div_ver_mais">															
-				<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="voltarCadastroDois();">
+			<div class="row justify-content-md-center mt-3  col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12" style="position: absolute; left:50%; top:90%; transform: translate(-50%, -50%);">															
+				<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="verMais();">
 					<strong>Ver mais</strong><br><i class="fa fa-chevron-down" aria-hidden="true"></i>	
 				</button>								
 			</div>				
+			</div>		
+			<!-- DIV CARD CARROSSEL RECEITA -->
+			<div class="div_card_receita">
+				<!-- <div class="div_ver_menos">															
+					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="verMais();">
+						<i class="fa fa-chevron-up" aria-hidden="true"></i><br><strong>Voltar</strong>	
+					</button>								
+				</div>	 -->
+				<div class="row mt-3 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12" style="position: absolute; left:50%; top:15%; transform: translate(-50%, -50%);">															
+					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="verMenos();">
+						<i class="fa fa-chevron-up" aria-hidden="true"></i><br><strong>Voltar</strong>	
+					</button>						
+				</div>
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
+					<font style="font-size: 0px">	
+					<br>								
+						<h2>Card Receitas!</h2>					
+					<br>																								
+					</font>				
+				</div>
+			</div>
 		</form>
 	</body>
 </html>
