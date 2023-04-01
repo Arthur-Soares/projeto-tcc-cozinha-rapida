@@ -82,6 +82,18 @@
 			
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
+			
+			$('input[type="file"]').on("change", function() {
+			    var filenames = [];
+			    var files = this.files;
+			   if(files.length > 1) {
+			      filenames.push("Selecionados(" + files.length + ")");
+		 	      $('#file').val(filenames);
+			    }else{
+			    	var filename = files[0].name;
+					$("#file").val(filename);
+			    }
+			  });
 		});
 		
 		function carregaReceita(idrec){
@@ -177,7 +189,30 @@
 								<br>								
 								<!-- DIV CADASTRO CONTA - PRIMEIRA PARTE -->
 								<div class="div_cadastro">								
-									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">																																												
+									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+										
+										<script type="text/javascript">
+											//Chama abertura de pesquisar arquivo
+											$(document).on("click", ".browse", function() {
+												  var file = $(this).parents().find(".file");
+												  file.trigger("click");
+											});
+											
+										</script>
+										<div class="row mt-3 justify-content-md-center">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+												<input type="file" name="file_upload" id="file_upload" class="file" style="display:none;">
+												<input type="hidden" name="ao_upload_nome_arq" id="ao_upload_nome_arq">
+					    						<input type="hidden" name="ao_upload_nome_arq_orig" id="ao_upload_nome_arq_orig">																			
+												<div class="input-group">
+											    	<input type="text" class="form-control" placeholder="Selecione uma imagem..." id="file" name="file"/>
+											      <div class="input-group-append">
+											        <button type="button" class="browse btn btn-dark" id="btn_procurar_arquivos"> <i class="fa fa-folder"> </i></button>
+											      </div>
+											    </div>
+											</div>
+										</div>
+																																																						
 										<div class="row mt-3 justify-content-md-center">
 											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 												<label for="cr_titulo_receita" style="font-size: 15px; font-weight: bold;"><strong>Titulo</strong></label> 
