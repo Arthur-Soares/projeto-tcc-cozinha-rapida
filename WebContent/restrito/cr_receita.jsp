@@ -72,7 +72,10 @@
 				font-family: 'Open Sans', sans-serif;
 				font-size: 30px;
 				color: #323232;
-			}	
+			}
+			div {
+				border-radius: 10px;
+			}
 			
 			#btnAddUsuario {	
 				border: none;						
@@ -93,7 +96,7 @@
 			
 			
 			.divpadrao{
-				border: black 1px solid;
+				border: rgba(99, 111, 97, .4) 1px solid;
 				height:100px;
 				padding: 5px;
 				
@@ -159,6 +162,26 @@
 			});				
 		});
 		
+		//Função do efeito favotitar receita no icone Hearth
+		function favoritarReceita(){
+			if(document.getElementById('btnFavoritar').className == 'btn btn-link bi bi-heart'){
+				document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
+				
+				alert('Receita favoritada');
+				
+			}else{
+				var controle;
+				var confirme = confirm("Deseja realmente desfavoritar receita?")
+		
+				if(confirme == true){
+					document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart';
+				}else{
+					document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
+				}
+				
+			}
+		}
+			
 		function carregaReceita(idrec){
 			
 			var cr_id_receita = "";
@@ -181,7 +204,6 @@
 								cr_tempo_preparo_receita = datalin.cr_tempo_preparo_receita;
 								cr_rendimento_receita = datalin.cr_rendimento_receita;
 								cr_valor_receita = datalin.cr_valor_receita;
-								
 																
 							}
 						}
@@ -230,10 +252,11 @@
 					</div>	
 				</div>
 				
-				
 			<!-- Icone da Receita -->
 				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2" style="height: 100px">
-					<span class="bi bi-heart" style="color: #b1463c;font-size:50px;"></span></div>
+					<div class="btn btn-link bi bi-heart" id="btnFavoritar" style="color: #b1463c;font-size:50px; border:none;" onclick="favoritarReceita();"></div>
+					</div>
+					
 				<div class="col-xl-2"></div>
 
 			</div>
@@ -241,19 +264,19 @@
 			<!-- Imagem da Receita -->
 			<div class="row justify-content-between mt-1">
 				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12"
-					style="border: black 1px solid; max-width: 100%"> <img src="../imagens/Brigadeiro.png" 
+					style="border: rgba(99, 111, 97, .4) 10px double; max-width: 100%"> <img src="../imagens/Brigadeiro.png" 
 					class="img-fluid" alt="Imagem receita">
 				</div>
 				
 				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: black 1px solid; width: 300px"></div>
+				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px"></div>
 			</div>
 			
 			<!-- Ingredientes da Receita -->
 			<div class="row mt-3 justify-content-between">
 			
 				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12"
-					style="border: black 1px solid; height: 400px;">
+					style="border: rgba(99, 111, 97, .4) 1px solid; height: 400px;">
 					
 					<div class="col-xl-12 col-lg-12" style="text-align: left;">
 						<label for="cr_ingrediente_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
@@ -268,16 +291,16 @@
 					
 				</div>
 				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: black 1px solid; width: 300px"></div>
+				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px"></div>
 
 			</div>
 
 			<!-- Modo de preparo da Receita -->
 			<div class="row mt-3 justify-content-between">
 			
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12" style="border: black 1px solid; height: 400px;">
+				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12" style="border: rgba(99, 111, 97, .4) 1px solid; height: 400px;">
 					
-					<div class="row mt-3 justify-content-md-center">
+					<div class="mt-3 justify-content-md-center">
 						<div class="col-xl-12 col-lg-12" style="text-align: left;">
 							<label for="cr_modo_preparo_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
 								<strong>Modo de preparo</strong>
@@ -291,27 +314,30 @@
 				</div>
 				
 				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: black 1px solid; width: 300px"></div>
+				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px"></div>
 
 			</div>
 			
-			<div class="row mt-3 ">
+			<div class="row mt-3 justify-content-between">
 				
 				<!-- Rendimento da Receita -->
-				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12" style="border: black 1px solid; height:410px; padding: 2px">
+				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12" style="border: rgba(99, 111, 97, .4) 1px solid; height:400px">
 				
-					<label for="cr_rendimento_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">7
-						<strong>Rendimento</strong>
-					</label> 
+					<div class="mt-3 justify-content-md-center">
+						<div class="col-xl-12 col-lg-12" style="text-align: left;">
+							<label for="cr_rendimento_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
+								<strong>Rendimento</strong>
+							</label> 
 					
-					<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="12" 
-					style="border:solid black 1px; resize: none; background: #FFFFFF; font-size: 18px; text-align: center;">
-					</textarea> 
-										
+							<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="12" 
+							style="resize: none; background: #FFFFFF; font-size: 18px; border: none ">
+							</textarea> 
+						</div>
+				   </div>			
 				</div>
 				
 				
-				<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" style="border: black 1px solid">
+				<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" >
 				 	
 				 	<!-- Tempo de preparo da Receita -->
 				 	<div class="mt-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 divpadrao" >
@@ -333,8 +359,8 @@
 					</div>
 						
 				 	<!-- Botão de compra -->
-				 	<div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 divpadrao" >
-				 		<button type="button" class="btn btn-secondary btn-lg btn-block" style="background-color:  #636f61;">
+				 	<div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				 		<button type="button" class="btn btn-secondary btn-lg btn-block" style="background-color:  #636f61">
 				 			Comprar
 				 		</button>
 				 	</div>
