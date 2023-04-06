@@ -329,13 +329,12 @@
 								<strong>Rendimento</strong>
 							</label> 
 					
-							<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="12" 
+							<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="10" 
 							style="resize: none; background: #FFFFFF; font-size: 18px; border: none ">
 							</textarea> 
 						</div>
 				   </div>			
 				</div>
-				
 				
 				<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" >
 				 	
@@ -358,17 +357,36 @@
 											
 					</div>
 						
-				 	<!-- Botão de compra -->
+				 	<!-- Botão de compra e Modal -->
 				 	<div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-				 		<button type="button" class="btn btn-secondary btn-lg btn-block" style="background-color:  #636f61">
-				 			Comprar
-				 		</button>
+				 		
+				 		<!-- Botão -->
+					 	<button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#modalCarrinho" style="background-color:  #636f61">
+					 			Comprar
+					 	</button>
+				 		
+				 		<!-- Modal -->
+						<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+						    <div class="modal-content" style="height: 500px;">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalLabel">Carrinho</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						        Aqui é onde vai aparecer o carrinho de compras onde o cliente poderá selecionar os ingredientes que deseja comprar.
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+						        <button type="button" class="btn btn-primary">Finalizar compra</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
 				 	</div>
-				 	
 				</div>
-				
-				
-
 			</div>
 		</div>
 
