@@ -166,10 +166,11 @@
 		}		 
 		
 		function carregaReceita(cr_id_receita){
+			//alert(cr_id_receita);
 			if("" == cr_id_receita){				
-				$("#cr_id_receita").val(0);
+				$("#id_receita").val(0);
 			}else{
-				$("#cr_id_receita").val(cr_id_receita);
+				$("#id_receita").val(cr_id_receita);
 				$("#frm_tela_receita").submit();
 			}
 		}
@@ -195,7 +196,7 @@
 		}
 		
 		function novaReceita(){	
-			$("#cr_id_receita").val("");
+			$("#id_receita").val("");
 			$("#frm_tela_receita").submit();		
 		}
 		
@@ -210,7 +211,7 @@
 		</form>
 		<form id="frmlogin" name="frmlogin" method="post" action="../index_cozinharapida.jsp"></form>							
 		<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_cadastro_receita.jsp">
-			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
+			<input type="hidden" id="id_receita" name="id_receita"/>
 			<div id="div_tela">
 				<div class="row mt-3">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 	<%	
-	String p_cr_id_receita = null!=request.getParameter("cr_id_receita")?request.getParameter("cr_id_receita"):"";
+	String p_cr_id_receita = null!=request.getParameter("id_receita")?request.getParameter("id_receita"):"";
 	
 	System.out.println("p_cr_id_receita :: "+p_cr_id_receita);
 	%>
@@ -105,6 +105,7 @@
 			var cr_tempo_preparo_receita = "";
 			var cr_rendimento_receita = "";
 			var cr_valor_receita = "";
+			var cr_receita_nome_img = "";
 			
 			if(""!=idrec && "0"!=idrec){
 				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
@@ -118,8 +119,8 @@
 								cr_tempo_preparo_receita = datalin.cr_tempo_preparo_receita;
 								cr_rendimento_receita = datalin.cr_rendimento_receita;
 								cr_valor_receita = datalin.cr_valor_receita;
-								
-																
+								cr_receita_nome_img = datalin.cr_receita_nome_img;
+																							
 							}
 						}
 						$("#cr_id_receita").val(cr_id_receita);
@@ -129,6 +130,7 @@
 						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
 						$("#cr_rendimento_receita").val(cr_rendimento_receita);
 						$("#cr_valor_receita").val(cr_valor_receita);
+						$("#file").val(cr_receita_nome_img);
 					}
 				);
 			}else{								
@@ -139,6 +141,7 @@
 				$("#cr_tempo_preparo_receita").val("");
 				$("#cr_rendimento_receita").val("");
 				$("#cr_valor_receita").val("");
+				$("#file").val("");
 					
 			}		
 		}
@@ -157,6 +160,7 @@
 				function(data,status){
 					if(data.id_receita!="0" && data.id_receita != ""){
 						alert("Receita atualizada com Sucesso!");
+						salvarImgReceita(data.id_receita);
 						carregaReceita(data.id_receita);
 						$("#frmreceita").submit();
 					}else{
@@ -166,9 +170,46 @@
 				}
 			);			
 		}
+		 
+		 function salvarImgReceita(id_receita){								
+
+			var imgReceita = $('input[name="file_upload"]').get(0).files[0];
+			if(imgReceita){
+	      		var formData = new FormData();
+	      		var arrayJSON = $('#frm_img_receita').serializeArray();
+	      		formData.append('arrayJSON', arrayJSON);
+	      		formData.append('img_upload', imgReceita);			      		     
+	      		formData.append('cr_id_receita', id_receita);      	      		
+	      		//Opção a ser chamada no FileServlet:
+	      		formData.append('opc', 'salva_img_receita');
+			    $.ajax({
+			        url: "../fileservlet",
+			        type:"POST",
+			        processData:false,
+			        contentType: false,
+			        data: formData,
+				    	complete: function(data){
+				    		alert("Arquivo salvo com sucesso!!")				    		
+			                //carregarListaArquivosAo(ao_id);
+			        		//limpaCamposArq();
+			            }
+			     });
+			}else{
+				//alert("Nenhuma imagem selecionada!")
+			}				
+		}
+	 
+	 	function limpaCamposArq(){					
+			$("#file").val("");
+		}
+	 		
 	</script>
 
-	<body>									
+	<body>		
+	
+		<!-- FORM DA ABA ARQUIVOS -->
+		<form id="frm_img_receita" name="frm_img_receita" method="post" action="cr_cadastro_receita.jsp"></form>							
+		
 		<form id="frmreceita" name="frmreceita" method="post" action="cr_lista_receitas.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_receita"/>
@@ -187,7 +228,7 @@
 									</div>
 								</div>																						
 								<br>								
-								<!-- DIV CADASTRO CONTA - PRIMEIRA PARTE -->
+								<!-- DIV CADASTRO RECEITA -->
 								<div class="div_cadastro">								
 									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
 										
@@ -199,19 +240,53 @@
 											});
 											
 										</script>
+										
+										 
 										<div class="row mt-3 justify-content-md-center">
 											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-												<input type="file" name="file_upload" id="file_upload" class="file" style="display:none;">
-												<input type="hidden" name="ao_upload_nome_arq" id="ao_upload_nome_arq">
-					    						<input type="hidden" name="ao_upload_nome_arq_orig" id="ao_upload_nome_arq_orig">																			
+												<input type="file" name="file_upload" id="file_upload" class="file" style="display:none;">																	    																						
 												<div class="input-group">
-											    	<input type="text" class="form-control" placeholder="Selecione uma imagem..." id="file" name="file"/>
+											    	<input type="text" class="form-control" placeholder="Selecione uma imagem..." id="file" name="file" onchange="previewImage()"/>
 											      <div class="input-group-append">
 											        <button type="button" class="browse btn btn-dark" id="btn_procurar_arquivos"> <i class="fa fa-folder"> </i></button>
 											      </div>
 											    </div>
-											</div>
+											</div>										
+										</div> 
+										
+										<!--
+										FORMA QUE TEM COMO VISUALIZAR A IMAGEM MAS NÃO SALVA
+										<div class="row mt-3 justify-content-md-center">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+												<input type="file" name="file_upload" id="file_upload" class="file" style="display:none;">																	    																																		
+											    <input type="file" class="form-control" placeholder="Selecione uma imagem..." id="file" name="file" onchange="previewImage()"/>																								
+											</div>										
 										</div>
+										
+										<div class="row mt-3 justify-content-md-center">											
+											<div id="preview-container">
+											    <img id="preview-image" src="#" alt="Prévia da imagem" style="max-width: 400px;" />
+											</div>											
+										</div>
+										
+										<script>
+											function previewImage() {
+											    var preview = document.getElementById('preview-image');
+											    var file    = document.getElementById('file').files[0];
+											    var reader  = new FileReader();
+											
+											    reader.onloadend = function () {
+											        preview.src = reader.result;
+											    }
+											
+											    if (file) {
+											        reader.readAsDataURL(file);
+											    } else {
+											        preview.src = "";
+											    }
+											}
+										</script>										
+										-->		
 																																																						
 										<div class="row mt-3 justify-content-md-center">
 											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

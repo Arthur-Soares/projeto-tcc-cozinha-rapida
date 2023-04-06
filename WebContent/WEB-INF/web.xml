@@ -24,6 +24,16 @@
 		<servlet-name>loginservlet</servlet-name>
 		<url-pattern>/loginservlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>fileservlet</servlet-name>
+		<servlet-class>projeto.servlet.FileServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>fileservlet</servlet-name>
+		<url-pattern>/fileservlet</url-pattern>
+	</servlet-mapping>
 
 	<jsp-config>
 	    <jsp-property-group>

@@ -1,5 +1,6 @@
 package projeto.model;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
+import projeto.util.AppSecrets;
 import projeto.util.FormatUtils;
 import projeto.util.ProjetoDatabase;
 
@@ -45,10 +47,13 @@ ALTER TABLE cr_receita
 ADD COLUMN cr_rendimento_receita varchar(255);
 
 ALTER TABLE cr_receita
-ADD COLUMN cr_valor_receita decimal(11,2) ;
+ADD COLUMN cr_valor_receita decimal(11,2);
 
 ALTER TABLE cr_receita
 CHANGE COLUMN cr_ingrediente_receita cr_ingrediente_receita text
+
+ALTER TABLE cr_receita
+ADD COLUMN cr_receita_nome_img varchar(255);
 
 /**
  * 
@@ -63,7 +68,8 @@ public class Cr_receita {
 	String cr_modo_preparo_receita = "";
 	String cr_tempo_preparo_receita = "";
 	String cr_rendimento_receita = "";
-	BigDecimal  cr_valor_receita = BigDecimal.ZERO;
+	BigDecimal cr_valor_receita = BigDecimal.ZERO;
+	String cr_receita_nome_img = "";
 	
 	
 	public static String SEL_PADRAO =   " SELECT " +
@@ -73,7 +79,8 @@ public class Cr_receita {
 										" cr_modo_preparo_receita, " +
 										" cr_tempo_preparo_receita, " +
 										" cr_rendimento_receita, " +
-										" cr_valor_receita " +
+										" cr_valor_receita, " +
+										" cr_receita_nome_img " +
 										" FROM cr_receita "+ 
 										" where 1=1 "; 
 
@@ -84,7 +91,7 @@ public class Cr_receita {
 							 	" cr_modo_preparo_receita, " +
 							 	" cr_tempo_preparo_receita, " +
 							 	" cr_rendimento_receita, " +
-							 	" cr_valor_receita " +
+							 	" cr_valor_receita" +							 	
 							    " ) VALUES " +
 							    " (?,?,?,?,?,?)";
 
@@ -95,7 +102,7 @@ public class Cr_receita {
 								" cr_modo_preparo_receita = ?, " +
 								" cr_tempo_preparo_receita = ?, " +
 								" cr_rendimento_receita = ?, " +
-								" cr_valor_receita = ? " +
+								" cr_valor_receita = ? " +								
 								" WHERE cr_id_receita = ? ";
 	
 	public String DEL_PADRAO = " DELETE FROM cr_receita WHERE cr_id_receita = ?";
@@ -156,9 +163,15 @@ public class Cr_receita {
 		this.cr_titulo_receita = cr_titulo_receita;
 	}
 
-	
+	public String getCr_receita_nome_img() {
+		return cr_receita_nome_img;
+	}
 
-	public Cr_receita(int cr_id_receita, String cr_titulo_receita, String cr_ingrediente_receita, String cr_modo_preparo_receita, String cr_tempo_preparo_receita, String cr_rendimento_receita, BigDecimal cr_valor_receita) {
+	public void setCr_receita_nome_img(String cr_receita_nome_img) {
+		this.cr_receita_nome_img = cr_receita_nome_img;
+	}
+
+	public Cr_receita(int cr_id_receita, String cr_titulo_receita, String cr_ingrediente_receita, String cr_modo_preparo_receita, String cr_tempo_preparo_receita, String cr_rendimento_receita, BigDecimal cr_valor_receita, String cr_receita_nome_img) {
 		super();
 		this.cr_id_receita = cr_id_receita;
 		this.cr_titulo_receita = cr_titulo_receita;
@@ -167,7 +180,7 @@ public class Cr_receita {
 		this.cr_tempo_preparo_receita = cr_tempo_preparo_receita;
 		this.cr_rendimento_receita = cr_rendimento_receita;
 		this.cr_valor_receita = cr_valor_receita;
-		
+		this.cr_receita_nome_img = cr_receita_nome_img;		
 	}
 	
 	public Cr_receita(List listObj) {
@@ -179,7 +192,8 @@ public class Cr_receita {
 		this.cr_modo_preparo_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
 		this.cr_tempo_preparo_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
 		this.cr_rendimento_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
-		this.cr_valor_receita = listObj.size()>ind?(BigDecimal)listObj.get(ind):BigDecimal.ZERO;
+		this.cr_valor_receita = listObj.size()>ind?(BigDecimal)listObj.get(ind):BigDecimal.ZERO;ind++;
+		this.cr_receita_nome_img = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";
 	}
 
 	public Cr_receita(Map<String, String> mapParams) {
@@ -293,8 +307,6 @@ public class Cr_receita {
 	}
 	
 	/**
-	 * 
-	 * 
 	 * @return retorna e trata os dados do select padrão para que seja possível exibir a informação na consulta.
 	 */
 	public static JSONArray listarJSON(Object[] params, Object[] values) {
@@ -432,6 +444,96 @@ public class Cr_receita {
 		}
 
 		return arrayRetorno;
+	}
+	
+	/**
+	 * @author Arthur Soares da Silva
+	 * @return o metodo salva_arquivo é responsavel por inserir ou alterar o arquivo da imagem na tabela cr_receita
+	 * @param Tem como parametros o nome do arquivo e o ID da receita na qual ele será inserido ou atualizado
+	 */
+	public int salva_arquivo(String cr_receita_nome_img, int cr_id_receita) {
+		int idRetorno = 0;
+		String nomeArquivo = "";
+		
+		try {
+			Connection c = ProjetoDatabase.getConnection();
+
+			String sqlArq = " select cr_receita_nome_img from cr_receita WHERE cr_id_receita = "+cr_id_receita;
+			Statement st = c.createStatement();
+			ResultSet rs = st.executeQuery(sqlArq);
+			if(rs.next()) {
+				nomeArquivo = null!=rs.getObject(1)?rs.getString(1):"";		
+				System.out.println("SqulArq Nome do Arquivo :: "+nomeArquivo);
+			}
+			if(null!=rs) {
+				rs.close();
+				rs=null;
+			}
+			if(null!=st) {
+				st.close();
+				st=null;
+			}
+			
+			/*
+			if(!nomeArquivo.equals("")) {
+				apagarArquivoPasta(nomeArquivo);
+			}
+			*/
+			
+			String ins_arquivo = " UPDATE cr_receita SET " +										  
+						 		 " cr_receita_nome_img = ? " +								
+						 		 " WHERE cr_id_receita = ? ";				
+							
+			PreparedStatement ps = c.prepareStatement(ins_arquivo);
+			ps.setString(1, cr_receita_nome_img);
+			ps.setInt(2, cr_id_receita);								
+			ps.executeUpdate();
+			
+			if(null!=ps) {
+				ps.close();
+				ps=null;
+			}			
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			idRetorno = -1;
+		}		
+		return idRetorno;
+	}	
+	
+	public static int apagarArquivoPasta(String arq_nome) {
+		String dir = AppSecrets.PATH_IMG;
+		
+		int nameIndex = arq_nome.lastIndexOf('.');	
+		String extensao = arq_nome.substring(nameIndex+1).trim().toLowerCase();
+		
+		dir = dir + arq_nome;
+		File f = new File(dir);
+		
+		try {
+		if(f.exists()) {			
+			arq_nome = arq_nome.substring(0, arq_nome.lastIndexOf("."));
+			String dirFOP = AppSecrets.PATH_IMG+arq_nome;
+			File fFop = new File(dirFOP);
+			if(fFop.exists()) {
+				if(fFop.delete()) {
+					System.out.println("Arquivo deletado da pasta de imagens");
+				}
+			}
+			if(f.delete()) {
+				System.out.println("Arquivo deletado");
+			}			
+		}
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+		return 0;
 	}
 	
 	public Cr_receita() {

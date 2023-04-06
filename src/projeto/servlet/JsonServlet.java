@@ -144,6 +144,10 @@ public class JsonServlet extends HttpServlet {
 			out = response.getWriter();
     		out.print(jsonObj);
 		}else if("salva_receita".equals(opcServlet)) {
+			String cr_valor_receita = mapParams.containsKey("cr_valor_receita")?mapParams.get("cr_valor_receita").trim():"";
+			cr_valor_receita = cr_valor_receita.replace(".","");
+			cr_valor_receita = cr_valor_receita.replaceAll(",",".");
+			mapParams.put("cr_valor_receita",Cast.toString(cr_valor_receita));			
 			Cr_receita crr = new Cr_receita(mapParams);
 			int id_receita = crr.salva_registro();
 			jsonObj= new JSONObject();

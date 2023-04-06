@@ -14,5 +14,8 @@ public interface AppSecrets {
 	static final String EMAIL_URL = "http://localhost/projeto-tcc-cozinha-rapida";
 	
 	//GERAL
-	static final String USER_KEY = "projeto.model.Cr_usuario";	
+	static final String USER_KEY = "projeto.model.Cr_usuario";
+	
+	//CAMINHOS DE PASTA DO SISTEMA
+	static final String PATH_IMG = "C:\\cozinha_rapida\\img\\";
 }
