@@ -191,6 +191,7 @@
 			var cr_tempo_preparo_receita = "";
 			var cr_rendimento_receita = "";
 			var cr_valor_receita = "";
+			var cr_receita_view = "";
 			
 			if(""!=idrec && "0"!=idrec){
 				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
@@ -204,6 +205,7 @@
 								cr_tempo_preparo_receita = datalin.cr_tempo_preparo_receita;
 								cr_rendimento_receita = datalin.cr_rendimento_receita;
 								cr_valor_receita = datalin.cr_valor_receita;
+								cr_receita_view = datalin.cr_receita_view;
 																
 							}
 						}
@@ -215,6 +217,8 @@
 						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
 						$("#cr_rendimento_receita").val(cr_rendimento_receita);
 						$("#cr_valor_receita").val("R$ "+cr_valor_receita);
+						
+						somaView(idrec, cr_receita_view);
 					}
 				);
 			}else{								
@@ -227,7 +231,23 @@
 				$("#cr_valor_receita").val("");
 					
 			}		
-		}		
+		}	
+		
+		function somaView(id_receita, qtd_view){
+			
+			$.postJSON("../jsonservlet",{opc_servlet:'soma_receita_view',cr_id_receita:id_receita,cr_receita_view:qtd_view},
+				function(data,status){
+					if(data.retorno_view != -1){
+						console.log("Tudo certo somado mais um na view da receita!");						
+					}else{
+						console.log("Erro ao somar mais um na view na receita!");
+						return false;
+					}
+				}
+			);
+
+			
+		}
 	</script>
 
 	<body>		

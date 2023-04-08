@@ -55,6 +55,9 @@ CHANGE COLUMN cr_ingrediente_receita cr_ingrediente_receita text
 ALTER TABLE cr_receita
 ADD COLUMN cr_receita_nome_img varchar(255);
 
+ALTER TABLE cr_receita
+ADD COLUMN cr_receita_view int DEFAULT 0;
+
 /**
  * 
  * @author Erick Rodrigues da Silva
@@ -70,6 +73,7 @@ public class Cr_receita {
 	String cr_rendimento_receita = "";
 	BigDecimal cr_valor_receita = BigDecimal.ZERO;
 	String cr_receita_nome_img = "";
+	int cr_receita_view = 0;
 	
 	
 	public static String SEL_PADRAO =   " SELECT " +
@@ -80,7 +84,8 @@ public class Cr_receita {
 										" cr_tempo_preparo_receita, " +
 										" cr_rendimento_receita, " +
 										" cr_valor_receita, " +
-										" cr_receita_nome_img " +
+										" cr_receita_nome_img, " +
+										" cr_receita_view " +
 										" FROM cr_receita "+ 
 										" where 1=1 "; 
 
@@ -91,7 +96,7 @@ public class Cr_receita {
 							 	" cr_modo_preparo_receita, " +
 							 	" cr_tempo_preparo_receita, " +
 							 	" cr_rendimento_receita, " +
-							 	" cr_valor_receita" +							 	
+							 	" cr_valor_receita " +
 							    " ) VALUES " +
 							    " (?,?,?,?,?,?)";
 
@@ -171,7 +176,15 @@ public class Cr_receita {
 		this.cr_receita_nome_img = cr_receita_nome_img;
 	}
 
-	public Cr_receita(int cr_id_receita, String cr_titulo_receita, String cr_ingrediente_receita, String cr_modo_preparo_receita, String cr_tempo_preparo_receita, String cr_rendimento_receita, BigDecimal cr_valor_receita, String cr_receita_nome_img) {
+	public int getCr_receita_view() {
+		return cr_receita_view;
+	}
+
+	public void setCr_receita_view(int cr_receita_view) {
+		this.cr_receita_view = cr_receita_view;
+	}
+
+	public Cr_receita(int cr_id_receita, String cr_titulo_receita, String cr_ingrediente_receita, String cr_modo_preparo_receita, String cr_tempo_preparo_receita, String cr_rendimento_receita, BigDecimal cr_valor_receita, String cr_receita_nome_img, int cr_receita_view) {
 		super();
 		this.cr_id_receita = cr_id_receita;
 		this.cr_titulo_receita = cr_titulo_receita;
@@ -181,6 +194,7 @@ public class Cr_receita {
 		this.cr_rendimento_receita = cr_rendimento_receita;
 		this.cr_valor_receita = cr_valor_receita;
 		this.cr_receita_nome_img = cr_receita_nome_img;		
+		this.cr_receita_view = cr_receita_view;
 	}
 	
 	public Cr_receita(List listObj) {
@@ -193,8 +207,10 @@ public class Cr_receita {
 		this.cr_tempo_preparo_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
 		this.cr_rendimento_receita = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
 		this.cr_valor_receita = listObj.size()>ind?(BigDecimal)listObj.get(ind):BigDecimal.ZERO;ind++;
-		this.cr_receita_nome_img = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";
+		this.cr_receita_nome_img = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_receita_view = listObj.size()>ind?(int)listObj.get(ind):0;
 	}
+	
 
 	public Cr_receita(Map<String, String> mapParams) {
 		super();
@@ -262,7 +278,7 @@ public class Cr_receita {
 				pins.setString(icol, this.cr_tempo_preparo_receita);icol++;
 				pins.setString(icol, this.cr_rendimento_receita);icol++;
 				pins.setBigDecimal(icol, this.cr_valor_receita);
-								
+				
 				if(this.getCr_id_receita() != 0) {
 					icol++;
 					pins.setInt(icol, this.cr_id_receita);
@@ -306,75 +322,75 @@ public class Cr_receita {
 		return idRetorno;
 	}
 	
-	/**
-	 * @return retorna e trata os dados do select padrão para que seja possível exibir a informação na consulta.
-	 */
-	public static JSONArray listarJSON(Object[] params, Object[] values) {
-		JSONArray arrayRetorno = new JSONArray();
-		String sql = SEL_PADRAO;
-		if(params.length > 0 && values.length > 0) {
-			for(int ob = 0; ob < params.length; ob++) {
-				sql += " and "+params[ob]+" = ?";
-			}
-		}
-		sql+= " order by cr_id_receita ";
-		System.out.println("Query="+sql);
-		try {
-			Connection c = ProjetoDatabase.getConnection();
-			PreparedStatement p = c.prepareStatement(sql);
+		/**
+		 * @return retorna e trata os dados do select padrão para que seja possível exibir a informação na consulta.
+		 */
+		public static JSONArray listarJSON(Object[] params, Object[] values) {
+			JSONArray arrayRetorno = new JSONArray();
+			String sql = SEL_PADRAO;
 			if(params.length > 0 && values.length > 0) {
-				for(int ob = 0, pind=1; ob < values.length; ob++, pind++) {
-					p.setObject(pind, values[ob]);
+				for(int ob = 0; ob < params.length; ob++) {
+					sql += " and "+params[ob]+" = ?";
 				}
 			}
-			
-			ResultSet r = p.executeQuery();
-			ResultSetMetaData rsmd = r.getMetaData();
-			int cols =	rsmd.getColumnCount();
-			while(r.next()) {
-				JSONObject jsonObj = new JSONObject();
-				for(int xc = 1;xc<=cols;xc++){
-					if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
-						try {
-							jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
-						}catch(Exception e) {
-							jsonObj.put(rsmd.getColumnLabel(xc), "");
-						} 
-					}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
-							java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
-							java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
-							java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
-							java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
-							java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
-							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
-					}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
-						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
-					}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
-						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
-					}else{
-						jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
+			sql+= " order by cr_id_receita ";
+			System.out.println("Query="+sql);
+			try {
+				Connection c = ProjetoDatabase.getConnection();
+				PreparedStatement p = c.prepareStatement(sql);
+				if(params.length > 0 && values.length > 0) {
+					for(int ob = 0, pind=1; ob < values.length; ob++, pind++) {
+						p.setObject(pind, values[ob]);
 					}
 				}
-				arrayRetorno.put(jsonObj);
+				
+				ResultSet r = p.executeQuery();
+				ResultSetMetaData rsmd = r.getMetaData();
+				int cols =	rsmd.getColumnCount();
+				while(r.next()) {
+					JSONObject jsonObj = new JSONObject();
+					for(int xc = 1;xc<=cols;xc++){
+						if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
+							try {
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
+							}catch(Exception e) {
+								jsonObj.put(rsmd.getColumnLabel(xc), "");
+							} 
+						}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
+								java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+						}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
+						}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
+						}else{
+							jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
+						}
+					}
+					arrayRetorno.put(jsonObj);
+				}
+				if(null!=r) {
+					r.close();
+					r=null;
+				}
+				if(null!=p) {
+					p.close();
+					p=null;
+				}
+				if(null!=c) {
+					c.close();
+					c=null;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
 			}
-			if(null!=r) {
-				r.close();
-				r=null;
-			}
-			if(null!=p) {
-				p.close();
-				p=null;
-			}
-			if(null!=c) {
-				c.close();
-				c=null;
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
+	
+			return arrayRetorno;
 		}
-
-		return arrayRetorno;
-	}
 	
 	/**
 	 * Retorna SQL de Receitas.
@@ -535,6 +551,114 @@ public class Cr_receita {
 		}
 		return 0;
 	}
+	
+	public int somaViewReceita(int cr_id_receita, int cr_receita_view) {
+		int retornaView = 0;
+		
+		String upd_somaview = " UPDATE cr_receita SET " +										  
+					 		  " cr_receita_view = ? " +								
+					 		  " WHERE cr_id_receita = ? ";
+		
+		if(cr_id_receita != 0) {
+			cr_receita_view++;
+		}else {
+			cr_receita_view = 0;
+		}
+		
+		try {
+			Connection c = ProjetoDatabase.getConnection();																									
+			PreparedStatement ps = c.prepareStatement(upd_somaview);
+			ps.setInt(1, cr_receita_view);
+			ps.setInt(2, cr_id_receita);								
+			ps.executeUpdate();
+			
+			if(null!=ps) {
+				ps.close();
+				ps=null;
+			}			
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+			retornaView = -1;
+		}		
+		return retornaView;
+	}
+	
+	/**
+	 * @return retorna e trata os dados do select padrão para que seja possível exibir a informação na consulta.
+	 */
+	public static JSONArray listaTopViews(Object[] params, Object[] values) {
+		JSONArray arrayRetorno = new JSONArray();
+		String sql = SEL_PADRAO;
+		if(params.length > 0 && values.length > 0) {
+			for(int ob = 0; ob < params.length; ob++) {
+				sql += " and "+params[ob]+" = ?";
+			}
+		}
+		sql+= " order by cr_receita_view desc " +
+			  "LIMIT 12; ";
+		System.out.println("Query="+sql);
+		try {
+			Connection c = ProjetoDatabase.getConnection();
+			PreparedStatement p = c.prepareStatement(sql);
+			if(params.length > 0 && values.length > 0) {
+				for(int ob = 0, pind=1; ob < values.length; ob++, pind++) {
+					p.setObject(pind, values[ob]);
+				}
+			}
+			
+			ResultSet r = p.executeQuery();
+			ResultSetMetaData rsmd = r.getMetaData();
+			int cols =	rsmd.getColumnCount();
+			while(r.next()) {
+				JSONObject jsonObj = new JSONObject();
+				for(int xc = 1;xc<=cols;xc++){
+					if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
+						try {
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
+						}catch(Exception e) {
+							jsonObj.put(rsmd.getColumnLabel(xc), "");
+						} 
+					}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
+							java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+					}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
+						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
+					}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
+						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
+					}else{
+						jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
+					}
+				}
+				arrayRetorno.put(jsonObj);
+			}
+			if(null!=r) {
+				r.close();
+				r=null;
+			}
+			if(null!=p) {
+				p.close();
+				p=null;
+			}
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return arrayRetorno;
+	}
+
 	
 	public Cr_receita() {
 		// TODO Auto-generated constructor stub

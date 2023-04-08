@@ -130,6 +130,7 @@
 			if(logoff == "S"){
 				$("#tela_home").submit();
 			}
+			carregalistaTopReceitas();
 			
 			//ESCONDENDO DIV DO CARD DE RECEITAS
 			var div_home = $('.div_home');
@@ -187,7 +188,28 @@
 		function verMenos(){   									    
 		    $(".div_card_receita").slideUp(200);		   
 			$(".div_home").slideDown(200);
-		}		
+		}
+		
+		function carregalistaTopReceitas(){						
+			$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+				function(datalin,statuslin){
+					if(datalin.length > 0){
+						var num = 0;					
+						for(var cx=0;cx<datalin.length;cx++){
+													
+							var cr_id_receita = datalin[cx].cr_id_receita;
+							var cr_titulo_receita = datalin[cx].cr_titulo_receita;
+							var cr_ingrediente_receita = datalin[cx].cr_ingrediente_receita;	
+							
+							$("#tit_receita_card_"+num).text(cr_titulo_receita);
+							$("#desc_receita_card_"+num).text(cr_ingrediente_receita);
+							
+							num++;
+						}
+					}
+				}
+			);
+		}	
 	</script>
 		
 	<body>	
@@ -228,9 +250,9 @@
 							      <div class="col-md-3">
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
-							          <div class="card-body">
-							            <h5 class="card-title">Card 1</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							          <div class="card-body"> 
+							            <h5 class="card-title" id="tit_receita_card_0"></h5> <!-- CARD 1 -->
+							            <p class="card-text" id="desc_receita_card_0"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -238,8 +260,8 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 2</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_1"></h5>
+							            <p class="card-text" id="desc_receita_card_1"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -247,8 +269,8 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 3</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_2"></h5>
+							            <p class="card-text" id="desc_receita_card_2"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -256,52 +278,8 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 4</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							          </div>
-							        </div>
-							      </div>
-							    </div>
-							  </div>
-							</div>
-					    </div>
-					    <div class="carousel-item">
-					      <div class="row justify-content-center">
-							  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-							    <div class="row text-center">
-							      <div class="col-md-3">
-							        <div class="card">
-							          <img class="card-img-top" src="..." alt="Card image cap">
-							          <div class="card-body">
-							            <h5 class="card-title">Card 5</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							          </div>
-							        </div>
-							      </div>
-							      <div class="col-md-3">
-							        <div class="card">
-							          <img class="card-img-top" src="..." alt="Card image cap">
-							          <div class="card-body">
-							            <h5 class="card-title">Card 6</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							          </div>
-							        </div>
-							      </div>
-							      <div class="col-md-3">
-							        <div class="card">
-							          <img class="card-img-top" src="..." alt="Card image cap">
-							          <div class="card-body">
-							            <h5 class="card-title">Card 7</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							          </div>
-							        </div>
-							      </div>
-							      <div class="col-md-3">
-							        <div class="card">
-							          <img class="card-img-top" src="..." alt="Card image cap">
-							          <div class="card-body">
-							            <h5 class="card-title">Card 8</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_3"></h5>
+							            <p class="card-text" id="desc_receita_card_3"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -317,8 +295,8 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 9</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_4"></h5>
+							            <p class="card-text" id="desc_receita_card_4"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -326,8 +304,8 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 10</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_5"></h5>
+							            <p class="card-text" id="desc_receita_card_5"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -335,8 +313,8 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 11</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_6"></h5>
+							            <p class="card-text" id="desc_receita_card_6"></p>
 							          </div>
 							        </div>
 							      </div>
@@ -344,8 +322,52 @@
 							        <div class="card">
 							          <img class="card-img-top" src="..." alt="Card image cap">
 							          <div class="card-body">
-							            <h5 class="card-title">Card 12</h5>
-							            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							            <h5 class="card-title" id="tit_receita_card_7"></h5>
+							            <p class="card-text" id="desc_receita_card_7"></p>
+							          </div>
+							        </div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+					    </div>
+					    <div class="carousel-item">
+					      <div class="row justify-content-center">
+							  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+							    <div class="row text-center">
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title" id="tit_receita_card_8"></h5>
+							            <p class="card-text" id="desc_receita_card_8"></p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title" id="tit_receita_card_9"></h5>
+							            <p class="card-text" id="desc_receita_card_9"></p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title" id="tit_receita_card_10"></h5>
+							            <p class="card-text" id="desc_receita_card_10"></p>
+							          </div>
+							        </div>
+							      </div>
+							      <div class="col-md-3">
+							        <div class="card">
+							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="card-body">
+							            <h5 class="card-title" id="tit_receita_card_11"></h5>
+							            <p class="card-text" id="desc_receita_card_11"></p>
 							          </div>
 							        </div>
 							      </div>

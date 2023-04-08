@@ -162,6 +162,19 @@ public class JsonServlet extends HttpServlet {
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
 			out = response.getWriter();
 			out.print(jsonObj);
+	   }else if("list_top_receitas".equals(opcServlet)) {	
+			jsonArray = Cr_receita.listaTopViews(new Object[0], new Object[0]);
+			out = response.getWriter();
+			out.print(jsonArray);
+	  	}else if("soma_receita_view".equals(opcServlet)) { 
+			int cr_id_receita = null!=request.getParameter("cr_id_receita")?Cast.toInt(request.getParameter("cr_id_receita")):0; 
+			int cr_receita_view = null!=request.getParameter("cr_receita_view")?Cast.toInt(request.getParameter("cr_receita_view")):0; 
+			Cr_receita crr = new Cr_receita();
+			int retornaview = crr.somaViewReceita(cr_id_receita, cr_receita_view);
+			jsonObj= new JSONObject();
+			jsonObj.put("retorno_view", retornaview);
+			out = response.getWriter();
+			out.print(jsonObj);
 	   }else if("find_pesquisa_receita".equals(opcServlet)) { 			
 		   	JSONArray jsonRet = new JSONArray();
 		   	String nome_receita = null!=request.getParameter("nome_receita")?request.getParameter("nome_receita"):"";
