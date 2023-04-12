@@ -47,12 +47,12 @@ public class MenuUtils {
 							"			<div class='collapse navbar-collapse justify-content-center' id='navbarNav'> "+
 							"				<form class='form-inline ml-auto mr-0'> " +
 							"				   <div class='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12' style='width: 500px;'> "+	
-							"    				<div class='input-group'> " +
-							"     					 <div class='input-group-append'> " +
+							"    				<div class='input-group rounded'> " +
+							"     					 <div class='input-group-append rounded'> " +
 							//"       					<button class='btn btn-dark' type='submit'><i class='fas fa-search'></i></button> " +
-							"       					<span class='input-group-text badge-dark' id='basic-addon1' style='border: none;'><i class='fas fa-search'></i></span> " +
+							"       					<span class='input-group-text badge-dark rounded-right-0 rounded-left' id='basic-addon1' style='border: none;'><i class='fas fa-search'></i></span> " +
 							"      					</div> " +
-							"							<select class='form-control basicAutoSelect' id='sel_receita' " +
+							"							<select class='form-control basicAutoSelect rounded-left-0 rounded-right' id='sel_receita' " +
 							"								name='sel_receita' " +
 							"								placeholder='Pesquise uma Receita...' " +
 							"								data-url='"+pontos+"/jsonservlet?opc_servlet=sel_pesquisa_receita' " +

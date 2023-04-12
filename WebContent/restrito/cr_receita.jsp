@@ -88,7 +88,7 @@
 			}	
 			
 			.visual_tit_rec {	
-				font-size: 25px;			
+				font-size: 40px;			
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
 				color: #b1463c;
@@ -98,10 +98,7 @@
 			.divpadrao{
 				border: rgba(99, 111, 97, .4) 1px solid;
 				height:100px;
-				padding: 5px;
-				
-				
-				
+				padding: 5px;				
 			}
 			
 			@media(max-width: 1000px) {
@@ -110,6 +107,39 @@
     			}
 			}
 			
+			.img_receita {
+			    position: relative; /* definir posição relativa para que a imagem possa ser centralizada verticalmente */
+			    height: 0; /* definir altura inicial como 0 para o aspect-ratio funcionar */
+			    padding-bottom: 56.25%; /* proporção 16:9 (ou 9:16 para retrato) */
+			    overflow: hidden; /* esconder a parte da imagem que exceder a div */
+			}
+			
+			.img_receita iframe {
+			    position: absolute; /* definir posição absoluta para a imagem ficar no topo */
+			    top: 0;
+			    left: 0;
+			    width: 100%; /* ajustar a largura para 100% */
+			    height: 100%; /* ajustar a altura para 100% */
+			    border: 0; /* remover a borda */
+			    object-fit: cover; /* fazer a imagem se ajustar ao tamanho da div pai */
+			    background-color: transparent;
+			}
+			
+			.img_receita iframe img {
+			  width: 100%;
+			  height: 100%;
+			  object-fit: cover;
+			}
+
+			#btnCompra {	
+				border: none;						
+				color: #FFFFFF;				
+				border-radius: 40px;
+				transition: 0.2s;
+				cursor: pointer;			
+				transition: 0.2s;
+				font-size: 20px;
+			}	
 		</style>		
 	</head>
 
@@ -192,6 +222,7 @@
 			var cr_rendimento_receita = "";
 			var cr_valor_receita = "";
 			var cr_receita_view = "";
+			var cr_receita_nome_img = "";
 			
 			if(""!=idrec && "0"!=idrec){
 				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
@@ -206,7 +237,7 @@
 								cr_rendimento_receita = datalin.cr_rendimento_receita;
 								cr_valor_receita = datalin.cr_valor_receita;
 								cr_receita_view = datalin.cr_receita_view;
-																
+								cr_receita_nome_img = datalin.cr_receita_nome_img;															
 							}
 						}
 						$("#cr_id_receita").val(cr_id_receita);
@@ -217,6 +248,10 @@
 						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
 						$("#cr_rendimento_receita").val(cr_rendimento_receita);
 						$("#cr_valor_receita").val("R$ "+cr_valor_receita);
+						
+						var div_image = $("#cr_receita_nome_img");
+						
+						div_image.append(cr_receita_nome_img);
 						
 						somaView(idrec, cr_receita_view);
 					}
@@ -266,151 +301,125 @@
 			<div class="row">
 			
 			<!-- Titulo da Receita -->
-				<div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8" style="height: 100px">
+				<div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8" style="height: 100px; text-align:left;">
 					<div class="row mt-3 justify-content-md-center">																									
 						<div id="cr_titulo_receita" class="visual_tit_rec"></div>
 					</div>	
 				</div>
 				
 			<!-- Icone da Receita -->
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2" style="height: 100px">
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2" style="height: 100px; text-align:right;">
 					<div class="btn btn-link bi bi-heart" id="btnFavoritar" style="color: #b1463c;font-size:50px; border:none;" onclick="favoritarReceita();"></div>
 					</div>
 					
 				<div class="col-xl-2"></div>
 
 			</div>
-
-			<!-- Imagem da Receita -->
+			
 			<div class="row justify-content-between mt-1">
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12" style="border: rgba(99, 111, 97, .4) 10px double; max-width: 100%"> 
-					<iframe src="https://drive.google.com/file/d/1KZHw3dCoRKYcSg4xmO-QLLd7sDNhI0Se/preview" width="640" height="480"></iframe>
-				</div>
-				
+				<!-- Imagem da Receita -->
+				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12"> 
+					<div class="img_receita" id="cr_receita_nome_img">	
+					</div>	
+				</div>	
+							
 				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px"></div>
+				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
+					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
+						<strong>Sugestões:</strong>
+					</label> 
+				</div>
 			</div>
 			
-			<!-- Ingredientes da Receita -->
-			<div class="row mt-3 justify-content-between">
+			<div class="row mt-3 justify-content-md-center text-center col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">		
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+					<label for="cr_rendimento_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
+						<strong>Rendimento</strong>
+					</label> 			
+					<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="1" 
+						style="resize: none; background: #FFFFFF; font-size: 18px; border: none; text-align: center;">
+					</textarea> 
+				</div>
+				
+				<!-- Tempo de preparo da Receita -->
+			 	<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+					<label style="font-size: 18px; font-weight: bold; color: #b1463c;"><strong> Tempo de Preparo </strong></label>
+					<input disabled type="text" class="form-control" name="cr_tempo_preparo_receita" id="cr_tempo_preparo_receita" 
+					style="border:none; background: #FFFFFF; font-size: 18px; text-align: center; ">					
+				</div>
+				
+				<!-- Valor da Receita -->
+			 	<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+					<label for="cr_valor_receita" style="font-size: 18px; font-weight: bold; color: #b1463c;">
+						<strong>Valor da Receita</strong>
+					</label> 
+					<input disabled type="text" class="form-control" name="cr_valor_receita"  id="cr_valor_receita" 
+					style="border:none; background: #FFFFFF; font-size: 18px; text-align: center;">									
+				</div>
+		   </div>
 			
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12"
-					style="border: rgba(99, 111, 97, .4) 1px solid; height: 400px;">
-					
-					<div class="col-xl-12 col-lg-12" style="text-align: left;">
+			<!-- Ingredientes da Receita -->
+			<div class="row mt-3 justify-content-between">			
+				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">					
+					<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">	
 						<label for="cr_ingrediente_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
 							<strong>Ingredientes</strong>
-						</label> 
-						
+						</label> 						
 						<textarea disabled type="textarea" class="form-control" name="cr_ingrediente_receita" 
-						id="cr_ingrediente_receita" rows="12" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
+						id="cr_ingrediente_receita" rows="6" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
 						</textarea> 
-					</div>	
-					
-					
-				</div>
-				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px"></div>
-
+					</div>										
+				</div>			
 			</div>
 
 			<!-- Modo de preparo da Receita -->
-			<div class="row mt-3 justify-content-between">
-			
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12" style="border: rgba(99, 111, 97, .4) 1px solid; height: 400px;">
-					
+			<div class="row mt-3 justify-content-between">			
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
 					<div class="mt-3 justify-content-md-center">
-						<div class="col-xl-12 col-lg-12" style="text-align: left;">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
 							<label for="cr_modo_preparo_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
 								<strong>Modo de preparo</strong>
 							</label> 
 							<textarea disabled type="textarea" class="form-control" name="cr_modo_preparo_receita" 
-							id="cr_modo_preparo_receita" rows="8" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
+							id="cr_modo_preparo_receita" rows="6" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
 							</textarea> 
 						</div>				
-					</div>
-						
-				</div>
-				
-				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px"></div>
-
+					</div>					
+				</div>				
 			</div>
 			
-			<div class="row mt-3 justify-content-between">
-				
-				<!-- Rendimento da Receita -->
-				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12" style="border: rgba(99, 111, 97, .4) 1px solid; height:400px">
-				
-					<div class="mt-3 justify-content-md-center">
-						<div class="col-xl-12 col-lg-12" style="text-align: left;">
-							<label for="cr_rendimento_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
-								<strong>Rendimento</strong>
-							</label> 
-					
-							<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="10" 
-							style="resize: none; background: #FFFFFF; font-size: 18px; border: none ">
-							</textarea> 
-						</div>
-				   </div>			
-				</div>
-				
-				<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" >
-				 	
-				 	<!-- Tempo de preparo da Receita -->
-				 	<div class="mt-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 divpadrao" >
-						<label style="font-size: 18px; font-weight: bold; color: #b1463c;"><strong> Tempo de Preparo </strong></label>
-						<input disabled type="text" class="form-control" name="cr_tempo_preparo_receita" id="cr_tempo_preparo_receita" 
-						style="border:none; background: #FFFFFF; font-size: 18px; text-align: center; ">
-					
-					</div>
-					
-					<!-- Valor da Receita -->
-				 	<div class="mt-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 divpadrao" style="font-size: 20px; 
-				 	font-weight: bold; color: #b1463c;" >
-						<label for="cr_valor_receita" style="font-size: 18px; font-weight: bold; color: #b1463c;">
-							<strong>Valor da Receita</strong>
-						</label> 
-						<input disabled type="text" class="form-control" name="cr_valor_receita"  id="cr_valor_receita" 
-						style="border:none; background: #FFFFFF; font-size: 18px; text-align: center; ">
-											
-					</div>
-						
-				 	<!-- Botão de compra e Modal -->
-				 	<div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-				 		
-				 		<!-- Botão -->
-					 	<button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#modalCarrinho" style="background-color:  #636f61">
-					 			Comprar
-					 	</button>
-				 		
-				 		<!-- Modal -->
-						<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						  <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
-						    <div class="modal-content" style="height: 500px;">
-						      <div class="modal-header">
-						        <h5 class="modal-title" id="exampleModalLabel">Carrinho</h5>
-						        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-						          <span aria-hidden="true">&times;</span>
-						        </button>
-						      </div>
-						      <div class="modal-body">
-						        Aqui é onde vai aparecer o carrinho de compras onde o cliente poderá selecionar os ingredientes que deseja comprar.
-						      </div>
-						      <div class="modal-footer">
-						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-						        <button type="button" class="btn btn-primary">Finalizar compra</button>
-						      </div>
-						    </div>
-						  </div>
-						</div>
-				 	</div>
-				</div>
+			<!-- Modo de preparo da Receita -->
+			<div class="mt-3 d-flex justify-content-end">
+			  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 ml-auto text-right">	
+			    <button type="button" class="btn btn-lg btn-block" data-toggle="modal" id="btnCompra" data-target="#modalCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #b1463c;">
+			     	<strong>Comprar Ingredientes</strong>
+			    </button>
+			  </div>												
 			</div>
-		</div>
+ 			<br>		 	
+	 		<!-- Modal -->
+			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+			    <div class="modal-content" style="height: 500px;">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Carrinho</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        Aqui é onde vai aparecer o carrinho de compras onde o cliente poderá selecionar os ingredientes que deseja comprar.
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			        <button type="button" class="btn btn-primary">Finalizar compra</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
-		
-			
+	 	</div>
+					
 		<div id="div_loading">
 			<div class="row h-100">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center" align="center">
@@ -420,13 +429,11 @@
 				</div>
 			</div>
 		</div>
-	</form>		
-		
-		  <footer class="bg-dark text-light">
-    
+	</form>				
+  <footer class="bg-dark text-light">	    
     <div class="text-center" style="background-color: #636f61; padding: 20px;margin-top: 5px" >
       &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
     </div>
   </footer>
-	</body>
+</body>
 </html>
