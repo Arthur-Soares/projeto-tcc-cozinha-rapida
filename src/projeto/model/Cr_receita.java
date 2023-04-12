@@ -96,9 +96,10 @@ public class Cr_receita {
 							 	" cr_modo_preparo_receita, " +
 							 	" cr_tempo_preparo_receita, " +
 							 	" cr_rendimento_receita, " +
-							 	" cr_valor_receita " +
+							 	" cr_valor_receita, " +
+							 	" cr_receita_nome_img " +
 							    " ) VALUES " +
-							    " (?,?,?,?,?,?)";
+							    " (?,?,?,?,?,?,?)";
 
 	public String UPD_PADRAO =	" UPDATE cr_receita SET " +
 								//" cr_id_receita = ?, " +
@@ -107,7 +108,8 @@ public class Cr_receita {
 								" cr_modo_preparo_receita = ?, " +
 								" cr_tempo_preparo_receita = ?, " +
 								" cr_rendimento_receita = ?, " +
-								" cr_valor_receita = ? " +								
+								" cr_valor_receita = ?, " +
+								" cr_receita_nome_img = ? " +
 								" WHERE cr_id_receita = ? ";
 	
 	public String DEL_PADRAO = " DELETE FROM cr_receita WHERE cr_id_receita = ?";
@@ -222,6 +224,7 @@ public class Cr_receita {
 		this.cr_tempo_preparo_receita = mapParams.containsKey("cr_tempo_preparo_receita")?mapParams.get("cr_tempo_preparo_receita").trim():"";
 		this.cr_rendimento_receita = mapParams.containsKey("cr_rendimento_receita")?mapParams.get("cr_rendimento_receita").trim():"";
 		this.cr_valor_receita = mapParams.containsKey("cr_valor_receita")?Cast.toBigDecimal((!"".equals(mapParams.get("cr_valor_receita"))?mapParams.get("cr_valor_receita"):0)):BigDecimal.ZERO;
+		this.cr_receita_nome_img = mapParams.containsKey("cr_receita_nome_img")?mapParams.get("cr_receita_nome_img").trim():"";
 	}
 
 	/**
@@ -277,7 +280,8 @@ public class Cr_receita {
 				pins.setString(icol, this.cr_modo_preparo_receita);icol++;
 				pins.setString(icol, this.cr_tempo_preparo_receita);icol++;
 				pins.setString(icol, this.cr_rendimento_receita);icol++;
-				pins.setBigDecimal(icol, this.cr_valor_receita);
+				pins.setBigDecimal(icol, this.cr_valor_receita);icol++;
+				pins.setString(icol, this.cr_receita_nome_img);
 				
 				if(this.getCr_id_receita() != 0) {
 					icol++;

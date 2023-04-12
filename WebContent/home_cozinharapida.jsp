@@ -200,7 +200,12 @@
 							var cr_id_receita = datalin[cx].cr_id_receita;
 							var cr_titulo_receita = datalin[cx].cr_titulo_receita;
 							var cr_ingrediente_receita = datalin[cx].cr_ingrediente_receita;	
+							var cr_receita_nome_img = datalin[cx].cr_receita_nome_img;
 							
+							var div_image = $("#cr_receita_nome_img_"+num);
+							
+							div_image.append(cr_receita_nome_img);
+														
 							$("#tit_receita_card_"+num).text(cr_titulo_receita);
 							$("#desc_receita_card_"+num).text(cr_ingrediente_receita);
 							
@@ -249,7 +254,7 @@
 							    <div class="row text-center">
 							      <div class="col-md-3">
 							        <div class="card">
-							          <img class="card-img-top" src="..." alt="Card image cap">
+							          <div class="img_receita" id="cr_receita_nome_img_0"></div>							          
 							          <div class="card-body"> 
 							            <h5 class="card-title" id="tit_receita_card_0"></h5> <!-- CARD 1 -->
 							            <p class="card-text" id="desc_receita_card_0"></p>

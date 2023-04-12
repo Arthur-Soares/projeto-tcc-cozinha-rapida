@@ -130,7 +130,7 @@
 						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
 						$("#cr_rendimento_receita").val(cr_rendimento_receita);
 						$("#cr_valor_receita").val(cr_valor_receita);
-						$("#file").val(cr_receita_nome_img);
+						$("#cr_receita_nome_img").val(cr_receita_nome_img);
 					}
 				);
 			}else{								
@@ -141,7 +141,7 @@
 				$("#cr_tempo_preparo_receita").val("");
 				$("#cr_rendimento_receita").val("");
 				$("#cr_valor_receita").val("");
-				$("#file").val("");
+				$("#cr_receita_nome_img").val("");
 					
 			}		
 		}
@@ -159,8 +159,7 @@
 			$.postJSON("../jsonservlet",arrayJSON,
 				function(data,status){
 					if(data.id_receita!="0" && data.id_receita != ""){
-						alert("Receita atualizada com Sucesso!");
-						salvarImgReceita(data.id_receita);
+						alert("Receita atualizada com Sucesso!");						
 						carregaReceita(data.id_receita);
 						$("#frmreceita").submit();
 					}else{
@@ -170,39 +169,6 @@
 				}
 			);			
 		}
-		 
-		 function salvarImgReceita(id_receita){								
-
-			var imgReceita = $('input[name="file_upload"]').get(0).files[0];
-			if(imgReceita){
-	      		var formData = new FormData();
-	      		var arrayJSON = $('#frm_img_receita').serializeArray();
-	      		formData.append('arrayJSON', arrayJSON);
-	      		formData.append('img_upload', imgReceita);			      		     
-	      		formData.append('cr_id_receita', id_receita);      	      		
-	      		//Opção a ser chamada no FileServlet:
-	      		formData.append('opc', 'salva_img_receita');
-			    $.ajax({
-			        url: "../fileservlet",
-			        type:"POST",
-			        processData:false,
-			        contentType: false,
-			        data: formData,
-				    	complete: function(data){
-				    		alert("Arquivo salvo com sucesso!!")				    		
-			                //carregarListaArquivosAo(ao_id);
-			        		//limpaCamposArq();
-			            }
-			     });
-			}else{
-				//alert("Nenhuma imagem selecionada!")
-			}				
-		}
-	 
-	 	function limpaCamposArq(){					
-			$("#file").val("");
-		}
-	 		
 	</script>
 
 	<body>		
@@ -230,64 +196,16 @@
 								<br>								
 								<!-- DIV CADASTRO RECEITA -->
 								<div class="div_cadastro">								
-									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">																
 										
-										<script type="text/javascript">
-											//Chama abertura de pesquisar arquivo
-											$(document).on("click", ".browse", function() {
-												  var file = $(this).parents().find(".file");
-												  file.trigger("click");
-											});
-											
-										</script>
-										
-										 
 										<div class="row mt-3 justify-content-md-center">
-											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-												<input type="file" name="file_upload" id="file_upload" class="file" style="display:none;">																	    																						
-												<div class="input-group">
-											    	<input type="text" class="form-control" placeholder="Selecione uma imagem..." id="file" name="file" onchange="previewImage()"/>
-											      <div class="input-group-append">
-											        <button type="button" class="browse btn btn-dark" id="btn_procurar_arquivos"> <i class="fa fa-folder"> </i></button>
-											      </div>
-											    </div>
-											</div>										
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+												<label for="cr_receita_nome_img" style="font-size: 15px; font-weight: bold;"><strong>Link da Imagem</strong> <i class="fab fa-google-drive"></i></label> 
+												<input type="text" class="form-control form-control-lg rounded-50" name="cr_receita_nome_img" id="cr_receita_nome_img" style="font-size: 15px; height: 50px; color:black; border-radius: 10px;"
+												placeholder="Cole o link incorporado da imagem do Google Drive aqui..."/> 
+											</div>				
 										</div> 
-										
-										<!--
-										FORMA QUE TEM COMO VISUALIZAR A IMAGEM MAS NÃO SALVA
-										<div class="row mt-3 justify-content-md-center">
-											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-												<input type="file" name="file_upload" id="file_upload" class="file" style="display:none;">																	    																																		
-											    <input type="file" class="form-control" placeholder="Selecione uma imagem..." id="file" name="file" onchange="previewImage()"/>																								
-											</div>										
-										</div>
-										
-										<div class="row mt-3 justify-content-md-center">											
-											<div id="preview-container">
-											    <img id="preview-image" src="#" alt="Prévia da imagem" style="max-width: 400px;" />
-											</div>											
-										</div>
-										
-										<script>
-											function previewImage() {
-											    var preview = document.getElementById('preview-image');
-											    var file    = document.getElementById('file').files[0];
-											    var reader  = new FileReader();
-											
-											    reader.onloadend = function () {
-											        preview.src = reader.result;
-											    }
-											
-											    if (file) {
-											        reader.readAsDataURL(file);
-											    } else {
-											        preview.src = "";
-											    }
-											}
-										</script>										
-										-->		
-																																																						
+																																																				
 										<div class="row mt-3 justify-content-md-center">
 											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 												<label for="cr_titulo_receita" style="font-size: 15px; font-weight: bold;"><strong>Titulo</strong></label> 

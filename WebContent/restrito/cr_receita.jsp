@@ -283,9 +283,8 @@
 
 			<!-- Imagem da Receita -->
 			<div class="row justify-content-between mt-1">
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12"
-					style="border: rgba(99, 111, 97, .4) 10px double; max-width: 100%"> <img src="../imagens/Brigadeiro.png" 
-					class="img-fluid" alt="Imagem receita">
+				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12" style="border: rgba(99, 111, 97, .4) 10px double; max-width: 100%"> 
+					<iframe src="https://drive.google.com/file/d/1KZHw3dCoRKYcSg4xmO-QLLd7sDNhI0Se/preview" width="640" height="480"></iframe>
 				</div>
 				
 				<!-- Div de sugestão a ser implementado -->
