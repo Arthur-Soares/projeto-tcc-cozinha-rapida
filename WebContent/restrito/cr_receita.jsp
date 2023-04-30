@@ -16,7 +16,7 @@
 	//logoff=S
 	String msgIndex = null != session.getAttribute("errologin") ? (String) session.getAttribute("errologin") : "";
 	
-	//System.out.println("VENDO O ID DO USUÁRIO :: "+cuserid);
+	//System.out.println("VENDO O ID DO USUÃRIO :: "+cuserid);
 			
 	if("S".equals(opclogoff) || !"".equals(msgIndex)){
 		session.setAttribute("errologin", null);
@@ -29,7 +29,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
-		<title>Cozinha Rápida - Receita</title>
+		<title>Cozinha RÃ¡pida - Receita</title>
 		<link href="../css/bootstrap.min.css" rel="stylesheet">
 		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
 		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
@@ -57,7 +57,7 @@
 		<!-- Final Data Tables -->
 		<style type="text/css">
 			select[readonly] {
-			  background: #eee; /*Simular campo inativo - Sugestão @GabrielRodrigues*/
+			  background: #eee; /*Simular campo inativo - SugestÃ£o @GabrielRodrigues*/
 			  pointer-events: none;
 			  touch-action: none;
 			}
@@ -108,14 +108,14 @@
 			}
 			
 			.img_receita {
-			    position: relative; /* definir posição relativa para que a imagem possa ser centralizada verticalmente */
+			    position: relative; /* definir posiÃ§Ã£o relativa para que a imagem possa ser centralizada verticalmente */
 			    height: 0; /* definir altura inicial como 0 para o aspect-ratio funcionar */
-			    padding-bottom: 56.25%; /* proporção 16:9 (ou 9:16 para retrato) */
+			    padding-bottom: 56.25%; /* proporÃ§Ã£o 16:9 (ou 9:16 para retrato) */
 			    overflow: hidden; /* esconder a parte da imagem que exceder a div */
 			}
 			
 			.img_receita iframe {
-			    position: absolute; /* definir posição absoluta para a imagem ficar no topo */
+			    position: absolute; /* definir posiÃ§Ã£o absoluta para a imagem ficar no topo */
 			    top: 0;
 			    left: 0;
 			    width: 100%; /* ajustar a largura para 100% */
@@ -156,21 +156,21 @@
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
 			
-			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
+			//Isto estÃ¡ definido diretamente no nosso <select> e tem o objetivo de carregar as possÃ­veis opÃ§Ãµes do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
 			//Implementando componente de AUTOCOMPLETE em um <select com o ID = "sel_receita"
 			$('#sel_receita').autoComplete({
-			  // configurações do autocomplete aqui
+			  // configuraÃ§Ãµes do autocomplete aqui
 			  noResultsText: 'Nenhum resultado encontrado'
 			});
-			//O AUTOCOMPLETE contém um evento que é chamado ao selecionarmos uma linha dele = 'autocomplete.select'
+			//O AUTOCOMPLETE contÃ©m um evento que Ã© chamado ao selecionarmos uma linha dele = 'autocomplete.select'
 			$('#sel_receita').on('autocomplete.select', function (evt, item) {
-				//ITEM é o item em específico que selecionamos do nosso autocomplete (possui as propriedades relativas a aquela linha)
+				//ITEM Ã© o item em especÃ­fico que selecionamos do nosso autocomplete (possui as propriedades relativas a aquela linha)
 				//item.text e item.value
 				//Checa se foi selecionada uma LINHA e se ela EXISTE
 				console.log('Passei evt :: '+evt+' -- item.value :: '+item.value+' -- item.text :: '+item.text);
 				if(item){										
-					//CHAMANDO outra URL para buscar os dados específicos do CLIENTE que selecionamos
+					//CHAMANDO outra URL para buscar os dados especÃ­ficos do CLIENTE que selecionamos
 					//$.getJSON( "./jsonservlet?opc_servlet=find_pesquisa_receita&q="+item.value, function( data ) {
 						
 					var cr_id_receita = "";
@@ -192,24 +192,58 @@
 			});				
 		});
 		
-		//Função do efeito favotitar receita no icone Hearth
-		function favoritarReceita(){
-			if(document.getElementById('btnFavoritar').className == 'btn btn-link bi bi-heart'){
-				document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
-				
-				alert('Receita favoritada');
-				
-			}else{
-				var controle;
-				var confirme = confirm("Deseja realmente desfavoritar receita?")
-		
-				if(confirme == true){
-					document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart';
-				}else{
-					document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
-				}
-				
+		function pintarCoracao(cr_id_receita){
+			var id = '<%=cuserid%>';
+			if(id != 0){
+				$.postJSON("../jsonservlet",{opc_servlet:'pintar_coracao',cr_id_receita:cr_id_receita},
+					function(data,status){
+						if(data.retorno == ""){
+							alert("Erro ao pintar o coracao");						
+						}else if(data.retorno == "favorita"){
+								document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
+						}else if(data.retorno == "desfavorita"){
+								document.getElementById('btnFavoritar').className == 'btn btn-link bi bi-heart';
+						}
+					}	
+				);				
 			}
+		}
+			
+		//FunÃ§Ã£o do efeito favotitar receita no icone Hearth
+		function favoritarReceita(){
+			var id = '<%=cuserid%>';
+			
+			if(id == 0){
+				alert("FaÃ§a o login antes de prosseguir!");
+				return false;
+			}
+			
+			var opc_favorito = "";
+			var txt = "";
+			var cr_id_receita = $("#cr_id_receita").val();
+			if(document.getElementById('btnFavoritar').className == 'btn btn-link bi bi-heart'){			
+				opc_favorito = "favoritar";
+				txt = "favoritada";
+			}else{
+				opc_favorito = "desfavoritar";
+				txt = "desfavoritada";
+			}
+			
+			
+			$.postJSON("../jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
+				function(data,status){
+					if(data.retorno == -1){
+						alert("Erro ao "+opc_favorito+" receita!");						
+					}else{
+						if(opc_favorito == "favoritar"){
+							document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
+						}else if(opc_favorito == "desfavoritar"){
+							document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart';
+						}
+						alert("Receita "+txt+" com sucesso!");
+					}
+				}
+			);
 		}
 			
 		function carregaReceita(idrec){
@@ -223,6 +257,8 @@
 			var cr_valor_receita = "";
 			var cr_receita_view = "";
 			var cr_receita_nome_img = "";
+			var tamanho_ingrediente = "";
+			var tamanho_modo_preparo = "";
 			
 			if(""!=idrec && "0"!=idrec){
 				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
@@ -237,7 +273,9 @@
 								cr_rendimento_receita = datalin.cr_rendimento_receita;
 								cr_valor_receita = datalin.cr_valor_receita;
 								cr_receita_view = datalin.cr_receita_view;
-								cr_receita_nome_img = datalin.cr_receita_nome_img;															
+								cr_receita_nome_img = datalin.cr_receita_nome_img;	
+								tamanho_ingrediente = datalin.tamanho_ingrediente;
+								tamanho_modo_preparo = datalin.tamanho_modo_preparo;
 							}
 						}
 						$("#cr_id_receita").val(cr_id_receita);
@@ -248,12 +286,15 @@
 						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
 						$("#cr_rendimento_receita").val(cr_rendimento_receita);
 						$("#cr_valor_receita").val("R$ "+cr_valor_receita);
+						$("#cr_ingrediente_receita").attr("rows",tamanho_ingrediente);
+						$("#cr_modo_preparo_receita").attr("rows",tamanho_modo_preparo);
 						
 						var div_image = $("#cr_receita_nome_img");
 						
 						div_image.append(cr_receita_nome_img);
 						
 						somaView(idrec, cr_receita_view);
+						pintarCoracao(cr_id_receita);
 					}
 				);
 			}else{								
@@ -323,10 +364,10 @@
 					</div>	
 				</div>	
 							
-				<!-- Div de sugestão a ser implementado -->
+				<!-- Div de sugestÃ£o a ser implementado -->
 				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
 					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
-						<strong>Sugestões:</strong>
+						<strong>SugestÃµes:</strong>
 					</label> 
 				</div>
 			</div>
@@ -360,13 +401,13 @@
 			
 			<!-- Ingredientes da Receita -->
 			<div class="row mt-3 justify-content-between">			
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">					
-					<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">	
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">						
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">		
 						<label for="cr_ingrediente_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
 							<strong>Ingredientes</strong>
 						</label> 						
 						<textarea disabled type="textarea" class="form-control" name="cr_ingrediente_receita" 
-						id="cr_ingrediente_receita" rows="6" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
+						id="cr_ingrediente_receita" rows="" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
 						</textarea> 
 					</div>										
 				</div>			
@@ -381,7 +422,7 @@
 								<strong>Modo de preparo</strong>
 							</label> 
 							<textarea disabled type="textarea" class="form-control" name="cr_modo_preparo_receita" 
-							id="cr_modo_preparo_receita" rows="6" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
+							id="cr_modo_preparo_receita" rows="" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
 							</textarea> 
 						</div>				
 					</div>					
@@ -408,7 +449,7 @@
 			        </button>
 			      </div>
 			      <div class="modal-body">
-			        Aqui é onde vai aparecer o carrinho de compras onde o cliente poderá selecionar os ingredientes que deseja comprar.
+			        Aqui Ã© onde vai aparecer o carrinho de compras onde o cliente poderÃ¡ selecionar os ingredientes que deseja comprar.
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -423,7 +464,7 @@
 		<div id="div_loading">
 			<div class="row h-100">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center" align="center">
-					<strong>Processando solicitação... &nbsp;</strong>
+					<strong>Processando solicitaÃ§Ã£o... &nbsp;</strong>
 					<div class="spinner-border text-primary ml-auto" role="status"
 						aria-hidden="true"></div>
 				</div>

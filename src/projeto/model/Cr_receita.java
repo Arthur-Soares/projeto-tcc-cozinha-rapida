@@ -351,9 +351,40 @@ public class Cr_receita {
 				ResultSet r = p.executeQuery();
 				ResultSetMetaData rsmd = r.getMetaData();
 				int cols =	rsmd.getColumnCount();
+				String ingrediente = "";
+				long tamanho_ingrediente = 0L;
+				
+				String modo_preparo = "";
+				long tamanho_modo_preparo = 0L;
 				while(r.next()) {
 					JSONObject jsonObj = new JSONObject();
 					for(int xc = 1;xc<=cols;xc++){
+						if(xc == 3) {
+							ingrediente = null!=r.getObject(3)?r.getString(3):"";
+							tamanho_ingrediente = ingrediente.lines().count();
+						}
+						if(xc == 4) {
+							modo_preparo = null!=r.getObject(4)?r.getString(4):"";
+							if(!modo_preparo.equals("")) {
+								tamanho_modo_preparo = modo_preparo.lines().count();
+								if(modo_preparo.contains("\n")) {
+									String[] linhas = modo_preparo.split("\n");
+									for (String linha : linhas) {
+									    if(linha.length() > 128) {
+									    	tamanho_modo_preparo += 1L;
+									    }
+									}
+								}else if(modo_preparo.contains("\n\n")) {
+									String[] linhas = modo_preparo.split("\n\n");
+									for (String linha : linhas) {
+										if(linha.length() > 128) {
+									    	tamanho_modo_preparo += 1L;
+									    }
+									}
+								}
+							}
+						}
+
 						if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
 							try {
 								jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
@@ -375,6 +406,8 @@ public class Cr_receita {
 							jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
 						}
 					}
+					jsonObj.put("tamanho_modo_preparo", tamanho_modo_preparo);
+					jsonObj.put("tamanho_ingrediente", tamanho_ingrediente);
 					arrayRetorno.put(jsonObj);
 				}
 				if(null!=r) {
@@ -672,8 +705,9 @@ public class Cr_receita {
 		// TODO Auto-generated method stub
 		//Cr_usuario cru = new Cr_usuario();		
 		//JSONArray retornolistar = new JSONArray();			
-		//retornolistar = cru.listarJSON(args, args);		
-		//System.out.println("Retorno da lista de Cr_usuario :: "+retornolistar);
+		//retornolistar = cru.listarJSON(args, args);
+		String txt = "Passados 15 minutos, retire a linguiça, o paio, corte em rodelas, volte eles para a panela com o lombo e carne seca (cortados em";
+		System.out.println("Retorno da lista de Cr_usuario :: "+txt.length());
 			
 	}
 	
