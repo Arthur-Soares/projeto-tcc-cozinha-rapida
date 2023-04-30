@@ -92,7 +92,8 @@
 				color: #FFFFFF;
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
-				font-size: 40px;
+				font-size: 30px;
+				margin-top:10px;
 			}
 			
 			h3 {	
@@ -211,6 +212,24 @@
 				align-items: center;
 				text-align: center;
 				float: right;
+			}
+			
+			@media(max-width: 766px) {
+    			#btnSalvarDados.btn1 {
+        			margin-left: 40%;
+    			}
+			}
+			@media(max-width: 550px) {
+    			#btnSalvarDados.btn1 {
+        			margin-left: 30%;
+    			}
+			}
+			@media(max-width: 400px) {
+    			#btnSalvarDados.btn2 {
+        			margin-right: 50%%;
+        			width: 150px;
+        			margin-top: 5px;
+    			}
 			}
 			
 			#btnCadastrar {	
@@ -737,34 +756,30 @@
 					<br>
 					
 					<div class="row mt-3 justify-content-md-center">
-						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+						<div class="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12">
 							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nome de Usuario</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" maxlength="255" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" placeholder="Digite seu Nome" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
+							<input type="text" class="form-control form-control-lg rounded-50" maxlength="255" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" placeholder="Digite seu Nome" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
 					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+						<div class="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12">
 							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" placeholder="Digite seu CPF" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" placeholder="Digite seu CPF" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+						<div class="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12">
 							<label for="cr_telefone_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
-							<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" placeholder="Digite seu Telefone + DD" maxlength="16" id="cr_telefone_usuario" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" placeholder="Digite seu Telefone + DD" maxlength="16" id="cr_telefone_usuario" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>						
 					<br/>
-					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" style="background: #636f61; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px; margin-right: 15px;"></button>
-						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px; margin-right: 15px;"></button>	
-						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px;"></button>
-					</div>
+					
 					<br/>
 					<div class="row mt-3 justify-content-md-center">																					
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
+						<button type="button" class="btn1 btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
 							<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
 						</button>	
 					</div>														
@@ -774,59 +789,62 @@
 			
 			<!--  DIV CADASTRO CONTA - SEGUNDA PARTE -->
 			<div class="div_cadastro_dois">			
-				<div class="row mt-3 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12" style="position: absolute; left:2%; top:5%;">															
-					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="voltarCadastroUm();">
-						<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-					</button>						
-				</div>
-				<div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">				
+				
+				<div class="col-xl-11 col-lg-11 col-md-8 col-sm-12 col-12">				
 					<font style="font-size: 0px">	
 					<br>								
 						<h2>Editar Endereço:</h2>						
 					<br>
 					
 					<div class="row mt-3 justify-content-md-center">
-						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
 							<label for="cr_cep_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" placeholder = "Digite seu CEP (Sem traços)" maxlength="20" onkeypress="$(this).mask('00000-000')" style="font-size: 15px; height: 50px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" placeholder = "Digite seu CEP (Sem traços)" maxlength="20" onkeypress="$(this).mask('00000-000')" style="font-size: 15px; height: 40px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
 						</div>					
 					</div>
 					
 					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+						<div class="col-xl-3 col-lg-4 col-md-6 col-sm-10 col-8">
 							<label for="cr_endereco_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" placeholder = "Endereço" maxlength="200" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;" readonly/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" placeholder = "Endereço" maxlength="200" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;" readonly/>
 						</div>
-						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
+						<div class="col-xl-1 col-lg-2 col-md-2 col-sm-2 col-4">
 							<label for="cr_nrmcasa_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" placeholder = "Nº" maxlength="5" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" placeholder = "Nº" maxlength="5" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>		
 					</div>		
 																		
 					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
 							<label for="cr_endcomplemento_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" placeholder = "Complemento" maxlength="200" style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" placeholder = "Complemento" maxlength="200" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>	
 					
 					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
 							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Ponto de Referência</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" placeholder = "Ponto de Referência" id="cr_pontoreferencia_usuario" maxlength="200"  style="font-size: 15px; height: 50px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
+							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" placeholder = "Ponto de Referência" id="cr_pontoreferencia_usuario" maxlength="200"  style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
 						</div>	
 					</div>	
+					
 					<br/>
-					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px; margin-right: 15px;"></button>
-						<button type="button" style="background: #636f61; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px; margin-right: 15px;"></button>
-						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px;"></button>	
-					</div>
-					<br/>
+					
 					<div class="row mt-3 justify-content-md-center">
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroTres();">
-							<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
-						</button>																						
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarCadastroUm();">
+								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+							</button>	
+						
+						</div>	
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroTres();">
+								<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
+							</button>
+						</div>
+																												
 					</div>														
 					</font>				
 				</div>
@@ -834,11 +852,7 @@
 		
 			<!-- DIV CADASTRO CONTA - TERCEIRA PARTE -->
 			<div class="div_cadastro_tres">								
-				<div class="row mt-3 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12" style="position: absolute; left:2%; top:5%;">															
-					<button type="button" class="btn btn-lg float-center" style="color: #FFFFFF; font-size: 20px;" onclick="voltarCadastroDois();">
-						<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-					</button>						
-				</div>
+				
 				<div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">						
 					<font style="font-size: 0px">														
 					<br>								
@@ -847,26 +861,30 @@
 					<div class="row mt-3 justify-content-md-center"></div>
 					
 					<div class="row mt-3 justify-content-md-center">
-						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+						<div class="col-xl-5 col-lg-6 col-md-8 col-sm-12 col-12">
 							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="email" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" onchange="validacaoEmail()" placeholder = "Digite seu E-mail" style="font-size: 15px; height: 50px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<input type="email" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" onchange="validacaoEmail()" placeholder = "Digite seu E-mail" style="font-size: 15px; height: 40px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 					
-					<div class="row mt-3 justify-content-md-center"></div>						
-					
 					<br/>
-					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px; margin-right: 15px;"></button>
-						<button type="button" style="background: #FFFFFF; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px; margin-right: 15px;"></button>	
-						<button type="button" style="background: #636f61; border:none; border-radius: 50%;  width: 10px; height: 10px; padding: 10px;"></button>
-					</div>
-					<br/>
-					<div class="row mt-3 justify-content-md-center">															
-						<button type="button" class="btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
-							<strong>Atualizar Cadastro</strong> 
-						</button>
-					</div>														
+					<div class="row mt-3 justify-content-md-center">
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarCadastroDois();">
+								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+							</button>	
+						
+						</div>	
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
+								<strong>Atualizar</strong> 
+							</button>
+						</div>
+																												
+					</div>		
+														
 					</font>				
 				</div>
 			</div>													
@@ -881,7 +899,7 @@
 					<br/>			
 					<div class="row mt-3 justify-content-md-center">															
 						<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;"  onclick="voltarLoginSucesso();">
-							<strong>Voltar</strong>
+							<strong>Inicio</strong>
 						</button>	
 					</div>													
 					</font>				
