@@ -76,6 +76,16 @@
 			div {
 				border-radius: 10px;
 			}
+			div.ingQtd{
+				height: 80px;
+				margin: auto;
+			}
+			div.ingImg{
+				height: 200px;
+			}
+			div.ingDsc{
+				height: 200px;
+			}
 			
 			#btnAddUsuario {	
 				border: none;						
@@ -94,13 +104,6 @@
 				color: #b1463c;
 			}
 			
-			
-			.divpadrao{
-				border: rgba(99, 111, 97, .4) 1px solid;
-				height:100px;
-				padding: 5px;				
-			}
-			
 			@media(max-width: 1000px) {
     			.sugestao {
         			display: none;
@@ -117,7 +120,12 @@
         			display: none;
     			}
 			}
-			
+			.hr-line {
+			  	border: none;
+			  	border-top: 1px solid #CCCCCC; /* Cor mais clara */
+			 	height: 0.5px; /* Menor altura */
+			  	margin: 10px 0;
+			}
 			.img_receita {
 			    position: relative; /* definir posiÃ§Ã£o relativa para que a imagem possa ser centralizada verticalmente */
 			    height: 0; /* definir altura inicial como 0 para o aspect-ratio funcionar */
@@ -449,14 +457,13 @@
 			  </div>												
 			</div>
  			<br>		 	
+ 			
 	 		<!-- Modal -->
-			!-- Modal -->
-
 			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg modal-dialog-centered "
 					role="document">
-					<div class="modal-content" style="height: 500px;">
+					<div class="modal-content" style="display: flex; flex-wrap: wrap;">
 						<div class="modal-header">
 							<div class="row justify-content-between" style="margin: auto">
 								<div class="col-xl-2 col-lg-2 col-md-2 spc" style="text-align: center; width: 300px"></div>
@@ -483,22 +490,28 @@
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
+						
 
-							<div class="row justify-content-between" style="margin: auto">
-
-								<%
-								int quantidade = 4; // Defina o número de repetições desejado
-								for (int i = 0; i < quantidade; i++) {
-								%>
-								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2" style="border: solid 1px black">qtd</div>
-								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6" style="border: solid 1px black">img</div>
-								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-4" style="border: solid 1px black">desc</div>
-								<%
-								}
-								%>
-							</div>
-						</div>
+							<div class="modal-body" style="display: flex; flex-wrap: wrap;">
+							<div class="row">
+						        <%
+						        int quantidade = 5; // Defina o número de repetições desejado
+						        for (int i = 0; i < quantidade; i++) {
+						        %>
+						        
+						        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 ingQtd" style="border: solid 1px black"> <h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Quantidade </h4> </div>
+								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 ingImg" style="border: solid 1px black"> <h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Ilustração </h4></div>
+								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 ingDsc" style="border: solid 1px black; margin-bottom: 20px;"> <h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Descrição </h4></div>
+								
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr-line"></div>
+								
+						        <%
+						        }
+						        %>
+        					</div>
+        					
+    						</div>
+						
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">Cancelar</button>
