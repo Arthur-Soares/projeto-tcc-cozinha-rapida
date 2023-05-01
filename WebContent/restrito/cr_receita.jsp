@@ -29,7 +29,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
-		<title>Cozinha RÃ¡pida - Receita</title>
+		<title>Cozinha Rápida - Receita</title>
 		<link href="../css/bootstrap.min.css" rel="stylesheet">
 		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
 		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
@@ -103,6 +103,17 @@
 			
 			@media(max-width: 1000px) {
     			.sugestao {
+        			display: none;
+    			}
+			}
+			
+			@media(max-width: 992px) {
+			.spc {
+        			display: none;
+    			}
+			}
+			@media(max-width: 575px) {
+			.spco {
         			display: none;
     			}
 			}
@@ -367,7 +378,7 @@
 				<!-- Div de sugestÃ£o a ser implementado -->
 				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
 					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
-						<strong>SugestÃµes:</strong>
+						<strong>Sugestões:</strong>
 					</label> 
 				</div>
 			</div>
@@ -439,29 +450,71 @@
 			</div>
  			<br>		 	
 	 		<!-- Modal -->
-			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
-			    <div class="modal-content" style="height: 500px;">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Carrinho</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        Aqui Ã© onde vai aparecer o carrinho de compras onde o cliente poderÃ¡ selecionar os ingredientes que deseja comprar.
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-			        <button type="button" class="btn btn-primary">Finalizar compra</button>
-			      </div>
-			    </div>
-			  </div>
+			!-- Modal -->
+
+			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered "
+					role="document">
+					<div class="modal-content" style="height: 500px;">
+						<div class="modal-header">
+							<div class="row justify-content-between" style="margin: auto">
+								<div class="col-xl-2 col-lg-2 col-md-2 spc" style="text-align: center; width: 300px"></div>
+								
+								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 spco"
+									style="text-align: right; width: 300px">
+									<img alt="IngIcon" src="..\imagens\ingIcon.png">
+								</div>
+								
+								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 ">
+									<h5 class="modal-title" id="ModalTitle" style="text-align: center; font-size: 30px; font-weight: bold; color: #b1463c">
+										Ingredientes</h5>
+								</div>
+								
+								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 spco"
+									style="text-align: left; width: 300px">
+									<img alt="IngIcon" src="..\imagens\ingIcon.png">
+								</div>
+								
+								<div class="col-xl-2 col-lg-2 col-md-2 spc" style="text-align: center; width: 300px"></div>
+							</div>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Fechar">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="row justify-content-between" style="margin: auto">
+
+								<%
+								int quantidade = 4; // Defina o número de repetições desejado
+								for (int i = 0; i < quantidade; i++) {
+								%>
+								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2" style="border: solid 1px black">qtd</div>
+								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6" style="border: solid 1px black">img</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-4" style="border: solid 1px black">desc</div>
+								<%
+								}
+								%>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Cancelar</button>
+							<button type="button" class="btn btn-primary">Finalizar
+								compra</button>
+						</div>
+					</div>
+				</div>
 			</div>
+
+		</div>
+
 
 	 	</div>
 					
-		<div id="div_loading">
+		<div id="div_loading">\
 			<div class="row h-100">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center" align="center">
 					<strong>Processando solicitaÃ§Ã£o... &nbsp;</strong>
