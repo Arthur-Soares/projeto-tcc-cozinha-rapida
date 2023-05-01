@@ -261,11 +261,8 @@
 		}
 		
 		@media(max-width: 768px) {
-   			#cr_receita_card_3,#cr_receita_card_7,#cr_receita_card_11{
-       			display: none;
-   			}
-   			
-   			#cr_receita_card_2{
+   			#cr_receita_card_1,#cr_receita_card_2,#cr_receita_card_3,#cr_receita_card_5,#cr_receita_card_6,
+   			#cr_receita_card_7,#cr_receita_card_9,#cr_receita_card_10,#cr_receita_card_11{
        			display: none;
    			}
    			
@@ -276,18 +273,11 @@
 		}
 		
 		@media(max-width: 600px) {
-   			#cr_receita_card_3,#cr_receita_card_7,#cr_receita_card_11{
+   			#cr_receita_card_1,#cr_receita_card_2,#cr_receita_card_3,#cr_receita_card_5,#cr_receita_card_6,
+   			#cr_receita_card_7,#cr_receita_card_9,#cr_receita_card_10,#cr_receita_card_11{
        			display: none;
    			}
-   			
-   			#cr_receita_card_2{
-       			display: none;
-   			}
-   			
-   			#cr_receita_card_1{
-       			display: none;
-   			} 
-   			
+   			   	
 			.carousel-inner {
 			  width: 80%; /* largura do carrossel */
 			  margin: 0 auto; /* centraliza o carrossel */			  

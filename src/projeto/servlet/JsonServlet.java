@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import br.com.neorelato.util.Cast;
 import projeto.model.Cr_receita;
 import projeto.model.Cr_usuario;
+import projeto.model.Cr_usuario_receita;
 import projeto.model.R1usuario;
 
 import projeto.util.AppSecrets;
@@ -173,6 +174,30 @@ public class JsonServlet extends HttpServlet {
 			int retornaview = crr.somaViewReceita(cr_id_receita, cr_receita_view);
 			jsonObj= new JSONObject();
 			jsonObj.put("retorno_view", retornaview);
+			out = response.getWriter();
+			out.print(jsonObj);
+	   }else if("pintar_coracao".equals(opcServlet)) { 
+		   	int userId = userLogado.getCr_id_usuario();
+			int cr_id_receita = null!=request.getParameter("cr_id_receita")?Cast.toInt(request.getParameter("cr_id_receita")):0; 
+			Cr_usuario_receita cur = new Cr_usuario_receita();
+			String retorno = cur.pintarCoracao(cr_id_receita, userId);
+			jsonObj= new JSONObject();
+			jsonObj.put("retorno", retorno);
+			out = response.getWriter();
+			out.print(jsonObj);
+	   }else if("favoritar_receita".equals(opcServlet)) { 
+		   	int userId = userLogado.getCr_id_usuario();
+			String opc_favorito = null!=request.getParameter("opc_favorito")?Cast.toString(request.getParameter("opc_favorito")):""; 
+			int cr_id_receita = null!=request.getParameter("cr_id_receita")?Cast.toInt(request.getParameter("cr_id_receita")):0; 
+			Cr_usuario_receita cur = new Cr_usuario_receita();
+			int retorno = 0;
+			if(opc_favorito.equals("favoritar")) {
+				retorno = cur.favoritarReceita(cr_id_receita, userId);
+			}else if(opc_favorito.equals("desfavoritar")) {
+				retorno = cur.desfavoritarReceita(cr_id_receita, userId);
+			}
+			jsonObj= new JSONObject();
+			jsonObj.put("retorno", retorno);
 			out = response.getWriter();
 			out.print(jsonObj);
 	   }else if("find_pesquisa_receita".equals(opcServlet)) { 			
