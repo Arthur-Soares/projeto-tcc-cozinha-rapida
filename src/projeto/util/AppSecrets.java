@@ -18,4 +18,10 @@ public interface AppSecrets {
 	
 	//CAMINHOS DE PASTA DO SISTEMA
 	static final String PATH_IMG = "C:\\cozinha_rapida\\img\\";
+	
+	//CRIPTOGRAFIA
+	static final boolean DEBUG_MODE = false;
+	static final String MAIL_USER_LOGIN = "suportecozinharapida@gmail.com";
+	static final String MAIL_USER = "suportecozinharapida@gmail.com";
+	static final String MAIL_PASS = "zbhirwyzqlneezsy";
 }

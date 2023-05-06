@@ -72,7 +72,7 @@ public class MenuUtils {
 			            	"							    <li class='nav-item'><a class='dropdown-item' href='/projeto-tcc-cozinha-rapida/restrito/cr_editar_usuario.jsp'> " +
 			            	"								    <i class='fas fa-edit'></i> Editar Dados</a> " +
 			            	"							    </li> " +
-			            	"							    <li class='nav-item'><a class='dropdown-item' href='/projeto-tcc-cozinha-rapida/restrito/cr_lista_receitas.jsp'> " +
+			            	"							    <li class='nav-item'><a class='dropdown-item' href='/projeto-tcc-cozinha-rapida/restrito/cr_receitas_favoritas.jsp'> " +
 			            	"								    <i class='fas fa-heart'></i> Receitas Salvas</a> " +
 			            	"							    </li> " +
 			            	"							    <li class='nav-item'><a class='dropdown-item' onclick='return confirm(\"Deseja sair do ambiente?\")'  href='/projeto-tcc-cozinha-rapida/home_cozinharapida.jsp?logoff=S'> " +

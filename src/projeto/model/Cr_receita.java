@@ -370,14 +370,14 @@ public class Cr_receita {
 								if(modo_preparo.contains("\n")) {
 									String[] linhas = modo_preparo.split("\n");
 									for (String linha : linhas) {
-									    if(linha.length() > 128) {
+									    if(linha.length() > 125) {
 									    	tamanho_modo_preparo += 1L;
 									    }
 									}
 								}else if(modo_preparo.contains("\n\n")) {
 									String[] linhas = modo_preparo.split("\n\n");
 									for (String linha : linhas) {
-										if(linha.length() > 128) {
+										if(linha.length() > 125) {
 									    	tamanho_modo_preparo += 1L;
 									    }
 									}
@@ -426,6 +426,77 @@ public class Cr_receita {
 				e.printStackTrace();
 			}
 	
+			return arrayRetorno;
+		}
+		
+		public static JSONArray listarJSONRecFavoritas(int id_usuario_logado) {
+			JSONArray arrayRetorno = new JSONArray();
+			String sql = " SELECT " +
+						 " cr_receita.cr_id_receita, " +
+						 " cr_titulo_receita, " +
+						 " cr_ingrediente_receita, " +
+						 " cr_modo_preparo_receita, " +
+						 " cr_tempo_preparo_receita, " +
+						 " cr_rendimento_receita, " +
+						 " cr_valor_receita, " +
+						 " cr_receita_nome_img, " +
+						 " cr_receita_view " +
+						 " FROM cr_receita "+ 
+						 " left outer join cr_usuario_receita on cr_usuario_receita.cr_id_receita = cr_receita.cr_id_receita " +
+						 " where cr_usuario_receita.cr_id_usuario = "+id_usuario_logado;
+				
+			sql+= " order by cr_receita.cr_id_receita ";
+			
+			System.out.println("listarJSONRecFavoritas Query="+sql);
+			try {
+				Connection c = ProjetoDatabase.getConnection();
+				PreparedStatement p = c.prepareStatement(sql);				
+				
+				ResultSet r = p.executeQuery();
+				ResultSetMetaData rsmd = r.getMetaData();
+				int cols =	rsmd.getColumnCount();
+				while(r.next()) {
+					JSONObject jsonObj = new JSONObject();
+					for(int xc = 1;xc<=cols;xc++){
+						if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
+							try {
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
+							}catch(Exception e) {
+								jsonObj.put(rsmd.getColumnLabel(xc), "");
+							} 
+						}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
+								java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+						}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
+						}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
+						}else{
+							jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
+						}
+					}
+					arrayRetorno.put(jsonObj);
+				}
+				if(null!=r) {
+					r.close();
+					r=null;
+				}
+				if(null!=p) {
+					p.close();
+					p=null;
+				}
+				if(null!=c) {
+					c.close();
+					c=null;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+
 			return arrayRetorno;
 		}
 	

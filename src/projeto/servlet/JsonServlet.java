@@ -163,6 +163,12 @@ public class JsonServlet extends HttpServlet {
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
 			out = response.getWriter();
 			out.print(jsonObj);
+	   }else if("list_receitas_favoritas".equals(opcServlet)) { 
+			int cuserid = null!=request.getParameter("cuserid")?Cast.toInt(request.getParameter("cuserid")):0; 			
+			jsonArray = Cr_receita.listarJSONRecFavoritas(cuserid); 
+			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			out = response.getWriter();
+			out.print(jsonObj);
 	   }else if("list_top_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listaTopViews(new Object[0], new Object[0]);
 			out = response.getWriter();
