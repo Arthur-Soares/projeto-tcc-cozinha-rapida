@@ -86,40 +86,32 @@
 			div.ingDsc{
 				height: 200px;
 			}
-			
-			#btnAddUsuario {	
-				border: none;						
-				color: #FFFFFF;				
-				border-radius: 40px;
-				transition: 0.2s;
-				cursor: pointer;			
-				transition: 0.2s;
-				font-size: 15px;
-			}	
-			
 			.visual_tit_rec {	
 				font-size: 40px;			
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
 				color: #b1463c;
 			}
-			
 			@media(max-width: 1000px) {
     			.sugestao {
         			display: none;
     			}
 			}
-			
-			@media(max-width: 992px) {
-			.spc {
-        			display: none;
-    			}
+			@media(max-width: 993px) {
+				.spc {
+	        			display: none;
+	    		}
 			}
 			@media(max-width: 575px) {
-			.spco {
-        			display: none;
-    			}
+				.spco {
+	        			display: none;
+	    		}
+	    		
 			}
+			
+			
+			
+			
 			.hr-line {
 			  	border: none;
 			  	border-top: 1px solid #CCCCCC; /* Cor mais clara */
@@ -132,7 +124,6 @@
 			    padding-bottom: 56.25%; /* proporÃ§Ã£o 16:9 (ou 9:16 para retrato) */
 			    overflow: hidden; /* esconder a parte da imagem que exceder a div */
 			}
-			
 			.img_receita iframe {
 			    position: absolute; /* definir posiÃ§Ã£o absoluta para a imagem ficar no topo */
 			    top: 0;
@@ -149,7 +140,15 @@
 			  height: 100%;
 			  object-fit: cover;
 			}
-
+			#btnAddUsuario {	
+				border: none;						
+				color: #FFFFFF;				
+				border-radius: 40px;
+				transition: 0.2s;
+				cursor: pointer;			
+				transition: 0.2s;
+				font-size: 15px;
+			}
 			#btnCompra {	
 				border: none;						
 				color: #FFFFFF;				
@@ -158,7 +157,8 @@
 				cursor: pointer;			
 				transition: 0.2s;
 				font-size: 20px;
-			}	
+			}
+				
 		</style>		
 	</head>
 
@@ -460,8 +460,8 @@
  			
 	 		<!-- Modal -->
 			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-centered "
+				aria-labelledby="Modal" aria-hidden="true">
+				<div class="modal-dialog modal-xl modal-dialog-centered "
 					role="document">
 					<div class="modal-content" style="display: flex; flex-wrap: wrap;">
 						<div class="modal-header">
@@ -494,15 +494,54 @@
 
 							<div class="modal-body" style="display: flex; flex-wrap: wrap;">
 							<div class="row">
-						        <%
+								<%
 						        int quantidade = 5; // Defina o número de repetições desejado
 						        for (int i = 0; i < quantidade; i++) {
 						        %>
 						        
-						        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 ingQtd" style="border: solid 1px black"> <h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Quantidade </h4> </div>
-								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 ingImg" style="border: solid 1px black"> <h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Ilustração </h4></div>
-								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 ingDsc" style="border: solid 1px black; margin-bottom: 20px;"> <h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Descrição </h4></div>
+						        <!-- Botões de somar e subtrair ingredientes -->
+						        <div class="col-xl-3 col-lg-2 col-md-4 col-sm-12 col-12 ingQtd"> 
+						        	
+						        	<div class="row">
+							        <button type="button" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white;background-color: #b1463c">
+							        +
+							        </button>
+							        
+							        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="border: solid 1px black; text-align: center; font-size: 30px;">
+							        5
+							        </div>
+							        
+							        <button type="button" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white; background-color: #b1463c">
+							        -
+							        </button>
+							        
+							        </div>
+						         </div>
+						         
+						         <!-- Imagem do ingrediente -->
+								<div class="col-xl-4 col-lg-5 col-md-8 col-sm-12 col-12 ingImg">
 								
+									<div class="row"> 
+										<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-8"
+											style="text-align: center; margin: auto;">
+											<img alt="IngIcon" src="..\imagens\ingIcon.png" height="150px">
+										</div>
+									</div>
+								</div>
+								
+								<!-- Descrição do ingrediente -->
+								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 ingDsc spc" style="margin-bottom: 20px;"> 
+									
+									<h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Descrição </h4>
+									
+									<div class="row" style="margin-top:15px"> 
+										
+										<textarea class="form-control" name="cr_desc_receita_modal" 
+										id="cr_desc_receita_modal" rows="5" style="resize: none; font-size: 18px;">Frango assado </textarea> 	
+									</div>
+								</div>
+								
+								<!-- Linha divisória-->
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr-line"></div>
 								
 						        <%
