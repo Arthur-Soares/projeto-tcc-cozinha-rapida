@@ -78,7 +78,7 @@
 			color: #FFFFFF;
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;
-			font-size: 40px;							
+			font-size: 2em;							
 		}		
 		
 		body {
@@ -141,7 +141,7 @@
 		  position: flex;	
 		  background-color: #636f61;
 		  border-radius: 11px;	
-		  height: 50vh;   		 
+		  height: 60vh;   		 
 		  margin-bottom: 30px;
 		  /*width: 240px;  ajuste o tamanho do cartão de acordo com suas necessidades */
 		  /*height: 320px;  ajuste o tamanho do cartão de acordo com suas necessidades */			  		
@@ -441,7 +441,16 @@
 							div_image.append(cr_receita_nome_img);													
 							
 							// limite o número de caracteres para exibir no modo de preparo
-							var limite_caracteres = 100;						
+							var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+							console.log("Largura da tela: " + larguraDaTela);
+
+							var limite_caracteres = 50;
+							
+							if(larguraDaTela >= 1300){
+								limite_caracteres = 200;
+							}					
+							
 
 							// obtém a substring do modo de preparo com limite de caracteres
 							var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
@@ -456,6 +465,40 @@
 				}
 			);
 		}	
+		
+		function validaTamanhoDescReceita(){
+			$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+				function(datalin,statuslin){
+					if(datalin.length > 0){
+						var num = 0;					
+						for(var cx=0;cx<datalin.length;cx++){
+																			
+							var cr_modo_preparo_receita = datalin[cx].cr_modo_preparo_receita;																																					
+							
+							// limite o número de caracteres para exibir no modo de preparo
+							var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+							console.log("Largura da tela: " + larguraDaTela);
+
+							var limite_caracteres = 50;
+							
+							if(larguraDaTela >= 1300){
+								limite_caracteres = 200;
+							}					
+							
+							// obtém a substring do modo de preparo com limite de caracteres
+							var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
+																										
+							$("#cr_modo_preparo_card_"+num).text(cr_modo_preparo_resumido);							
+							
+							num++;
+						}
+					}
+				}
+			);				
+		}
+		
+		window.addEventListener('resize', validaTamanhoDescReceita);
 	
 		function verReceita(card_num){			
 			var card_id = $("#card_id_receita_"+card_num).val();				
@@ -496,186 +539,185 @@
 					<br>					
 					<div class="owl-carousel">
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_0">
-					          <div class="img_receita" id="cr_receita_nome_img_0"></div>							          
-						          <div class="card-body"> 
+						    <div class="card" id="cr_receita_card_0">
+						        <div class="img_receita" id="cr_receita_nome_img_0"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_0"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_0"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_0" name="card_id_receita_0"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('0');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-						          </div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_0" name="card_id_receita_0"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('0');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_1">
-					          <div class="img_receita" id="cr_receita_nome_img_1"></div>							          
-						          <div class="card-body"> 
+						    <div class="card" id="cr_receita_card_1">
+						        <div class="img_receita" id="cr_receita_nome_img_1"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_1"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_1"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_1" name="card_id_receita_1"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('1');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-						          </div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_1" name="card_id_receita_1"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('1');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_2">
-					          <div class="img_receita" id="cr_receita_nome_img_2"></div>							          
-				         		<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_2">
+						        <div class="img_receita" id="cr_receita_nome_img_2"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_2"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_2"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_2" name="card_id_receita_2"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('2');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_2" name="card_id_receita_2"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('2');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_3">
-					          <div class="img_receita" id="cr_receita_nome_img_3"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_3">
+						        <div class="img_receita" id="cr_receita_nome_img_3"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_3"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_3"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_3" name="card_id_receita_3"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('3');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_3" name="card_id_receita_3"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('3');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_4">
-					          <div class="img_receita" id="cr_receita_nome_img_4"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_4">
+						        <div class="img_receita" id="cr_receita_nome_img_4"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_4"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_4"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_4" name="card_id_receita_4"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('4');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_4" name="card_id_receita_4"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('4');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_5">
-					          <div class="img_receita" id="cr_receita_nome_img_5"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_5">
+						        <div class="img_receita" id="cr_receita_nome_img_5"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_5"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_5"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_5" name="card_id_receita_5"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('5');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_5" name="card_id_receita_5"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('5');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_6">
-					          <div class="img_receita" id="cr_receita_nome_img_6"></div>							          
-					         	 <div class="card-body"> 
+						    <div class="card" id="cr_receita_card_6">
+						        <div class="img_receita" id="cr_receita_nome_img_6"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_6"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_6"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_6" name="card_id_receita_6"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('6');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_6" name="card_id_receita_6"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('6');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_7">
-					          <div class="img_receita" id="cr_receita_nome_img_7"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_7">
+						        <div class="img_receita" id="cr_receita_nome_img_7"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_7"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_7"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_7" name="card_id_receita_7"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('7');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-				         	 	</div>
-					        </div>
-				        </div>
-				        <div class="item">
-				            <div class="card" id="cr_receita_card_8">
-					          <div class="img_receita" id="cr_receita_nome_img_8"></div>							          
-					          	<div class="card-body"> 
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_7" name="card_id_receita_7"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('7');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
+				       <div class="item">
+						    <div class="card" id="cr_receita_card_8">
+						        <div class="img_receita" id="cr_receita_nome_img_8"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_8"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_8"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_8" name="card_id_receita_8"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('8');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-				         	 	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_8" name="card_id_receita_8"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('8');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_9">
-					          <div class="img_receita" id="cr_receita_nome_img_9"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_9">
+						        <div class="img_receita" id="cr_receita_nome_img_9"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_9"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_9"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_9" name="card_id_receita_9"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('9');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_9" name="card_id_receita_9"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('9');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_10">
-					          <div class="img_receita" id="cr_receita_nome_img_10"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_10">
+						        <div class="img_receita" id="cr_receita_nome_img_10"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_10"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_10"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_10" name="card_id_receita_10"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('10');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_10" name="card_id_receita_10"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('10');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				        <div class="item">
-				            <div class="card" id="cr_receita_card_11">
-					          <div class="img_receita" id="cr_receita_nome_img_11"></div>							          
-					          	<div class="card-body"> 
+						    <div class="card" id="cr_receita_card_11">
+						        <div class="img_receita" id="cr_receita_nome_img_11"></div>							          
+						        <div class="card-body d-flex flex-column">
 						            <h6 class="card-title" id="tit_receita_card_11"></h6>
 						            <p class="card-text" id="cr_modo_preparo_card_11"></p>
-						            <div class="row mt-3 justify-content-center div_conteudo_rec">
-						            	<input type="hidden" id="card_id_receita_11" name="card_id_receita_11"/>							            																														
-										<button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('11');">
-											<strong>Ver</strong> 
-										</button>
-									</div>
-					          	</div>
-					        </div>
-				        </div>			        
-				    </div>
+						            <div class="mt-auto">
+						                <input type="hidden" id="card_id_receita_11" name="card_id_receita_11"/>
+						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('11');">
+						                    <strong>Ver</strong> 
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 			     </div>
 
 			    
