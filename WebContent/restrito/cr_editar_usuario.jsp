@@ -778,11 +778,27 @@
 					<br/>
 					
 					<br/>
-					<div class="row mt-3 justify-content-md-center">																					
-						<button type="button" class="btn1 btn btn-success btn-lg float-center" id="btnSalvarDados" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
+					
+					<div class="row mt-3 justify-content-md-center">
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLoginSucesso();">
+								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+							</button>	
+						
+						</div>	
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+							<button type="button" class="btn1 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
 							<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
-						</button>	
-					</div>														
+						</button>
+						</div>																				
+							
+					</div>	
+																												
+					</div>	
+					
+																	
 					</font>				
 				</div>				
 			</div>	
