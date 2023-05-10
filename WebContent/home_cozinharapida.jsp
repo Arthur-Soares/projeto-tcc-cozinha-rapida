@@ -449,9 +449,11 @@
 							
 							if(larguraDaTela >= 1300){
 								limite_caracteres = 200;
-							}					
+							}
+							if(larguraDaTela == 1280){
+								limite_caracteres = 40;
+							}	
 							
-
 							// obtém a substring do modo de preparo com limite de caracteres
 							var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
 																				
@@ -467,35 +469,93 @@
 		}	
 		
 		function validaTamanhoDescReceita(){
-			$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
-				function(datalin,statuslin){
-					if(datalin.length > 0){
-						var num = 0;					
-						for(var cx=0;cx<datalin.length;cx++){
-																			
-							var cr_modo_preparo_receita = datalin[cx].cr_modo_preparo_receita;																																					
-							
-							// limite o número de caracteres para exibir no modo de preparo
-							var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+			
+			// limite o número de caracteres para exibir no modo de preparo
+			var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+			console.log("Largura da tela: " + larguraDaTela);
+			
+			var limite_caracteres = 0;
+			
+			/*
+			 * Se a larguraDaTela for MAIOR ou IGUAL a 1300 irá
+			 * Definir o limite_caracteres para 200 caracteres
+			 */
+			if(larguraDaTela >= 1300){				
+				limite_caracteres = 200; 
+				
+				$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+					function(datalin,statuslin){
+						if(datalin.length > 0){
+							var num = 0;					
+							for(var cx=0;cx<datalin.length;cx++){
+																				
+								var cr_modo_preparo_receita = datalin[cx].cr_modo_preparo_receita;																																												
 
-							console.log("Largura da tela: " + larguraDaTela);
-
-							var limite_caracteres = 50;
-							
-							if(larguraDaTela >= 1300){
-								limite_caracteres = 200;
-							}					
-							
-							// obtém a substring do modo de preparo com limite de caracteres
-							var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
-																										
-							$("#cr_modo_preparo_card_"+num).text(cr_modo_preparo_resumido);							
-							
-							num++;
+								var limite_caracteres = 50;																						
+								
+								// Obtém a substring do modo de preparo com limite de caracteres
+								var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
+																											
+								$("#cr_modo_preparo_card_"+num).text(cr_modo_preparo_resumido);							
+								
+								num++;
+							}
 						}
 					}
-				}
-			);				
+				);
+			}
+			/*
+			 * Se não se a larguraDaTela for IGUAL a 1280 irá
+			 * Definir o limite_caracteres para 40 caracteres
+			 */
+			else if(larguraDaTela == 1280){
+				limite_caracteres = 40;
+				
+				$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+					function(datalin,statuslin){
+						if(datalin.length > 0){
+							var num = 0;					
+							for(var cx=0;cx<datalin.length;cx++){
+																				
+								var cr_modo_preparo_receita = datalin[cx].cr_modo_preparo_receita;																																																					
+								
+								// Obtém a substring do modo de preparo com limite de caracteres
+								var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
+																											
+								$("#cr_modo_preparo_card_"+num).text(cr_modo_preparo_resumido);							
+								
+								num++;
+							}
+						}
+					}
+				);
+			}
+			/*
+			 * Se não não for nenhuma das opções irá
+			 * Definir o limite_caracteres para 50 caracteres
+			 */
+			 else{
+				limite_caracteres = 50;
+				
+				$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+					function(datalin,statuslin){
+						if(datalin.length > 0){
+							var num = 0;					
+							for(var cx=0;cx<datalin.length;cx++){
+																				
+								var cr_modo_preparo_receita = datalin[cx].cr_modo_preparo_receita;																																												
+						
+								// Obtém a substring do modo de preparo com limite de caracteres
+								var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
+																											
+								$("#cr_modo_preparo_card_"+num).text(cr_modo_preparo_resumido);							
+								
+								num++;
+							}
+						}
+					}
+				);								
+			}
 		}
 		
 		window.addEventListener('resize', validaTamanhoDescReceita);
