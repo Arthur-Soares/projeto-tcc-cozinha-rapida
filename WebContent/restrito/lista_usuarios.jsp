@@ -1,8 +1,6 @@
-<%@page import="projeto.util.MenuVerticalUtils"%>
 <%@page import="projeto.util.MenuUtils"%>
 <%@page import="projeto.util.Cast"%>
 <%@page import="projeto.util.AppSecrets"%>
-<%@page import="projeto.model.R1usuario"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>

@@ -30,7 +30,6 @@ import br.com.neorelato.util.Cast;
 import projeto.model.Cr_receita;
 import projeto.model.Cr_usuario;
 import projeto.model.Cr_usuario_receita;
-import projeto.model.R1usuario;
 
 import projeto.util.AppSecrets;
 
@@ -124,7 +123,7 @@ public class JsonServlet extends HttpServlet {
 		}//else if("atualiza_senha".equals(opcServlet)) {			
 //			int id_usuario = userLogado.getId_usuario();		
 //			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";
-//			int retornasenha = R1usuario.atualizaSenha(id_usuario, senha);
+//			int retornasenha = Cr_usuario.atualizaSenha(id_usuario, senha);
 //			out = response.getWriter();
 //			jsonObj.put("retorno",retornasenha);
 //        	out.print(jsonObj);    		
@@ -165,10 +164,9 @@ public class JsonServlet extends HttpServlet {
 			out.print(jsonObj);
 	   }else if("list_receitas_favoritas".equals(opcServlet)) { 
 			int cuserid = null!=request.getParameter("cuserid")?Cast.toInt(request.getParameter("cuserid")):0; 			
-			jsonArray = Cr_receita.listarJSONRecFavoritas(cuserid); 
-			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			jsonArray = Cr_receita.listarJSONRecFavoritas(cuserid); 			
 			out = response.getWriter();
-			out.print(jsonObj);
+			out.print(jsonArray);
 	   }else if("list_top_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listaTopViews(new Object[0], new Object[0]);
 			out = response.getWriter();

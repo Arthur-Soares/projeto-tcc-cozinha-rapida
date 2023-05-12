@@ -228,7 +228,7 @@
 			}
 		}
 			
-		//Função do efeito favotitar receita no icone Hearth
+		//Fun��o do efeito favotitar receita no icone Hearth
 		function favoritarReceita(){
 			var id = '<%=cuserid%>';
 			
@@ -560,13 +560,10 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 
-
-	 	</div>
 					
-		<div id="div_loading">\
+		<div id="div_loading">
 			<div class="row h-100">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center" align="center">
 					<strong>Processando solicitação... &nbsp;</strong>

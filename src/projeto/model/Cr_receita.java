@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -499,6 +500,66 @@ public class Cr_receita {
 
 			return arrayRetorno;
 		}
+		
+		/*public static Map<Integer,List<List>> listarJSONRecFavoritas(int id_usuario_logado) {		
+			Map<Integer,List<List>> Map_dados_rec_favoritas = new LinkedHashMap<Integer,List<List>>();
+			
+			String sql = " SELECT " +
+						 " cr_receita.cr_id_receita, " +
+						 " cr_titulo_receita, " +
+						 " cr_ingrediente_receita, " +
+						 " cr_modo_preparo_receita, " +
+						 " cr_tempo_preparo_receita, " +
+						 " cr_rendimento_receita, " +
+						 " cr_valor_receita, " +
+						 " cr_receita_nome_img, " +
+						 " cr_receita_view " +
+						 " FROM cr_receita "+ 
+						 " left outer join cr_usuario_receita on cr_usuario_receita.cr_id_receita = cr_receita.cr_id_receita " +
+						 " where cr_usuario_receita.cr_id_usuario = "+id_usuario_logado+
+						 " order by cr_receita.cr_id_receita ";						
+			
+			int cr_id_receita = 0;
+			String cr_titulo_receita = "";
+			String cr_receita_nome_img = "";
+			
+			List listDadosRec = new ArrayList<>();
+			
+			System.out.println("listarJSONRecFavoritas Query="+sql);
+			try {
+				Connection c = ProjetoDatabase.getConnection();
+				PreparedStatement p = c.prepareStatement(sql);			
+				
+				ResultSet r = p.executeQuery();
+				ResultSetMetaData rsmd = r.getMetaData();
+				int cols =	rsmd.getColumnCount();
+				while(r.next()) {
+					cr_id_receita = null!=r.getObject(1)?r.getInt(1):0;
+					cr_titulo_receita = null!=r.getObject(3)?r.getString(3):"";
+					cr_receita_nome_img = null!=r.getObject(8)?r.getString(8):"";
+					//System.out.println("cr_id_receita :: "+cr_id_receita+ " cr_titulo_receita :: "+cr_titulo_receita+ " cr_receita_nome_img :: "+cr_receita_nome_img);
+					listDadosRec = cr_titulo_receita;
+					Map_dados_rec_favoritas.put(cr_id_receita,listDadosRec);				
+				}				
+				//System.out.println("Map_dados_rec_favoritas :: "+Map_dados_rec_favoritas);
+				if(null!=r) {
+					r.close();
+					r=null;
+				}
+				if(null!=p) {
+					p.close();
+					p=null;
+				}
+				if(null!=c) {
+					c.close();
+					c=null;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return Map_dados_rec_favoritas;
+		}
+		*/
 	
 	/**
 	 * Retorna SQL de Receitas.

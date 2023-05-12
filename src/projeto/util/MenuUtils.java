@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import projeto.model.Cr_usuario;
-import projeto.model.R1usuario;
 
 public class MenuUtils { 
 	

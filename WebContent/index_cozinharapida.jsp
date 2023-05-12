@@ -754,21 +754,13 @@
 						</div>	
 					</div>						
 					
-					<div class="row mt-3 justify-content-md-center">
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLogin();">
-								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-							</button>	
-						
-						</div>	
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
-								<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
-							</button>
-						</div>
-																												
+					<div class="row mt-3 justify-content-center">											
+						<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-right: 2px; margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLogin();">
+							<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+						</button>																								
+						<button type="button" class="btn2 btn btn-success float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
+							<strong>Próximo <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
+						</button>																																]
 					</div>						
 					</font>				
 				</div>				

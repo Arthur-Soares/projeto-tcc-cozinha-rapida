@@ -88,18 +88,13 @@
 			}	
 			
 			.visual_tit_rec {	
-				font-size: 40px;			
+				font-size: 5vh;			
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
 				color: #b1463c;
+				margin-top: 4%;
 			}
-			
-			
-			.divpadrao{
-				border: rgba(99, 111, 97, .4) 1px solid;
-				height:100px;
-				padding: 5px;				
-			}
+				
 			
 			@media(max-width: 1000px) {
     			.sugestao {
@@ -139,16 +134,7 @@
 				cursor: pointer;			
 				transition: 0.2s;
 				font-size: 20px;
-			}	
-			
-			footer {
-			    position: absolute;
-			    bottom: 0;			    			    
-			    width: 100%;			      
-			    text-align: center;		
-			    background-color: #636f61; 
-			    padding: 20px;	    
-			}
+			}							
 		</style>		
 	</head>
 
@@ -162,8 +148,7 @@
 		
 		//Inicia assim que a tela abre
 		$(document).ready(function() {				
-			$("#div_loading").hide();
-			carregaReceita('<%=p_cr_id_receita%>');
+			$("#div_loading").hide();			
 			
 			carregaListaReceitasFav('<%=cuserid%>');
 			
@@ -221,140 +206,99 @@
 		}
 			
 		//Função do efeito favotitar receita no icone Hearth
-		function favoritarReceita(){
+		function desfavoritarReceita(cr_id_receita){
 			var id = '<%=cuserid%>';
+			var opc_favorito = "desfavoritar";
 			
 			if(id == 0){
 				alert("Faça o login antes de prosseguir!");
 				return false;
-			}
+			}				
 			
-			var opc_favorito = "";
-			var txt = "";
-			var cr_id_receita = $("#cr_id_receita").val();
-			if(document.getElementById('btnFavoritar').className == 'btn btn-link bi bi-heart'){			
-				opc_favorito = "favoritar";
-				txt = "favoritada";
-			}else{
-				opc_favorito = "desfavoritar";
-				txt = "desfavoritada";
-			}
-			
-			
-			$.postJSON("../jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
-				function(data,status){
-					if(data.retorno == -1){
-						alert("Erro ao "+opc_favorito+" receita!");						
-					}else{
-						if(opc_favorito == "favoritar"){
-							document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
-						}else if(opc_favorito == "desfavoritar"){
-							document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart';
+			if(confirm("Deseja desfavoritar essa receita?")){					
+				$.postJSON("../jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
+					function(data,status){
+						if(data.retorno == -1){
+							alert("Erro ao "+opc_favorito+" receita!");						
+						}else{						
+							alert("Receita desfavoritada com sucesso!");
+							carregaListaReceitasFav(id);
 						}
-						alert("Receita "+txt+" com sucesso!");
-					}
-				}
-			);
-		}
-			
-		function carregaReceita(idrec){
-			
-			var cr_id_receita = "";
-			var cr_titulo_receita = "";
-			var cr_ingrediente_receita = "";
-			var cr_modo_preparo_receita = "";
-			var cr_tempo_preparo_receita = "";
-			var cr_rendimento_receita = "";
-			var cr_valor_receita = "";
-			var cr_receita_view = "";
-			var cr_receita_nome_img = "";
-			var tamanho_ingrediente = "";
-			var tamanho_modo_preparo = "";
-			
-			if(""!=idrec && "0"!=idrec){
-				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
-					function(datalin,statuslin){
-						if(datalin){
-							cr_id_receita = datalin.cr_id_receita;
-							if(cr_id_receita != "0"){								
-								cr_titulo_receita = datalin.cr_titulo_receita;
-								cr_ingrediente_receita = datalin.cr_ingrediente_receita;
-								cr_modo_preparo_receita = datalin.cr_modo_preparo_receita;
-								cr_tempo_preparo_receita = datalin.cr_tempo_preparo_receita;
-								cr_rendimento_receita = datalin.cr_rendimento_receita;
-								cr_valor_receita = datalin.cr_valor_receita;
-								cr_receita_view = datalin.cr_receita_view;
-								cr_receita_nome_img = datalin.cr_receita_nome_img;	
-								tamanho_ingrediente = datalin.tamanho_ingrediente;
-								tamanho_modo_preparo = datalin.tamanho_modo_preparo;
-							}
-						}
-						$("#cr_id_receita").val(cr_id_receita);
-						$("#cr_titulo_receita").text(cr_titulo_receita);
-						$("#cr_titulo_receita").val(cr_titulo_receita);
-						$("#cr_ingrediente_receita").val(cr_ingrediente_receita);
-						$("#cr_modo_preparo_receita").val(cr_modo_preparo_receita);
-						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
-						$("#cr_rendimento_receita").val(cr_rendimento_receita);
-						$("#cr_valor_receita").val("R$ "+cr_valor_receita);
-						$("#cr_ingrediente_receita").attr("rows",tamanho_ingrediente);
-						$("#cr_modo_preparo_receita").attr("rows",tamanho_modo_preparo);
-						
-						var div_image = $("#cr_receita_nome_img");
-						
-						div_image.append(cr_receita_nome_img);
-						
-						somaView(idrec, cr_receita_view);
-						pintarCoracao(cr_id_receita);
 					}
 				);
-			}else{								
-				$("#cr_id_receita").val("");
-				$("#cr_titulo_receita").val("");
-				$("#cr_ingrediente_receita").val("");
-				$("#cr_modo_preparo_receita").val("");
-				$("#cr_tempo_preparo_receita").val("");
-				$("#cr_rendimento_receita").val("");
-				$("#cr_valor_receita").val("");
-					
-			}		
+			}
 		}	
 		
-		function somaView(id_receita, qtd_view){
-			
-			$.postJSON("../jsonservlet",{opc_servlet:'soma_receita_view',cr_id_receita:id_receita,cr_receita_view:qtd_view},
-				function(data,status){
-					if(data.retorno_view != -1){
-						console.log("Tudo certo somado mais um na view da receita!");						
-					}else{
-						console.log("Erro ao somar mais um na view na receita!");
-						return false;
-					}
-				}
-			);	
+		function createDesfavoritarReceitaFunction(idReceita) {
+		    return function() {
+		        desfavoritarReceita(idReceita);
+		    };
 		}
 		
-		function carregaListaReceitasFav(cuserid){			
-			$.postJSON("../jsonservlet",{opc_servlet:'list_receitas_favoritas',cuserid:cuserid},
-				function(datalin,statuslin){
-					if(datalin.length > 0){
-						for(var cx=0;cx<datalin.length;cx++){
-							var cr_id_receita = datalin[cx].cr_id_receita;
-							var cr_titulo_receita = datalin[cx].cr_titulo_receita;
-							var cr_desc_receita = datalin[cx].cr_desc_receita;
-													
-													
-							var arrayRow = [];
-			                arrayRow.push(cr_id_receita);
-							arrayRow.push(cr_titulo_receita);
-							arrayRow.push("<i class='fas fa-edit' onclick='carregaReceita(\""+cr_id_receita+"\")'> </i>");
-							arrayRow.push("<i class='fas fa-trash' onclick='apagaReceita(\""+cr_id_receita+"\")'> </i>");
-							table.row.add(arrayRow).draw();
-						}
-					}
-				}
-			);
-		}	
+		function carregaListaReceitasFav(cuserid) {
+		    var num = 1;
+		    var div_receitas_favoritas = $(".div_receitas_favoritas");
+
+		    $.postJSON("../jsonservlet", { opc_servlet: 'list_receitas_favoritas', cuserid: cuserid }, function(datalin, statuslin) {
+		        if (datalin.length > 0) {
+		            // Limpa o conteúdo existente dentro da div caso seja chamada novamente
+		            div_receitas_favoritas.empty();
+
+		            for (var cx = 0; cx < datalin.length; cx++) {
+		                var cr_id_receita = datalin[cx].cr_id_receita;
+		            	var cr_titulo_receita = datalin[cx].cr_titulo_receita;
+		                var cr_receita_nome_img = datalin[cx].cr_receita_nome_img;
+
+		                var divContainer = $("<div>").addClass("container");
+		                var divRow = $("<div>").addClass("row mt-3 align-items-center");
+		                var divColImg = $("<div>").addClass("col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num);
+		                var divColTitulo = $("<div>").addClass("col-xl-6 col-lg-6 col-md-6 col-sm-9 col-9").attr("id", "cr_titulo_receita_" + num);
+		                var inputTitulo = $("<input>").attr({
+		                    type: "text",
+		                    class: "form-control",
+		                    name: "cr_titulo_receita",
+		                    id: "cr_titulo_receita_input_" + num,
+		                    readonly: "readonly",
+		                    onfocus: "this.blur();"
+		                }).css({
+		                    border: "none",
+		                    background: "transparent",
+		                    fontSize: "18px",
+		                    textAlign: "left",
+		                    fontWeight: "bold",
+		                    color: "#b1463c",
+		                    pointerEvents: "none" // Desabilita eventos de clique
+		                }).val(cr_titulo_receita);
+		                divColTitulo.append(inputTitulo);
+
+		                var divColHeart = $("<div>").addClass("col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2").attr("id", "cr_heart_" + num);
+		                var divHeartIcon = $("<div>").addClass("btn btn-link bi bi-heart-fill").css({
+		                    color: "#b1463c",
+		                    fontSize: "50px",
+		                    border: "none"
+		                }).click(createDesfavoritarReceitaFunction(cr_id_receita));
+
+		                divColHeart.append(divHeartIcon);
+		                divRow.append(divColImg, divColTitulo, divColHeart);
+		                divContainer.append(divRow);
+		                div_receitas_favoritas.append(divContainer);
+
+		                // Adiciona um HR pontilhado
+		                if (cx < datalin.length - 1) {
+		                    var hrElement = $("<hr>").addClass("dashed-hr");
+		                    div_receitas_favoritas.append(hrElement);
+		                }
+
+		                // Adiciona a imagem
+		                var imgElement = $(cr_receita_nome_img).css("max-width", "100%");
+		                $("#cr_receita_nome_img_" + num).html(imgElement);
+
+		                num++;
+		            }
+		        }
+		    });
+		}
+
 	</script>
 
 	<body>		
@@ -363,40 +307,25 @@
 	<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
 		<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 	</form>									
-	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">
-			<input type="hidden" id="cr_id_receita" name="cr_id_receita" value="0"/>
-			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_receita"/>
+	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">	
 			
-		<div class="container" style="margin-top: 100px">					
+		<div class="container" style="margin-top: 4%">					
 			<div class="row">							
-				<div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8" style="height: 100px; text-align:left;">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 					<div class="row mt-3 justify-content-center">																									
 						<div class="visual_tit_rec">Receitas Favoritas</div>
 					</div>	
 				</div>													
 			</div>	
-			<div class="row mt-3 justify-content-md-center text-center col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">	
-				<!-- Imagem receita favorita -->	
-				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">							
-					<div class="img_receita" id="cr_receita_nome_img"></div>
-				</div>
-				
-				<!-- Titulo receita favorita -->
-			 	<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 text-center">					
-					<input disabled type="text" class="form-control" name="cr_titulo_receita" id="cr_titulo_receita" 
-					style="border:none; background: #FFFFFF; font-size: 18px; text-align: center; font-weight: bold; color: #b1463c;">					
-				</div>
-				
-				<!-- Desfavoritar receita -->
-			 	<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 text-center">
-					<div class="btn btn-link bi bi-heart" id="btnFavoritar" style="color: #b1463c;font-size:50px; border:none;" onclick="desfavoritarReceita();"></div>								
-				</div>
-		   </div>			
+			<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+			</div>					
 	 	</div>
 	</form>		
-			
-  	<footer class="text-light">	        	
-   	 	&copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>    	
-  	</footer>
+			  
+<!--   	<footer class="text-light" style="background-color: #636f61; padding: 20px;margin-top: 4%">	    
+		    <div class="text-center">
+		      &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
+		    </div>
+  		</footer> -->
 </body>
 </html>
