@@ -71,6 +71,7 @@
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;							
 		}
+		
 		body {
 			background: url('imagens/fast_kitchen_home_menorzinha.png') no-repeat center center fixed; 
 			height: 100%;
@@ -78,7 +79,8 @@
 			-moz-background-size: cover;
 			-o-background-size: cover;
 			background-size: cover;			
-			font-family: 'Open Sans', sans-serif;			
+			font-family: 'Open Sans', sans-serif;
+			overflow-y: hidden;			
 		}
 		#tit_rec_mais_pesquisadas {	
 			height: 800;
@@ -109,6 +111,7 @@
 		    align-items: center;
 		  }
 		}
+		
 		@keyframes arrow-bounce {
 		  0% {
 		    transform: translateY(0);
@@ -233,8 +236,6 @@
 		    align-items: center; /* Centralizar verticalmente o ícone */
 		    justify-content: center; /* Centralizar horizontalmente o ícone */
 		    border-radius: 50%; /* Bordas arredondadas */
-		    margin-left: 10px;
-		    
 		    
 		}
 		
@@ -530,7 +531,7 @@
 						</button>						
 			   </div>	
 								
-				<div class="row justify-content-center col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12 text-align" style="margin-top: 8%;">	
+				<div class="row justify-content-center col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12 text-align" style="margin-top: 110px; position: absolute;">	
 					<div id="tit_rec_mais_pesquisadas">Receitas Mais Pesquisadas</div>			
 					<br>					
 					<div class="owl-carousel">
