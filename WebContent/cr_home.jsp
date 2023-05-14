@@ -298,6 +298,7 @@
 			if(logoff == "S"){
 				$("#tela_home").submit();
 			}
+			
 			carregalistaTopReceitas();
 			
 			//ESCONDENDO DIV DO CARD DE RECEITAS
@@ -342,7 +343,22 @@
 						  }
 					});
 				}				
-			});						
+			});
+					
+			const btnAbrirCarrinho = $('#abrir-carrinho');
+		    const btnFecharCarrinho = $('#fechar-carrinho');
+		    const carrinho = $('.carrinho');
+		    carrinho.hide();
+
+		    btnAbrirCarrinho.click(function() {
+		        carrinho.show();
+		        carrinho.addClass('aberto');
+		    });
+
+		    btnFecharCarrinho.click(function() {
+		        carrinho.removeClass('aberto');
+		        carrinho.hide();
+		    });
 		});
 			
 		
@@ -495,7 +511,7 @@
 			}
 		}
 		
-		window.addEventListener('resize', validaTamanhoDescReceita);
+		//window.addEventListener('resize', validaTamanhoDescReceita);
 	
 		function verReceita(card_num){			
 			var card_id = $("#card_id_receita_"+card_num).val();				
@@ -506,13 +522,13 @@
 		
 	<body>	
 		
-		<%=MenuUtils.buildMenu("welcome", cru, "")%>
+		<%=MenuUtils.buildMenu("welcome", cru)%>
 		
 		
-		<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
+		<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 		</form>
-		<form id="tela_home" name=tela_home method="post" action="home_cozinharapida.jsp">	
+		<form id="tela_home" name=tela_home method="post" action="cr_home.jsp">	
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>						
 			<div class="div_home" style="font-size: 90%;">																
@@ -715,6 +731,7 @@
 						        </div>
 						    </div>
 						</div>
+					</div>
 			     </div>
 			</div>
 		</form>

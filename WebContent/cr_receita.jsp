@@ -30,30 +30,30 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
 		<title>Cozinha Rápida - Receita</title>
-		<link href="../css/bootstrap.min.css" rel="stylesheet">
-		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
-		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="fontawesome/css/all.min.css" rel="stylesheet">
+		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-		<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
-		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../fontawesome/js/all.min.js"></script>
-		<script type="text/javascript" src="../js/bootstrap-autocomplete.js"></script>
-		<script type="text/javascript" src="../js/popper.js"></script>
-		<script src="../js/bootstrap-datepicker.min.js"></script>
-		<script src="../js/bootstrap-datepicker.pt-BR.min.js"></script>
-		<!-- <script src="../js/jquery.maskMoney.min.js" type="text/javascript"></script>       
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
+		<script type="text/javascript" src="./js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="./js/popper.js"></script>
+		<script src="./js/bootstrap-datepicker.min.js"></script>
+		<script src="./js/bootstrap-datepicker.pt-BR.min.js"></script>
+		<!-- <script src="js/jquery.maskMoney.min.js" type="text/javascript"></script>       
 		 data-thousands="." data-decimal="," data-prefix="R$ "  -->
 		
 		<!-- Data Tables -->
-		<script src="../js/datatables/jquery.dataTables.min.js"></script>
-		<script src="../js/datatables/dataTables.bootstrap4.min.js"></script>
-		<script src="../js/datatables/dataTables.fixedHeader.min.js"></script>
-		<script src="../js/datatables/dataTables.responsive.min.js"></script>
-		<script src="../js/datatables/responsive.bootstrap.min.js"></script>
+		<script src="js/datatables/jquery.dataTables.min.js"></script>
+		<script src="js/datatables/dataTables.bootstrap4.min.js"></script>
+		<script src="js/datatables/dataTables.fixedHeader.min.js"></script>
+		<script src="js/datatables/dataTables.responsive.min.js"></script>
+		<script src="js/datatables/responsive.bootstrap.min.js"></script>
 
-		<link rel="stylesheet" href="../css/datatables/dataTables.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/fixedHeader.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/responsive.bootstrap.min.css">
+		<link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/fixedHeader.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/responsive.bootstrap.min.css">
 		<!-- Final Data Tables -->
 		<style type="text/css">
 			select[readonly] {
@@ -194,7 +194,7 @@
 						
 					var cr_id_receita = "";
 					//TENTANDO OUTRA FORMA DE CHAMAR
-					$.getJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
+					$.getJSON("./jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
 					 function(datalin,statuslin){						
 						  if(datalin){							  
 							cr_id_receita = datalin.cr_id_receita;
@@ -214,7 +214,7 @@
 		function pintarCoracao(cr_id_receita){
 			var id = '<%=cuserid%>';
 			if(id != 0){
-				$.postJSON("../jsonservlet",{opc_servlet:'pintar_coracao',cr_id_receita:cr_id_receita},
+				$.postJSON("./jsonservlet",{opc_servlet:'pintar_coracao',cr_id_receita:cr_id_receita},
 					function(data,status){
 						if(data.retorno == ""){
 							alert("Erro ao pintar o coracao");						
@@ -249,7 +249,7 @@
 			}
 			
 			
-			$.postJSON("../jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
+			$.postJSON("./jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
 				function(data,status){
 					if(data.retorno == -1){
 						alert("Erro ao "+opc_favorito+" receita!");						
@@ -280,7 +280,7 @@
 			var tamanho_modo_preparo = "";
 			
 			if(""!=idrec && "0"!=idrec){
-				$.postJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
+				$.postJSON("./jsonservlet",{opc_servlet:'find_receita',cr_id_receita:idrec},
 					function(datalin,statuslin){
 						if(datalin){
 							cr_id_receita = datalin.cr_id_receita;
@@ -330,7 +330,7 @@
 		
 		function somaView(id_receita, qtd_view){
 			
-			$.postJSON("../jsonservlet",{opc_servlet:'soma_receita_view',cr_id_receita:id_receita,cr_receita_view:qtd_view},
+			$.postJSON("./jsonservlet",{opc_servlet:'soma_receita_view',cr_id_receita:id_receita,cr_receita_view:qtd_view},
 				function(data,status){
 					if(data.retorno_view != -1){
 						console.log("Tudo certo somado mais um na view da receita!");						
@@ -346,9 +346,9 @@
 	</script>
 
 	<body>		
-	<%=MenuUtils.buildMenu("receita", cru, "S")%>
+	<%=MenuUtils.buildMenu("receita", cru)%>
 									
-	<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
+	<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 		<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 	</form>									
 	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">
@@ -470,7 +470,7 @@
 								
 								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 spco"
 									style="text-align: right; width: 300px">
-									<img alt="IngIcon" src="..\imagens\ingIcon.png">
+									<img alt="IngIcon" src="imagens\ingIcon.png">
 								</div>
 								
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 ">
@@ -480,7 +480,7 @@
 								
 								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 spco"
 									style="text-align: left; width: 300px">
-									<img alt="IngIcon" src="..\imagens\ingIcon.png">
+									<img alt="IngIcon" src="imagens\ingIcon.png">
 								</div>
 								
 								<div class="col-xl-2 col-lg-2 col-md-2 spc" style="text-align: center; width: 300px"></div>
@@ -524,7 +524,7 @@
 									<div class="row"> 
 										<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-8"
 											style="text-align: center; margin: auto;">
-											<img alt="IngIcon" src="..\imagens\ingIcon.png" height="150px">
+											<img alt="IngIcon" src="imagens\ingIcon.png" height="150px">
 										</div>
 									</div>
 								</div>

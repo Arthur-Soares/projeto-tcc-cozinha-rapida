@@ -101,7 +101,7 @@ public class SecurityFilter implements Filter {
 			hrequest.getSession().setAttribute(AppSecrets.USER_KEY, null);			
 			//String checaUser = getLogUser();
 			
-			httpresponse.sendRedirect(AppSecrets.SISTEMA_URL+"index_cozinharapida.jsp");
+			httpresponse.sendRedirect(AppSecrets.SISTEMA_URL+"cr_login.jsp");
 			return;
 		}
 		chain.doFilter(request, response);

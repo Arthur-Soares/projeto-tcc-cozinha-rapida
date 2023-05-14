@@ -43,6 +43,6 @@
 	</jsp-config>
 	
 	<welcome-file-list>
-		<welcome-file>home_cozinharapida.jsp</welcome-file>
+		<welcome-file>cr_home.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

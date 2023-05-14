@@ -30,30 +30,30 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
 		<title>Cozinha Rápida - Receita Favoritas</title>
-		<link href="../css/bootstrap.min.css" rel="stylesheet">
-		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
-		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="fontawesome/css/all.min.css" rel="stylesheet">
+		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-		<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
-		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../fontawesome/js/all.min.js"></script>
-		<script type="text/javascript" src="../js/bootstrap-autocomplete.js"></script>
-		<script type="text/javascript" src="../js/popper.js"></script>
-		<script src="../js/bootstrap-datepicker.min.js"></script>
-		<script src="../js/bootstrap-datepicker.pt-BR.min.js"></script>
-		<!-- <script src="../js/jquery.maskMoney.min.js" type="text/javascript"></script>       
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="js/popper.js"></script>
+		<script src="js/bootstrap-datepicker.min.js"></script>
+		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>
+		<!-- <script src="js/jquery.maskMoney.min.js" type="text/javascript"></script>       
 		 data-thousands="." data-decimal="," data-prefix="R$ "  -->
 		
 		<!-- Data Tables -->
-		<script src="../js/datatables/jquery.dataTables.min.js"></script>
-		<script src="../js/datatables/dataTables.bootstrap4.min.js"></script>
-		<script src="../js/datatables/dataTables.fixedHeader.min.js"></script>
-		<script src="../js/datatables/dataTables.responsive.min.js"></script>
-		<script src="../js/datatables/responsive.bootstrap.min.js"></script>
+		<script src="js/datatables/jquery.dataTables.min.js"></script>
+		<script src="js/datatables/dataTables.bootstrap4.min.js"></script>
+		<script src="js/datatables/dataTables.fixedHeader.min.js"></script>
+		<script src="js/datatables/dataTables.responsive.min.js"></script>
+		<script src="js/datatables/responsive.bootstrap.min.js"></script>
 
-		<link rel="stylesheet" href="../css/datatables/dataTables.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/fixedHeader.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/responsive.bootstrap.min.css">
+		<link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/fixedHeader.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/responsive.bootstrap.min.css">
 		<!-- Final Data Tables -->
 		<style type="text/css">
 			select[readonly] {
@@ -171,7 +171,7 @@
 						
 					var cr_id_receita = "";
 					//TENTANDO OUTRA FORMA DE CHAMAR
-					$.getJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
+					$.getJSON("./jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
 					 function(datalin,statuslin){						
 						  if(datalin){							  
 							cr_id_receita = datalin.cr_id_receita;
@@ -191,7 +191,7 @@
 		function pintarCoracao(cr_id_receita){
 			var id = '<%=cuserid%>';
 			if(id != 0){
-				$.postJSON("../jsonservlet",{opc_servlet:'pintar_coracao',cr_id_receita:cr_id_receita},
+				$.postJSON("./jsonservlet",{opc_servlet:'pintar_coracao',cr_id_receita:cr_id_receita},
 					function(data,status){
 						if(data.retorno == ""){
 							alert("Erro ao pintar o coracao");						
@@ -216,7 +216,7 @@
 			}				
 			
 			if(confirm("Deseja desfavoritar essa receita?")){					
-				$.postJSON("../jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
+				$.postJSON("./jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
 					function(data,status){
 						if(data.retorno == -1){
 							alert("Erro ao "+opc_favorito+" receita!");						
@@ -239,7 +239,7 @@
 		    var num = 1;
 		    var div_receitas_favoritas = $(".div_receitas_favoritas");
 
-		    $.postJSON("../jsonservlet", { opc_servlet: 'list_receitas_favoritas', cuserid: cuserid }, function(datalin, statuslin) {
+		    $.postJSON("./jsonservlet", { opc_servlet: 'list_receitas_favoritas', cuserid: cuserid }, function(datalin, statuslin) {
 		        if (datalin.length > 0) {
 		            // Limpa o conteúdo existente dentro da div caso seja chamada novamente
 		            div_receitas_favoritas.empty();
@@ -295,16 +295,19 @@
 
 		                num++;
 		            }
+		        }else{
+		        	div_receitas_favoritas.empty();
 		        }
+
 		    });
 		}
 
 	</script>
 
 	<body>		
-	<%=MenuUtils.buildMenu("receita", cru, "S")%>
+	<%=MenuUtils.buildMenu("receita", cru)%>
 									
-	<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
+	<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 		<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 	</form>									
 	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">	

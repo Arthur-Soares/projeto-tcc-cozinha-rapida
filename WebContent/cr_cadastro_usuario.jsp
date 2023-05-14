@@ -14,26 +14,26 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
 		<title>Cozinha Rápida - Lista Usuários</title>
-		<link href="../css/bootstrap.min.css" rel="stylesheet">
-		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
-		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
-		<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
-		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../fontawesome/js/all.min.js"></script>
-		<script type="text/javascript" src="../js/bootstrap-autocomplete.js"></script>
-		<script type="text/javascript" src="../js/popper.js"></script>
-		<script src="../js/bootstrap-datepicker.min.js"></script>
-		<script src="../js/bootstrap-datepicker.pt-BR.min.js"></script>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="fontawesome/css/all.min.css" rel="stylesheet">
+		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="js/popper.js"></script>
+		<script src="js/bootstrap-datepicker.min.js"></script>
+		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>
 		<!-- Data Tables -->
-		<script src="../js/datatables/jquery.dataTables.min.js"></script>
-		<script src="../js/datatables/dataTables.bootstrap4.min.js"></script>
-		<script src="../js/datatables/dataTables.fixedHeader.min.js"></script>
-		<script src="../js/datatables/dataTables.responsive.min.js"></script>
-		<script src="../js/datatables/responsive.bootstrap.min.js"></script>
+		<script src="js/datatables/jquery.dataTables.min.js"></script>
+		<script src="js/datatables/dataTables.bootstrap4.min.js"></script>
+		<script src="js/datatables/dataTables.fixedHeader.min.js"></script>
+		<script src="js/datatables/dataTables.responsive.min.js"></script>
+		<script src="js/datatables/responsive.bootstrap.min.js"></script>
 
-		<link rel="stylesheet" href="../css/datatables/dataTables.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/fixedHeader.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/responsive.bootstrap.min.css">
+		<link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/fixedHeader.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/responsive.bootstrap.min.css">
 		<!-- Final Data Tables -->
 		<style type="text/css">
 			select[readonly] {
@@ -97,7 +97,7 @@
 			
 			
 			if(""!=idusu && "0"!=idusu){
-				$.postJSON("../jsonservlet",{opc_servlet:'find_usuario',cr_id_usuario:idusu},
+				$.postJSON("./jsonservlet",{opc_servlet:'find_usuario',cr_id_usuario:idusu},
 					function(datalin,statuslin){
 						if(datalin){
 							cr_id_usuario = datalin.cr_id_usuario;
@@ -152,7 +152,7 @@
 		 */
 		function salvarRegistro(){
 			var arrayJSON = $('#frmusuario').serializeArray();
-			$.postJSON("../jsonservlet",arrayJSON,
+			$.postJSON("./jsonservlet",arrayJSON,
 				function(data,status){
 					if(data.id_usuario!="0" && data.id_usuario != ""){
 						alert("Usuário atualizado com Sucesso!");

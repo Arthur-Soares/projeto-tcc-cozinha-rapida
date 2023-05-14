@@ -10,22 +10,22 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">		
 		<title>Cozinha Rápida - Lista Usuários</title>
-		<link href="../css/bootstrap.min.css" rel="stylesheet">
-		<link href="../fontawesome/css/all.min.css" rel="stylesheet">
-		<link href="../css/bootstrap-datepicker.css" rel="stylesheet"/>
-		<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
-		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../fontawesome/js/all.min.js"></script>
-		<script type="text/javascript" src="../js/bootstrap-autocomplete.js"></script>
-		<script type="text/javascript" src="../js/popper.js"></script>
-		<script src="../js/bootstrap-datepicker.min.js"></script>
-		<script src="../js/bootstrap-datepicker.pt-BR.min.js"></script>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="fontawesome/css/all.min.css" rel="stylesheet">
+		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="js/popper.js"></script>
+		<script src="js/bootstrap-datepicker.min.js"></script>
+		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>
 		<!-- Data Tables -->
-		<script src="../js/datatables/jquery.dataTables.min.js"></script>
-		<script src="../js/datatables/dataTables.bootstrap4.min.js"></script>
-		<script src="../js/datatables/dataTables.fixedHeader.min.js"></script>
-		<script src="../js/datatables/dataTables.responsive.min.js"></script>
-		<script src="../js/datatables/responsive.bootstrap.min.js"></script>
+		<script src="js/datatables/jquery.dataTables.min.js"></script>
+		<script src="js/datatables/dataTables.bootstrap4.min.js"></script>
+		<script src="js/datatables/dataTables.fixedHeader.min.js"></script>
+		<script src="js/datatables/dataTables.responsive.min.js"></script>
+		<script src="js/datatables/responsive.bootstrap.min.js"></script>
 		<%
 		Cr_usuario cru = null!=session.getAttribute(AppSecrets.USER_KEY)?(Cr_usuario)session.getAttribute(AppSecrets.USER_KEY):null;
 		int cuserid = null!=cru?cru.getCr_id_usuario():0;
@@ -44,9 +44,9 @@
 		}
 				
 		%>
-		<link rel="stylesheet" href="../css/datatables/dataTables.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/fixedHeader.bootstrap4.min.css">
-		<link rel="stylesheet" href="../css/datatables/responsive.bootstrap.min.css">
+		<link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/fixedHeader.bootstrap4.min.css">
+		<link rel="stylesheet" href="css/datatables/responsive.bootstrap.min.css">
 		<!-- Final Data Tables -->
 		<style type="text/css">
 			select[readonly] {
@@ -124,7 +124,7 @@
 						
 					var cr_id_receita = "";
 					//TENTANDO OUTRA FORMA DE CHAMAR
-					$.getJSON("../jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
+					$.getJSON("./jsonservlet",{opc_servlet:'find_receita',cr_id_receita:item.value}, 
 					 function(datalin,statuslin){						
 						  if(datalin){							  
 							cr_id_receita = datalin.cr_id_receita;
@@ -144,7 +144,7 @@
 		function carregaListaUsuarios(crep){
 			var table = $('#table_usuarios').DataTable();
 			table.clear().draw();
-			$.postJSON("../jsonservlet",{opc_servlet:'list_usuarios'},
+			$.postJSON("./jsonservlet",{opc_servlet:'list_usuarios'},
 				function(datalin,statuslin){
 					if(datalin.length > 0){
 						for(var cx=0;cx<datalin.length;cx++){
@@ -181,7 +181,7 @@
 		
 		function apagaUsuario(id_usuario){												
 			if(confirm("Deseja apagar esse Usuário?")){			
-				$.postJSON("../jsonservlet",{opc_servlet:'apaga_usuario',id_usuario:id_usuario},
+				$.postJSON("./jsonservlet",{opc_servlet:'apaga_usuario',id_usuario:id_usuario},
 					function(data,status){
 						if(data.ERRO == ""){						
 						   alert("Usuário deletado com sucesso!");
@@ -207,13 +207,13 @@
 
 	<body>	
 	
-		<%=MenuUtils.buildMenu("usuario", cru, "S")%>
+		<%=MenuUtils.buildMenu("usuario", cru)%>
 		
-		<form id="frmreceita" name="frmreceita" method="post" action="/projeto-tcc-cozinha-rapida/restrito/cr_receita.jsp">
+		<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 		</form>			
 		<form id="frm_lista_receita" name="frm_lista_receita" method="post" action="cr_lista_receitas.jsp"></form>
-		<form id="frmlogin" name="frmlogin" method="post" action="../index_cozinharapida.jsp"></form>							
+		<form id="frmlogin" name="frmlogin" method="post" action="cr_login.jsp"></form>							
 		<form id="frmusuario" name="frmusuario" method="post" action="cr_cadastro_usuario.jsp">
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario"/>
 			<div id="div_tela">

@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 					}else if(retorno_login != 0) {
 						//Senha OK
 						request.getSession().setAttribute(AppSecrets.USER_KEY, cru);						
-						response.sendRedirect(AppSecrets.SISTEMA_URL+"/home_cozinharapida.jsp");
+						response.sendRedirect(AppSecrets.SISTEMA_URL+"/cr_home.jsp");						
 					}else {
 						//Senha Incorreta
 						//throw new InvalidRequestException("Usuário ou senha inválidos!");
@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			request.getSession().setAttribute("errologin", i.getMessage());
 			request.getSession().setAttribute(AppSecrets.USER_KEY, null);			
 			
-			response.sendRedirect(AppSecrets.SISTEMA_URL+"/index_cozinharapida.jsp");
+			response.sendRedirect(AppSecrets.SISTEMA_URL+"/cr_login.jsp");
 		}
 	}
 }
