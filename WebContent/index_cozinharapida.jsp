@@ -3,6 +3,7 @@
 <html lang="pt-BR, pt">
 	<head>
 		<title>Cozinha Rápida - Acesso restrito</title>
+		
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="fontawesome/css/all.min.css" rel="stylesheet">
 		<meta http-equiv="Content-Type" content="text/html; charset:iso-88590-1">
@@ -23,9 +24,8 @@
 		<script type="text/javascript" src="./js/jquery.mask.min.js"></script>
 	    <script src="./js/bootstrap.min.js"></script>
 	    <script src="./js/bootstrap-dialog.min.js"></script>
+	    
 		<!--	
-		
-		<!-- 
 		Font Awesome Free 5.3.1 by @fontawesome - (https://fontawesome.com)
 		Bootstrap v4.1.3 (https://getbootstrap.com/)
 		jQuery JavaScript Library v3.3.1 (https://jquery.com/)
@@ -41,15 +41,13 @@
 			session.setAttribute("errologin", null);
 			session.setAttribute("projeto.model.Cr_usuario", null);			
 		}
-		
-		
 		%>
 		
 		<script type="text/javascript">
 			<%
 			if(!"".equals(msgIndex)){
 			%>
-			alert('<%=msgIndex%>');
+			alert('<%=msgIndex%>');	
 			<%
 			}
 			%>
@@ -61,22 +59,19 @@
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;
 			font-size: 40px;
-		}	
-		
+		}
 		h2 {
 			color: #FFFFFF;
 			font-weight: 800;
 			font-family: 'Open Sans', sans-serif;
 			font-size: 40px;
 		}
-		
 		h3 {	
 			font-weight: bold;
 			font-family: 'Open Sans', sans-serif;
 			color: #FFFFFF;
 			font-size: 20px;
-		}			
-
+		}
 		#btnLogin {	
 			border: 5px solid;					
 			border-color: #FFFFFF; 
@@ -90,7 +85,6 @@
 			transition: 0.2s;
 			font-size: 15px;
 		}
-		
 		#btnCadastro {	
 			border: none;						
 			color: #FFFFFF;
@@ -100,8 +94,7 @@
 			cursor: pointer;			
 			transition: 0.2s;
 			font-size: 15px;
-		}
-					
+		}		
 		#btnSalvarDados {	
 			border: none;						
 			color: #FFFFFF;
@@ -112,7 +105,6 @@
 			transition: 0.2s;
 			font-size: 15px;
 		}
-		
 		body {
 			background: url('imagens/fast_kitchen_login_dark.png') no-repeat center center fixed; 
 			-webkit-background-size: cover;
@@ -122,7 +114,6 @@
 			color: #323232;
 			font-family: 'Open Sans', sans-serif;	
 		}
-		
 		.login {
 			background-color: #636f61;
 			margin: 0px;
@@ -134,7 +125,6 @@
 			text-align: center;
 			float: left;
 		}
-		
 		.div_cadastro_sucesso {
 			background-color: #636f61;
 			margin: 0px;
@@ -146,7 +136,6 @@
 			text-align: center;
 			float: center;
 		}
-		
 		.cadastro {			
 			margin: 0px;
 		    height: 100vh;
@@ -157,7 +146,6 @@
 			text-align: center;
 			float: right;
 		}
-		
 		.div_cadastro_dois{
 			margin: 0px;
 		    height: 100vh;
@@ -168,7 +156,6 @@
 			text-align: center;
 			float: center;
 		}
-		
 		.div_cadastro{
 			margin: 0px;
 		    height: 100vh;
@@ -179,7 +166,6 @@
 			text-align: center;
 			float: center;
 		}
-		
 		.div_cadastro_tres{
 			margin: 0px;
 		    height: 100vh;
@@ -190,7 +176,11 @@
 			text-align: center;
 			float: center;
 		}
-		
+		.modal-dialog {
+		    display: flex;
+		    align-items: center;
+		    min-height: calc(100% - 3.5rem);
+		}
 		.conta {			
 			margin: 0px;
 		    height: 100vh;
@@ -201,7 +191,6 @@
 			text-align: center;
 			float: right;
 		}
-		
 		#btnCadastrar {	
 			border: none;			
 			outline: none;
@@ -213,7 +202,6 @@
 			transition: 0.2s;
 			font-size: 15px;
 		}
-		
 		#btnCadastrar:hover {	 	    
 		    border: 5px solid;					
 			border-color: #FFFFFF;
@@ -258,39 +246,203 @@
 		//Chama a tela de Cadastro
 		function chamaCadastro(){   								
 		    $(".div_login").slideUp(200);
-		    $(".div_cadastro").slideDown(200);		   
+		    $(".div_cadastro").slideDown(200);
 		}
-			 		
-		//Chama a segunda tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes ao endereço
-		function chamaCadastroDois(){   		
-			var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
-			var cr_cpf_usuario = $("#cr_cpf_usuario").val();
-			var cr_telefone_usuario = $("#cr_telefone_usuario").val();					
+		//Função para validar login
+		function validaLogin(){	
+			var cr_email_usuario_login = $("#cr_email_usuario_login").val();
+			var cr_senha_usuario_login = $("#cr_senha_usuario_login").val();
+			var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; //expressão regular para email
+			var senhaRegex = /^\w{6,}$/;                 //expressão regular para senha
 			
-			if(cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == ""){
-				alert('Preencha todos os campos!');
-				return false;					
-			}else{
-				$(".div_cadastro").toggle('slide');
-			    $(".div_cadastro_dois").toggle('slide');
-			}						   
+			if(cr_email_usuario_login == ""){
+				$("#mensagemErro").text('Digite o Email!');
+			    $("#modalErro").modal('show');
+			    $("#cr_email_usuario_login").focus();
+			    return false;
+			}else if(cr_senha_usuario_login == ""){
+				$("#mensagemErro").text('Digite a Senha!');
+			    $("#modalErro").modal('show');
+			    $("#cr_senha_usuario_login").focus();
+			    return false;
+			}else if(!emailRegex.test(cr_email_usuario_login)){
+			    $("#mensagemErro").text('Email inválido!');
+			    $("#modalErro").modal('show');
+			    $("#cr_email_usuario_login").focus();
+			    return false;
+			}else if(!senhaRegex.test(cr_senha_usuario_login)){
+			    $("#mensagemErro").text('Senha inválida! A senha deve ter no mínimo 6 caracteres Alfanumericos!');
+			    $("#modalErro").modal('show');
+			    $("#cr_senha_usuario_login").focus();
+			    return false;
+			  }
+			else{
+				$("#login_cadastro").submit();
+			}			
+						
+		}	 		
+		//Chama a tela de cadastro
+		function chamaCadastroDois() {   		
+		    var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
+		    var cr_cpf_usuario = $("#cr_cpf_usuario").val();
+		    var cr_telefone_usuario = $("#cr_telefone_usuario").val();
+		    var nomeRegex = /^[A-Za-z]+([\ A-Za-z]+)*$/; //expressão regular para nome
+		    
+		    if (cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == "") {
+		    	$("#mensagemErro").text('Preencha todos os campos!');
+		        $("#modalErro").modal('show');
+		        $("#cr_nome_completo_usuario").focus();
+		        return false;
+		    }
+		    else if(!nomeRegex.test(cr_nome_completo_usuario)){
+		    	$("#mensagemErro").text('Digite o nome corretamente!');
+		        $("#modalErro").modal('show');
+		        $("#cr_nome_completo_usuario").focus();
+		        return false;
+		    }
+		    else if (validarCPF(cr_cpf_usuario) == false) {
+		    	$("#mensagemErro").text('Insira um CPF valido!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cpf_usuario").focus();
+		        return false;
+		    }
+		    else if (!/\(\d{2}\)\s\d{4,5}-\d{4}/.test(cr_telefone_usuario)) {
+		    	$("#mensagemErro").text('Insira um telefone valido!');
+		        $("#modalErro").modal('show');
+		        $("#cr_telefone_usuario").focus();
+		        return false;
+		    }
+		    else {
+		        $(".div_cadastro").toggle('slide');
+		        $(".div_cadastro_dois").toggle('slide');
+		    }						   
 		}
-	
-		//Chama a terceira tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes a Email e Senha
+		
+		//Chama a segunda tela de cadastro
 		function chamaCadastroTres(){   									    
 			var cr_cep_usuario = $("#cr_cep_usuario").val();
 			var cr_nrmcasa_usuario = $("#cr_nrmcasa_usuario").val();
-			var cr_endereco_usuario = $("#cr_endereco_usuario").val();					
+			var cr_endereco_usuario = $("#cr_endereco_usuario").val();
+			var cr_complemento = $("#cr_endcomplemento_usuario").val();	
+			var cr_referencia = $("#cr_pontoreferencia_usuario").val();	
+			var nrmcasaRegex = /^[0-9]+$/; //expressão regular para numero da casa
+			var complementeereferenciaRegex = /^[a-zA-Z0-9]*$/; //expressão regular para complemento e referencia
+			var campoNumero = document.getElementById("cr_nrmcasa_usuario"); //elemento do campo numero para limpar após verificar
+			var campoComplemento = document.getElementById("cr_endcomplemento_usuario");//elemento do campo complemento para limpar após verificar
+			var campoReferencia = document.getElementById("cr_pontoreferencia_usuario");//elemento do campo referencia para limpar após verificar
 			
 			if(cr_cep_usuario == "" || cr_nrmcasa_usuario == "" || cr_endereco_usuario == ""){
-				alert('Preencha todos os campos!');
-				return false;					
-			}else{
+				$("#mensagemErro").text('Preencha todos os campos!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cep_usuario").focus();
+			}
+			else if(!nrmcasaRegex.test(cr_nrmcasa_usuario)){
+				campoNumero.value = "";
+				$("#mensagemErro").text('Preencha o campo Nº somente com numeros!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cep_usuario").focus();
+		        
+			}else if(!complementeereferenciaRegex.test(cr_complemento) || !complementeereferenciaRegex.test(cr_referencia)){
+				campoComplemento.value = "";
+				campoReferencia.value = "";
+				$("#mensagemErro").text('Preencha o campo somente com caracteres alfanuméricos!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cep_usuario").focus();
+			}
+			else{
 			    $(".div_cadastro_dois").toggle('slide');
 			    $(".div_cadastro_tres").toggle('slide');		  
 			}
 		}
-					
+		
+		//Chama a terceira e ultima tela de cadastro
+		function salvarRegistro(){
+			var cr_email_usuario = $("#cr_email_usuario").val();
+			var cr_senha_usuario = $("#cr_senha_usuario").val();
+			var cr_senha_usuario_confirm = $("#cr_senha_usuario_confirm").val();	
+			var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; //expressão regular para email
+			var senhaRegex = /^\w{6,}$/; //expressão regular para senha
+			  
+			
+			if(cr_email_usuario == "" || cr_senha_usuario == ""){
+				$("#mensagemErro").text('Preencha todos os campos!');
+		        $("#modalErro").modal('show');
+				$("#cr_email_usuario").focus();
+				return false;
+			}
+			if(!emailRegex.test(cr_email_usuario)){
+				$("#mensagemErro").text('Insira um email Valido!');
+		        $("#modalErro").modal('show');
+				$("#cr_email_usuario").focus();
+				return false;
+			}
+			if(!senhaRegex.test(cr_senha_usuario) && !senhaRegex.test(cr_senha_usuario_confirm)){
+				$("#mensagemErro").text('Senha de no minimo 6 caracteres!');
+		        $("#modalErro").modal('show');
+				$("#cr_email_usuario").focus();
+				return false;
+			}
+			if(cr_senha_usuario != cr_senha_usuario_confirm){
+				$("#mensagemErro").text('Preencha as senhas igualmente!');
+		        $("#modalErro").modal('show');
+				$("#cr_senha_usuario").focus();
+				return false;
+			}
+			var arrayJSON = $('#login_cadastro').serializeArray();
+			$.postJSON("./jsonservlet",arrayJSON,
+				function(data,status){
+					if(data.id_usuario!="0" && data.id_usuario != ""){
+						$("#cr_id_usuario").val(data.id_usuario);																		
+						$(".div_cadastro_tres").slideUp(200);
+					    $(".div_cadastro_sucesso").slideDown(200);	
+					    limpaCamposCadastro();
+					}else{
+						$("#mensagemErro").text('Erro inesperado ao salvar registro!');
+				        $("#modalErro").modal('show');
+						$("#cr_senha_usuario").focus();
+						return false;
+					}
+				}
+			);			
+		}
+		
+		//Função para validação de CPF
+		function validarCPF(cpf) {
+			  cpf = cpf.replace(/[^\d]+/g,'');
+			  // Elimina CPFs invalidos conhecidos
+			  if (cpf.length != 11 ||
+			    cpf == "00000000000" ||
+			    cpf == "11111111111" ||
+			    cpf == "22222222222" ||
+			    cpf == "33333333333" ||
+			    cpf == "44444444444" ||
+			    cpf == "55555555555" ||
+			    cpf == "66666666666" ||
+			    cpf == "77777777777" ||
+			    cpf == "88888888888" ||
+			    cpf == "99999999999")
+			        return false;
+			  // Valida 1o digito
+			  add = 0;
+			  for (i=0; i < 9; i ++)
+			    add += parseInt(cpf.charAt(i)) * (10 - i);
+			  rev = 11 - (add % 11);
+			  if (rev == 10 || rev == 11)
+			      rev = 0;
+			  if (rev != parseInt(cpf.charAt(9)))
+			      return false;
+			  // Valida 2o digito
+			  add = 0;
+			  for (i = 0; i < 10; i ++)
+			    add += parseInt(cpf.charAt(i)) * (11 - i);
+			  rev = 11 - (add % 11);
+			  if (rev == 10 || rev == 11)
+			      rev = 0;
+			  if (rev != parseInt(cpf.charAt(10)))
+			      return false;
+			  return true;
+			}
+		
 		//Volta para a primeira tela de preenchimento de dados onde se encontra: Nome, CPF e Telefone 
 		function voltarCadastroUm(){   									    
 		    $(".div_cadastro_dois").toggle('slide');
@@ -331,42 +483,7 @@
 		 * - Se as senhas digitadas pelo usuário são iguais;
 		 * Caso essas duas funções sejam verdadeiras ele irá salvar.
 		 */
-		function salvarRegistro(){
-			var cr_email_usuario = $("#cr_email_usuario").val();
-			var cr_senha_usuario = $("#cr_senha_usuario").val();
-			var cr_senha_usuario_confirm = $("#cr_senha_usuario_confirm").val();					
-			
-			if(cr_email_usuario == ""){
-				alert('Email em Branco!');
-				$("#cr_email_usuario").focus();
-				return false;
-			}
-			if(cr_senha_usuario == ""){
-				alert('Preencha sua senha');				
-				$("#cr_senha_usuario").focus();
-				return false;
-			}
-			if(cr_senha_usuario != cr_senha_usuario_confirm){
-				alert('Senhas diferentes!');				
-				$("#cr_senha_usuario_confirm").focus();
-				return false;
-			}
-			
-			var arrayJSON = $('#login_cadastro').serializeArray();
-			$.postJSON("./jsonservlet",arrayJSON,
-				function(data,status){
-					if(data.id_usuario!="0" && data.id_usuario != ""){
-						$("#cr_id_usuario").val(data.id_usuario);																		
-						$(".div_cadastro_tres").slideUp(200);
-					    $(".div_cadastro_sucesso").slideDown(200);	
-					    limpaCamposCadastro();
-					}else{
-						alert("Problema ao salvar registro!");
-						return false;
-					}
-				}
-			);			
-		}
+		
 		
 		//Função que pesquisa o CEP, é chamada assim que o usuário clica fora do campo CEP
 		function pesquisaCEP() {
@@ -395,12 +512,16 @@
 				} else {
 					//cep é inválido.
 					limpaCamposCEP();
-					alert("Formato de CEP inválido.");
+					$("#mensagemErro").text('Formato de CEP inválido!');
+			        $("#modalErro").modal('show');
+			        $("#cr_cpf_usuario").focus();
 				}
 			} else {
 				//cep sem valor, limpa formulário.
 				limpaCamposCEP();
-				alert("Digite o CEP antes de pesquisar!");
+				$("#mensagemErro").text('Insira um CEP válido!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cpf_usuario").focus();
 				return false;
 			}
 		}
@@ -417,7 +538,9 @@
 			} else {
 				//CEP não Encontrado.
 				limpaCamposCEP();
-				alert("CEP não encontrado!");
+				$("#mensagemErro").text('CEP não encontrado!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cep_usuario").focus();
 			}
 		}	      
 		
@@ -426,8 +549,6 @@
 			$("#cr_cep_usuario").val("");
 			$("#cr_endereco_usuario").val("");
 			$("#cr_nrmcasa_usuario").val("");
-			$("#cr_endcomplemento_usuario").val("");
-			$("#cr_pontoreferencia_usuario").val("");			
 		}
 		
 		//Função que Limpa todos os campos ao Salvar Registro
@@ -446,25 +567,6 @@
 			$("#cr_email_usuario_login").val("");
 			$("#cr_senha_usuario_login").val("");
 		}
-		
-		function validaLogin(){
-			var cr_email_usuario_login = $("#cr_email_usuario_login").val();
-			var cr_senha_usuario_login = $("#cr_senha_usuario_login").val();					
-			
-			if(cr_email_usuario_login == ""){
-				alert('Digite o Email!');
-				$("#cr_email_usuario_login").focus();
-				return false;
-			}else if(cr_senha_usuario_login == ""){
-				alert('Digite a Senha!');				
-				$("#cr_senha_usuario_login").focus();
-				return false;
-			}else{
-				$("#login_cadastro").submit();
-			}			
-						
-		}
-
 		//Aplica a máscara no campo
 		//Função para ser utilizada nos eventos do input para formatação dinâmica
 		function aplica_mascara_cpfcnpj(campo,tammax,teclapres) {
@@ -473,7 +575,6 @@
 		    /*if ( ( (tecla < 48 || tecla > 57) && (tecla < 96 || tecla > 105) && tecla != 46 && tecla != 8) ){
 		        return false;
 		    }*/
-	
 		    var vr = campo.value;
 		    vr = vr.replace( /\//g, "" );
 		    vr = vr.replace( /-/g, "" );
@@ -499,115 +600,7 @@
 		        campo.value = vr.substr( 0, tam - 12 ) + '.' + vr.substr( tam - 12, 3 ) + '.' + vr.substr( tam - 9, 3 ) + '/' + vr.substr( tam - 6, 4 ) + '-' + vr.substr( tam - 2, tam );
 		    }
 		}
-		
-		function retorna_verifica_cpfcnpj(){
-			var cpf_cnpj = $("#cr_cpf_usuario").val();
-			ret = verifica_cpf_cnpj(retira_mascara(cpf_cnpj));		
-			if(!falsidade){
-				alert("CPF/CNPJ inválido!");
-				$("#cr_cpf_usuario").val("");
-				$("#cr_cpf_usuario").focus();
-				return false;
-			}
-		}
-		
-		
-		
-		//Verifica se CPF ou CGC e encaminha para a devida função, no caso do cpf/cgc estar digitado sem mascara
-		function verifica_cpf_cnpj(cpf_cnpj) {
-		    if (cpf_cnpj.length == 11) {
-		        return(verifica_cpf(cpf_cnpj));
-		    } else if (cpf_cnpj.length == 14) {
-		        return(verifica_cnpj(cpf_cnpj));
-		    } else { 
-		        return false;
-		    }		   
-		}
-	
-		//Verifica se o número de CPF informado é válido
-		function verifica_cpf(sequencia) {
-		    if ( Procura_Str(1,sequencia,'00000000000,11111111111,22222222222,33333333333,44444444444,55555555555,66666666666,77777777777,88888888888,99999999999,00000000191,19100000000') > 0 ) {
-		        return false;
-		    }
-		    seq = sequencia;
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 3;f >= 0;f--) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        multiplicador++;
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 2,seq.length - 1)) {
-		        return false;
-		    }
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 2;f >= 0;f--) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        multiplicador++;
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 1,seq.length)) {
-		        return false;
-		    }
-		    return true;
-		}
-	
-		//Verifica se o número de CNPJ informado é válido
-		function verifica_cnpj(sequencia) {
-		    seq = sequencia;
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 3;f >= 0;f-- ) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        if ( multiplicador < 9 ) {
-		            multiplicador++;
-		        } else {
-		            multiplicador = 2;
-		        }
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 2,seq.length - 1)) {
-		        return false;
-		    }
-	
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 2;f >= 0;f--) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        if (multiplicador < 9) {
-		            multiplicador++;
-		        } else {
-		            multiplicador = 2;
-		        }
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 1,seq.length)) {
-		        return false;
-		    }
-		    return true;
-		}
-		
+
 		//Procura uma string dentro de outra string
 		function Procura_Str(param0,param1,param2) {
 		    for (a = param0 - 1;a < param1.length;a++) {
@@ -625,32 +618,30 @@
 		function retira_mascara(cpf_cnpj) {
 		    return cpf_cnpj.replace(/\./g,'').replace(/-/g,'').replace(/\//g,'')
 		}
-	
-		
-		function validacaoEmail() {			  
-			  var email = $("#cr_email_usuario").val();			  
-			  var usuario = email.substring(0, email.indexOf("@"));
-			  var dominio = email.substring(email.indexOf("@")+ 1, email.length);
-
-			  if ((usuario.length >=1) &&
-			      (dominio.length >=3) &&
-			      (usuario.search("@")==-1) &&
-			      (dominio.search("@")==-1) &&
-			      (usuario.search(" ")==-1) &&
-			      (dominio.search(" ")==-1) &&
-			      (dominio.search(".")!=-1) &&
-			      (dominio.indexOf(".") >=1)&&
-			      (dominio.lastIndexOf(".") < dominio.length - 1)) {
-			    // email válido			   
-			  } else {
-			    // email inválido
-			    alert('Por favor, insira um email válido.');
-			  }
-			}
-		
 	</script>
 		
-	<body>	
+	<body>
+			<!-- Modal de mensagem de tratamento de Alerta -->
+			<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        <p id="mensagemErro"></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			      </div>
+			    </div>
+			   </div>
+			 </div>
+			 
+			 
 		<form id="login_cadastro" name="login_cadastro" method="post" action="loginservlet">	
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
 			<input type="hidden" id="cr_nivel_usuario" name="cr_nivel_usuario" value="2"/>
@@ -724,6 +715,8 @@
 				</div>				
 			</div>	
 			
+			
+			
 			<!-- DIV CADASTRO CONTA - PRIMEIRA PARTE -->
 			<div class="div_cadastro">
 				
@@ -754,13 +747,21 @@
 						</div>	
 					</div>						
 					
-					<div class="row mt-3 justify-content-center">											
-						<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-right: 2px; margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLogin();">
-							<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-						</button>																								
-						<button type="button" class="btn2 btn btn-success float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
-							<strong>Próximo <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
-						</button>																																]
+					<div class="row mt-3 justify-content-md-center">
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLogin();">
+								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
+							</button>	
+						
+						</div>	
+						
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
+								<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
+							</button>
+						</div>
+																												
 					</div>						
 					</font>				
 				</div>				
@@ -839,7 +840,7 @@
 					<div class="row mt-3 justify-content-md-center">
 						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
 							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="email" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" onchange="validacaoEmail()" placeholder = "Digite seu E-mail" style="font-size: 15px; height: 50px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
+							<input type="email" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" placeholder = "Digite seu E-mail" style="font-size: 15px; height: 50px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
 						</div>					
 					</div>
 						
