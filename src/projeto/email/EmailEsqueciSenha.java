@@ -90,16 +90,14 @@ public class EmailEsqueciSenha {
 	
 	public String envioEmailEsqueciSenha(String email, String nomeusuario) {
 		
+		int indiceEspaco = nomeusuario.indexOf(" ");			
+		nomeusuario = (indiceEspaco != -1) ? nomeusuario.substring(0, indiceEspaco) : nomeusuario;
+
 		String htmlEmail = "";		
-		//String nomeusuario = "Arthur";
 		
-		String senha = gerarSenhaAleatoria(8);
+		String senha = gerarSenhaAleatoria(8);						
 						
-						//System.out.println("VER SE ESTÁ ENTRANDO NO EnvioEmailEsqueciSenha!"+email);			
-						
-						String assunto = "Cozinha Rápida - Redefinição de Senha";							
-			
-						//String PATH_IMAGE = "C://Projetos//livemusik//WebContent//imagens//live_talentos_logo_reto.png";
+		String assunto = "Cozinha Rápida - Redefinição de Senha";										
 						
 		String htmlEmailIni =   "<html> " +
 								"<head> " +
@@ -201,8 +199,8 @@ public class EmailEsqueciSenha {
 						}						
 					};
 					t.start();		
-					//msgRetorno = atualizaRecuperaSenha(email, senha);
-					msgRetorno = "Deu certo!";
+					msgRetorno = atualizaRecuperaSenha(email, senha);
+					//msgRetorno = "Deu certo!";
 		
 		return msgRetorno;
 	}
@@ -212,10 +210,10 @@ public class EmailEsqueciSenha {
 		String retorno = "";
 		String opc_senha_alterada = "S";
 
-		String UPD_SENHA =	" UPDATE r1_usuario SET " +
-				    		" senha_usuario = ?, "+	
-				    		" opc_alterar_senha = ? "+
-				    		" WHERE email_usuario='"+email+"'";
+		String UPD_SENHA =	" UPDATE cr_usuario SET " +
+				    		" cr_senha_usuario = MD5(?), "+	
+				    		" cr_senha_alterada = ? "+
+				    		" WHERE cr_email_usuario = '"+email+"'";
 		
 		try {
 			Connection co = ProjetoDatabase.getConnection();		

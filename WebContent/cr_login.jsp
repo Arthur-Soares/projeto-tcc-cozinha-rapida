@@ -16,10 +16,9 @@
 		<script type="text/javascript" src="js/popper.js"></script>
 		<script type="text/javascript" src="js/jquery.mask.min.js"></script>
 		<script src="js/bootstrap-datepicker.min.js"></script>
-		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>		 
-		<link href="js/bootstrap.min.css"rel="stylesheet">
+		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>		 		
 		<link href="js/bootstrap-dialog.min.css" rel="stylesheet">
-		<link href="js/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<link href="fontawesome/css/fontawesome.min.css" rel="stylesheet">
 		<script src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery.mask.min.js"></script>
 	    <script src="js/bootstrap.min.js"></script>
@@ -118,8 +117,14 @@
 			text-align: center;
 			float: left;
 		}
-		.div_cadastro_sucesso {
-			background-color: #636f61;
+		
+		.div_cadastro_sucesso {			
+			background: linear-gradient(135deg, rgba(99, 111, 97 , 0));
+		    -webkit-backdrop-filter: blur(20px);
+		    backdrop-filter: blur(20px);
+		    padding: 30px;    		    
+		    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+		    border: 1px solid rgba(255, 255, 255, 0.18);
 			margin: 0px;
 		    height: 100vh;
 		    display: flex;
@@ -543,6 +548,7 @@
 			$("#cr_id_usuario").val("");
 			$("#cr_email_usuario").val("");
 			$("#cr_senha_usuario").val("");
+			$("#cr_senha_usuario_confirm").val("");
 			$("#cr_nome_completo_usuario").val("");
 			$("#cr_cpf_usuario").val("");
 			$("#cr_telefone_usuario").val("");
@@ -552,7 +558,7 @@
 			$("#cr_endcomplemento_usuario").val("");
 			$("#cr_pontoreferencia_usuario").val("");
 			$("#cr_email_usuario_login").val("");
-			$("#cr_senha_usuario_login").val("");
+			$("#cr_senha_usuario_login").val("");					
 		}
 		//Aplica a máscara no campo
 		//Função para ser utilizada nos eventos do input para formatação dinâmica
@@ -600,33 +606,115 @@
 		    return 0;
 		}
 		
-		
 		//Retira a máscara do valor de cpf_cnpj
 		function retira_mascara(cpf_cnpj) {
 		    return cpf_cnpj.replace(/\./g,'').replace(/-/g,'').replace(/\//g,'')
 		}
+		
+		function novaSenha(){
+			var email_esqueci_senha = $("#email_esqueci_senha").val();
+			 
+			if(email_esqueci_senha == ""){
+			 	// Remove a classe input-error se já estiver presente
+			  	$("#email_esqueci_senha").removeClass('input-error');
+
+			  	// Adiciona a classe input-error para acionar a animação e destaque vermelho
+			  	$("#email_esqueci_senha").addClass('input-error');
+
+			  	// Foca no input de email
+			  	$("#email_esqueci_senha").focus();
+				
+			    // Remove o elemento de mensagem de erro existente
+			    $(".error-message").remove();
+			    
+			 	// Cria um elemento para exibir a mensagem de erro
+			 	var errorElement = $('<div class="error-message">Email em branco, digite algo antes de enviar!</div>');
+			  	$("#email_esqueci_senha_error").parent().append(errorElement);
+				return false;
+			}
+			
+			$.postJSON("./jsonservlet",{opc_servlet:'envia_email',email_esqueci_senha:email_esqueci_senha},
+				function(emailretorno){				
+					var retorno = emailretorno.retorno;
+					if(retorno == 0){											        										      					 					
+					    // Remove o elemento de mensagem de sucesso existente
+					    $(".success-message").remove();
+					    
+					 	// Cria um elemento para exibir a mensagem de sucesso
+					 	$("#email_esqueci_senha").val("");
+					 	var successElement = $('<div class="success-message">Pronto! Siga os passos que foram enviados para o seu email para prosseguir com a redefinição da sua senha.</div>');
+					  	$("#email_esqueci_senha_error").parent().append(successElement);									        
+					}else{	
+						// Remove a classe input-error se já estiver presente
+					  	$("#email_esqueci_senha").removeClass('input-error');
+
+					  	// Adiciona a classe input-error para acionar a animação e destaque vermelho
+					  	$("#email_esqueci_senha").addClass('input-error');
+
+					  	// Foca no input de email
+					  	$("#email_esqueci_senha").focus();
+						
+					    // Remove o elemento de mensagem de erro existente
+					    $(".error-message").remove();
+					    
+					 	// Cria um elemento para exibir a mensagem de erro
+					 	var errorElement = $('<div class="error-message">Erro! O email informado não está cadastrado!</div>');
+					  	$("#email_esqueci_senha_error").parent().append(errorElement);														        									
+					}											        		
+				}
+			);	
+		}
+		
+		function limpaError(){
+			// Remove a classe input-error se já estiver presente
+		  	$("#email_esqueci_senha").removeClass('input-error');
+		  	 // Remove o elemento de mensagem de erro existente
+		    $(".error-message").remove();
+		    $(".success-message").remove();
+		}
+			
 	</script>
 		
 	<body>
-			<!-- Modal de mensagem de tratamento de Alerta -->
-			<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        <p id="mensagemErro"></p>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-			      </div>
-			    </div>
-			   </div>
-			 </div>
+		<!-- Modal de mensagem de tratamento de Alerta -->
+		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#b1463c;">
+		        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemErro"></p>			         
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
+		 
+		 <!-- Modal de mensagem de tratamento de Sucesso -->
+		<div class="modal fade" id="modalSucesso" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalSucessoLabel">Comunicado</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemSucesso"></p>			         
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
 			 
 			 
 		<form id="login_cadastro" name="login_cadastro" method="post" action="loginservlet">	
@@ -648,7 +736,7 @@
 							<label for="cr_senha_usuario_login">Senha</label> 
 						</div>			
 																
-						<a class="esquecer_senha" data-toggle="modal" href="#modalsenha">Esqueceu sua senha?</a>
+						<a class="esquecer_senha" data-toggle="modal" href="#modalsenha" onclick="limpaError();">Esqueceu sua senha?</a>
 						
 						<button type="button" class="btn_entrar" onclick="validaLogin();">
 							Entrar&nbsp;<i class="fas fa-sign-in-alt"></i> 
@@ -806,5 +894,44 @@
 				</div>
 			</div>					
 		</form>
+		
+		<!-- MODAL ESQUECI SENHA -->
+		<div class="modal fade" id="modalsenha" tabindex="-1" role="dialog" aria-labelledby="modalsenhaLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">		      
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalErroLabel">Esqueci a Senha</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+	        	<p>Informe seu email abaixo para receber os próximos passos:</p>
+	        	<div class="input-group">
+				  <input id="email_esqueci_senha" name="email_esqueci_senha" type="text" class="form-control" placeholder="Email">
+				  <div class="input-group-append">
+				    <button class="btn btn-success" type="button" onclick="javascript:novaSenha();">Enviar</button>
+				  </div>
+				</div>				
+			    <input type="hidden" id="email_esqueci_senha_error"  name="email_esqueci_senha_error">				  				
+				
+				<div class="row mt-2 justify-content-center text-center" id="sucesso" style="display:none;">
+		          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		            <h5>Pronto! Siga os passos que foram enviados para o seu email para prosseguir com a redefinição da sua senha.</h5>
+		          </div>
+		        </div>
+		
+		        <div class="row mt-2 justify-content-center text-center" id="erro" style="display:none; color:#ff0000">
+		          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		            <h5>Erro! O email informado não está cadastrado.</h5>
+		          </div>
+		        </div>	
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" id="fecha_modal_esqueci_senha" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>			 	
 	</body>
 </html>

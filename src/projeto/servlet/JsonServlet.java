@@ -120,6 +120,12 @@ public class JsonServlet extends HttpServlet {
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
 			out = response.getWriter();
 			out.print(jsonObj);
+		}else if("envia_email".equals(opcServlet)) {			
+			String email_esqueci_senha = null!=request.getParameter("email_esqueci_senha")?Cast.toString(request.getParameter("email_esqueci_senha")):"";
+			int retornoemail = Cr_usuario.verificaEmail(email_esqueci_senha);
+			out = response.getWriter();
+			jsonObj.put("retorno",retornoemail);
+        	out.print(jsonObj);    		
 		}//else if("atualiza_senha".equals(opcServlet)) {			
 //			int id_usuario = userLogado.getId_usuario();		
 //			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";

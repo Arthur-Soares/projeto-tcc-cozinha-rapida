@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
+import projeto.email.EmailEsqueciSenha;
 import projeto.util.FormatUtils;
 import projeto.util.ProjetoDatabase;
 
@@ -36,6 +37,9 @@ CREATE TABLE cr_usuario
 
 ALTER TABLE cr_usuario
 ADD COLUMN cr_nivel_usuario varchar(1) DEFAULT ''
+
+ALTER TABLE cr_usuario
+ADD COLUMN cr_senha_alterada varchar(1) DEFAULT ''
 
 */
 
@@ -59,6 +63,7 @@ public class Cr_usuario {
 	String cr_endcomplemento_usuario = "";
 	String cr_pontoreferencia_usuario = "";
 	String cr_nivel_usuario = "";
+	String cr_senha_alterada = "";
 	
 	
 	public static String SEL_PADRAO =   " SELECT " +
@@ -73,7 +78,8 @@ public class Cr_usuario {
 										" cr_nrmcasa_usuario, " +
 										" cr_endcomplemento_usuario, " +
 										" cr_pontoreferencia_usuario, " +
-										" cr_nivel_usuario " +
+										" cr_nivel_usuario, " +
+										" cr_senha_alterada " +
 										" FROM cr_usuario "+ 
 										" where 1=1 "; 
 
@@ -204,17 +210,24 @@ public class Cr_usuario {
 
 	public void setCr_nivel_usuario(String cr_nivel_usuario) {
 		this.cr_nivel_usuario = cr_nivel_usuario;
+	}	
+
+	public String getCr_senha_alterada() {
+		return cr_senha_alterada;
 	}
 
-	
-	
+	public void setCr_senha_alterada(String cr_senha_alterada) {
+		this.cr_senha_alterada = cr_senha_alterada;
+	}
+
 	/**
 	 * Este é o construtor da classe "Cr_usuario". Ele recebe como entrada um conjunto de parâmetros que correspondem às 
 	 * variáveis de instância da classe e atribui esses valores aos campos correspondentes. Em outras palavras, ele é 
 	 * usado para criar um objeto "Cr_usuario" com os valores fornecidos para cada um dos campos do objeto.
 	 */
 	public Cr_usuario(int cr_id_usuario, String cr_email_usuario, String cr_senha_usuario, String cr_nome_completo_usuario, String cr_cpf_usuario,
-					  String cr_telefone_usuario, String cr_cep_usuario, String cr_endereco_usuario, String cr_nrmcasa_usuario, String cr_endcomplemento_usuario, String cr_pontoreferencia_usuario, String cr_nivel_usuario) {
+					  String cr_telefone_usuario, String cr_cep_usuario, String cr_endereco_usuario, String cr_nrmcasa_usuario, String cr_endcomplemento_usuario, 
+					  String cr_pontoreferencia_usuario, String cr_nivel_usuario, String cr_senha_alterada) {
 		super();
 		this.cr_id_usuario = cr_id_usuario;
 		this.cr_email_usuario = cr_email_usuario;
@@ -228,6 +241,7 @@ public class Cr_usuario {
 		this.cr_endcomplemento_usuario = cr_endcomplemento_usuario;
 		this.cr_pontoreferencia_usuario = cr_pontoreferencia_usuario;
 		this.cr_nivel_usuario = cr_nivel_usuario;
+		this.cr_senha_alterada = cr_senha_alterada;
 		
 	}
 	
@@ -245,8 +259,8 @@ public class Cr_usuario {
 		this.cr_nrmcasa_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;	
 		this.cr_endcomplemento_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;	
 		this.cr_pontoreferencia_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
-		this.cr_nivel_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";
-		
+		this.cr_nivel_usuario = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";ind++;
+		this.cr_senha_alterada = listObj.size()>ind?(null!=listObj.get(ind)?listObj.get(ind).toString():""):"";
 		
 	}
 
@@ -265,6 +279,7 @@ public class Cr_usuario {
 		this.cr_endcomplemento_usuario = mapParams.containsKey("cr_endcomplemento_usuario")?mapParams.get("cr_endcomplemento_usuario").trim():"";
 		this.cr_pontoreferencia_usuario = mapParams.containsKey("cr_pontoreferencia_usuario")?mapParams.get("cr_pontoreferencia_usuario").trim():"";
 		this.cr_nivel_usuario = mapParams.containsKey("cr_nivel_usuario")?mapParams.get("cr_nivel_usuario").trim():"";
+		this.cr_senha_alterada = mapParams.containsKey("cr_senha_alterada")?mapParams.get("cr_senha_alterada").trim():"";
 		
 	}
 
@@ -565,6 +580,55 @@ public class Cr_usuario {
 		}
 		return r1u;
 	}
+	
+	public static int verificaEmail(String email) {
+		int idRetorno = 0;
+		String emailSql = "";
+		String emailRetorno = "";
+		String nomeRetorno = "";
+		
+		emailSql =  " SELECT " +									
+					" cr_email_usuario, " +			
+					" cr_nome_completo_usuario " +
+					" FROM cr_usuario " +
+					" where 1=1"+
+					" and cr_email_usuario = '"+email+"'";
+		
+		try {
+			Connection c = ProjetoDatabase.getConnection();
+			Statement st = c.createStatement();
+			ResultSet rs = st.executeQuery(emailSql);
+			if(rs.next()) {
+				emailRetorno = null!=rs.getObject(1)?rs.getString(1).trim():"";	
+				nomeRetorno = null!=rs.getObject(2)?rs.getString(2).trim():"";	
+			}
+			System.out.println("@@@@@ VENDO SE O DADO ESTÁ DENTRO DO EMAIL RETORNO :: "+emailRetorno);
+			if(!emailRetorno.equals("")) {
+				idRetorno = 0;
+				EmailEsqueciSenha ees = new EmailEsqueciSenha(); 
+				ees.envioEmailEsqueciSenha(email, nomeRetorno);
+				System.out.println("Não está vazio :: "+idRetorno);
+			}else {
+				idRetorno = -1;		
+				System.out.println("Está vazio :: "+idRetorno);
+			}
+			if(null!=rs) {
+				rs.close();
+				rs=null;
+			}
+			if(null!=st) {
+				st.close();
+				st=null;
+			}										
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return idRetorno;
+	}	
 
 	public Cr_usuario() {
 		// TODO Auto-generated constructor stub
