@@ -343,7 +343,25 @@
 
 			
 		}
+		function Menos(id) {
+	        var quantidade = parseInt($("#" + id).text());
+	        if (quantidade > 1) {
+	            var menos = quantidade - 1;
+	            $("#" + id).text(menos);
+	            totalItem();
+	        } else {
+	            return false;
+	        }
+	    }
+
+	    function Mais(id) {
+	        var quantidade = parseInt($("#" + id).text());
+	        quantidade++;
+	        $("#" + id).text(quantidade);
+	        totalItem();
+	    }
 	</script>
+	
 
 	<body>		
 	<%=MenuUtils.buildMenu("receita", cru)%>
@@ -496,28 +514,25 @@
 							<div class="row">
 								<%
 						        int quantidade = 5; // Defina o número de repetições desejado
+						        String divId; //declarando variavel para ser utilizada fora do loop;
 						        for (int i = 0; i < quantidade; i++) {
-						        %>
+						        	divId = "div_"+i; // Gera um ID único para cada div
 						        
-						        <!-- Botões de somar e subtrair ingredientes -->
-						        <div class="col-xl-3 col-lg-2 col-md-4 col-sm-12 col-12 ingQtd"> 
-						        	
-						        	<div class="row">
-							        <button type="button" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white;background-color: #b1463c">
-							        +
-							        </button>
-							        
-							        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="border: solid 1px black; text-align: center; font-size: 30px;">
-							        5
+						        %>						        <!-- Botões de somar e subtrair ingredientes -->
+							    <div class="col-xl-3 col-lg-2 col-md-4 col-sm-12 col-12 ingQtd"> 
+							        <div class="row">
+							            <button type="button" onclick="Menos('<%= divId %>')" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white; background-color: #b1463c">
+							                -
+							            </button>
+							            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" id="<%= divId %>" style="border: solid 1px black; text-align: center; font-size: 30px;">
+							                5
+							            </div>
+							            <button type="button" onclick="Mais('<%= divId %>')" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white;background-color: #b1463c">
+							                +
+							            </button>
 							        </div>
-							        
-							        <button type="button" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white; background-color: #b1463c">
-							        -
-							        </button>
-							        
-							        </div>
-						         </div>
-						         
+							    </div>
+													         
 						         <!-- Imagem do ingrediente -->
 								<div class="col-xl-4 col-lg-5 col-md-8 col-sm-12 col-12 ingImg">
 								
