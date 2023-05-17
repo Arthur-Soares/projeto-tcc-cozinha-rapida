@@ -4,8 +4,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-BR, pt">
-	<head>
+	<head>  
+		<link rel="icon" href="imagens/cr_logo_guia_ret_arredondado.png" type="image/png">	
 		<title>Home - Cozinha Rápida</title>
+		<link href="css/cr_login.css" rel="stylesheet">
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="fontawesome/css/all.min.css" rel="stylesheet">
 		<meta http-equiv="Content-Type" content="text/html; charset:iso-88590-1">
@@ -15,7 +17,8 @@
 		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>		 
+	    <script src="js/bootstrap-dialog.min.js"></script>
 		<script type="text/javascript" src="js/popper.js"></script>
 		<script src="./js/bootstrap-datepicker.min.js"></script>
 		<script src="./js/bootstrap-datepicker.pt-BR.min.js"></script>		
@@ -34,6 +37,7 @@
 		int cuserid = null!=cru?cru.getCr_id_usuario():0;
 		String cuseradmin = null!=cru?cru.getCr_nivel_usuario():"";
 		String cusername = null!=cru?cru.getCr_nome_completo_usuario():"";
+		String copcsenhaalt = null!= cru?cru.getCr_senha_alterada():"";
 		String redir = null!=request.getParameter("redir")?request.getParameter("redir"):"";
 		String opclogoff = null!=request.getParameter("logoff")?request.getParameter("logoff"):"";
 		//logoff=S
@@ -63,13 +67,17 @@
 		
 		h1 {	
 			color: #FFFFFF;
-			font-weight: 800;
-			font-family: 'Open Sans', sans-serif;							
+			font-weight: 800;								
 		}
+		
+		h2 {	
+			color: #FFFFFF;
+			font-weight: 800;								
+		}
+		
 		h6 {	
 			color: #FFFFFF;
-			font-weight: 800;
-			font-family: 'Open Sans', sans-serif;							
+			font-weight: 800;								
 		}
 		
 		body {
@@ -153,13 +161,15 @@
 			/* 
 			float: center; */
 		}
-		.card-body{
-		  background-color: #636f61;
+		.card-body{		  		  
+		  background-color: rgba(99, 111, 97, 0.9);	
+		  backdrop-filter: blur(40px);
+		  -webkit-backdrop-filter: blur(40px);		   
 		  border-radius: 11px;			  		  
 		}	
 		.card {
-		  position: flex;	
-		  background-color: #636f61;
+		  position: flex;			  
+		  background-color: rgba(99, 111, 97, 0.9);		  			  	
 		  border-radius: 11px;	
 		  height: 60vh;   		 
 		  margin-bottom: 30px;
@@ -167,16 +177,14 @@
 		  /*height: 320px;  ajuste o tamanho do cartão de acordo com suas necessidades */			  		
 		}
 		.card-text{
-			color: #FFFFFF;			
-			font-family: 'Open Sans', sans-serif;		
+			color: #FFFFFF;					
 		}
 		.img_receita {
 		  position: relative;
 		  height: 200px; /* ajuste a altura da imagem de acordo com suas necessidades */
 		  border: 6px solid #323232; /* adiciona uma borda preta de 2px */
-		  border-radius: 10px;
-  		  box-sizing: border-box; /* inclui a largura da borda no cálculo do tamanho do iframe */
-  		  box-shadow: 0px 0px 10px; /* adiciona uma sombra de 10px ao redor da div */  		  
+		  border-radius: 8px;
+  		  box-sizing: border-box; /* inclui a largura da borda no cálculo do tamanho do iframe */  		   		 
 		}
 		.img_receita iframe {
 		  position: absolute;
@@ -298,6 +306,19 @@
 			if(logoff == "S"){
 				$("#tela_home").submit();
 			}
+			
+			//SE A SENHA DO USUÁRIO FOI ALTERADA, IRÁ APARECER UM MODAL PARA ELE REDEFINIR ELA:
+			<%
+			if("S".equals(copcsenhaalt)){
+			%>
+				$("#modalsenha").modal('show');		
+			<%
+			}else{
+			%>
+				$("#modalsenha").modal('hide');		
+			<%
+			}
+			%>
 			
 			carregalistaTopReceitas();
 			
@@ -518,6 +539,63 @@
 			$("#cr_id_receita").val(card_id);
 			$("#frmreceita").submit();		
 		}
+		
+		
+		//Funções da Redefinição de Senha:
+		function novaSenha(){
+			var senha = $("#nova_senha").val();			
+						
+			if(senha == "" || senha.length == 0){
+			 	// Remove a classe input-error se já estiver presente
+			  	$("#nova_senha").removeClass('input-error');
+
+			  	// Adiciona a classe input-error para acionar a animação e destaque vermelho
+			  	$("#nova_senha").addClass('input-error');
+
+			  	// Foca no input de email
+			  	$("#nova_senha").focus();
+				
+			    // Remove o elemento de mensagem de erro existente
+			    $(".error-message").remove();
+			    
+			 	// Cria um elemento para exibir a mensagem de erro
+			 	var errorElement = $('<div class="error-message">Senha em branco, digite algo antes de enviar!</div>');
+			  	$("#email_esqueci_senha_error").parent().append(errorElement);
+				return false;
+			}
+			
+			$.postJSON("./jsonservlet",{opc_servlet:'atualiza_senha',senha:senha},
+				function(retornasenha){				
+					var retorno = retornasenha.retorno;					
+					if(retorno == 0){											        										      					 					
+					    // Remove o elemento de mensagem de sucesso existente
+					    $(".success-message").remove();
+					    
+					 	// Cria um elemento para exibir a mensagem de sucesso
+					 	$("#nova_senha").val("");
+					 	var successElement = $('<div class="success-message">Senha alterada com sucesso!</div>');
+					  	$("#email_esqueci_senha_error").parent().append(successElement);									        
+					}else{	
+						// Remove a classe input-error se já estiver presente
+					  	$("#email_esqueci_senha").removeClass('input-error');
+
+					  	// Adiciona a classe input-error para acionar a animação e destaque vermelho
+					  	$("#email_esqueci_senha").addClass('input-error');
+
+					  	// Foca no input de email
+					  	$("#email_esqueci_senha").focus();
+						
+					    // Remove o elemento de mensagem de erro existente
+					    $(".error-message").remove();
+					    
+					 	// Cria um elemento para exibir a mensagem de erro
+					 	var errorElement = $('<div class="error-message">Erro ao alterar senha!</div>');
+					  	$("#email_esqueci_senha_error").parent().append(errorElement);														        									
+					}					
+					$("#nova_senha").prop('readonly', true);					
+				}
+			);
+		}		
 	</script>
 		
 	<body>	
@@ -532,7 +610,7 @@
 			<input type="hidden" id="cr_id_usuario" name="cr_id_usuario" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_usuario"/>						
 			<div class="div_home" style="font-size: 90%;">																
-				<h1>Olá, Bem vindo ao<br/>Cozinha Rápida!</h1>																																								
+				<h2>Olá, Bem vindo ao<br/>Cozinha Rápida!</h2>																																								
 				<div class="row justify-content-center mt-3 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12" style="position: absolute; left:50%; top:90%; transform: translate(-50%, -50%);">															
 					<button type="button" class="btn btn-lg float-center arrow-icon" style="color: #FFFFFF; font-size: 20px;" onmouseover="verMais();">
 						<strong>Ver mais</strong><br><i class="fa fa-chevron-down" aria-hidden="true"></i>	
@@ -735,5 +813,31 @@
 			     </div>
 			</div>
 		</form>
+		<!-- MODAL ESQUECI SENHA -->
+		<div class="modal fade" id="modalsenha" tabindex="-1" role="dialog" aria-labelledby="modalsenhaLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">		      
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalErroLabel">Redefinição de Senha</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+	        	<p>Olá!<br>Notamos que você entrou com uma senha de redefinição. Por favor, digite sua nova senha abaixo:</p>
+	        	<div class="input-group">
+				  <input id="nova_senha" name="nova_senha" type="password" class="form-control" placeholder="Senha">
+				  <div class="input-group-append">
+				    <button class="btn btn-success" type="button" onclick="javascript:novaSenha();">Salvar</button>
+				  </div>
+				</div>				
+			    <input type="hidden" id="email_esqueci_senha_error"  name="email_esqueci_senha_error">				  								
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" id="fecha_modal_esqueci_senha" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>	
 	</body>
 </html>

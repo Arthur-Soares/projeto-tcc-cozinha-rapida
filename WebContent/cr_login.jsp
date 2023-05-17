@@ -611,7 +611,7 @@
 		    return cpf_cnpj.replace(/\./g,'').replace(/-/g,'').replace(/\//g,'')
 		}
 		
-		function novaSenha(){
+		function esqueciSenha(){
 			var email_esqueci_senha = $("#email_esqueci_senha").val();
 			 
 			if(email_esqueci_senha == ""){
@@ -910,7 +910,7 @@
 	        	<div class="input-group">
 				  <input id="email_esqueci_senha" name="email_esqueci_senha" type="text" class="form-control" placeholder="Email">
 				  <div class="input-group-append">
-				    <button class="btn btn-success" type="button" onclick="javascript:novaSenha();">Enviar</button>
+				    <button class="btn btn-success" type="button" onclick="javascript:esqueciSenha();">Enviar</button>
 				  </div>
 				</div>				
 			    <input type="hidden" id="email_esqueci_senha_error"  name="email_esqueci_senha_error">				  				

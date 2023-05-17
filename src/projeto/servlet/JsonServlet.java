@@ -126,14 +126,15 @@ public class JsonServlet extends HttpServlet {
 			out = response.getWriter();
 			jsonObj.put("retorno",retornoemail);
         	out.print(jsonObj);    		
-		}//else if("atualiza_senha".equals(opcServlet)) {			
-//			int id_usuario = userLogado.getId_usuario();		
-//			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";
-//			int retornasenha = Cr_usuario.atualizaSenha(id_usuario, senha);
-//			out = response.getWriter();
-//			jsonObj.put("retorno",retornasenha);
-//        	out.print(jsonObj);    		
-	  	else if("list_receitas".equals(opcServlet)) {	
+		}else if("atualiza_senha".equals(opcServlet)) {			
+			int id_usuario = userLogado.getCr_id_usuario();		
+			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";
+			String opc_senha_alterada = "N";
+			int retornasenha = Cr_usuario.atualizaSenha(id_usuario, senha, opc_senha_alterada);
+			out = response.getWriter();
+			jsonObj.put("retorno",retornasenha);
+        	out.print(jsonObj);    		
+		}else if("list_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listarJSON(new Object[0], new Object[0]);
 			out = response.getWriter();
     		out.print(jsonArray);

@@ -628,7 +628,39 @@ public class Cr_usuario {
 			e.printStackTrace();
 		}
 		return idRetorno;
-	}	
+	}
+	
+	public static int atualizaSenha(int id_usuario, String senha, String opc_senha_alterada) {
+		int idRetorno = 0;
+
+		String UPD_SENHA =	" UPDATE cr_usuario SET " +
+				    		" cr_senha_usuario = MD5(?), "+	
+				    		" cr_senha_alterada = ? "+	
+				    		" WHERE cr_id_usuario = ? ";
+		
+		try {
+			Connection co = ProjetoDatabase.getConnection();		
+			PreparedStatement ps = co.prepareStatement(UPD_SENHA);			
+			ps.setString(1, senha);
+			ps.setString(2, opc_senha_alterada);
+			ps.setInt(3, id_usuario);
+			ps.executeUpdate();
+			
+			if(null!=ps) {
+				ps.close();
+				ps=null;
+			}
+			if(null!=co) {
+				co.close();
+				co=null;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			idRetorno = -1;	
+		}				
+		return idRetorno;
+	}
 
 	public Cr_usuario() {
 		// TODO Auto-generated constructor stub

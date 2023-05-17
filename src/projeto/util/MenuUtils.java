@@ -110,14 +110,21 @@ public class MenuUtils {
 							"			} " +
 							" " +
 							"			.carrinho .conteudo-carrinho .pagar:hover { " +
-							"			  background-color: #cc0000; " +
+							"			  background-color: #cc0000; " +							
+							"			} "+
+							" " +
+							"			.elemento_navbar { " +
+							"  				background-color: rgba(99, 111, 97, 0.9); " +	
+							"			    backdrop-filter: blur(40px); "+
+							"				-webkit-backdrop-filter: blur(40px); " +
 							"			} "+
 							"	</style> " +
 							"	<form id='frmchama' method='post' action=''> " +
 							"	</form> " +								 							
 							"	<!-- Navigation --> " +
-							"	<nav class='navbar navbar-expand-lg navbar-dark fixed-top' style='background-color: #636f61;'> " +							
-							"			<a class='navbar-brand' onclick=\"javascript:chamaMenu('cr_home.jsp');\" style='color: #FFFFFF; font-weight: 800;'><strong>Cozinha Rápida</strong></a> " +
+							"	<nav class='navbar navbar-expand-lg navbar-light fixed-top elemento_navbar'> " +
+							"			<img class='img-fluid' onclick=\"javascript:chamaMenu('cr_home.jsp');\" style='max-width: 200px;' src='./imagens/cr_navbar.png' /> " +
+							//"			<a class='navbar-brand' onclick=\"javascript:chamaMenu('cr_home.jsp');\" style='color: #FFFFFF; font-weight: 800;'><strong>Cozinha Rápida</strong></a> " +
 							"			<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'> " +							
 							"				<span class='navbar-toggler-icon'></span> " +
 							"			</button> " +																				
