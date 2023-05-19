@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR, pt">
 	<head>
+		<link rel="icon" href="imagens/cr_logo_guia_ret_arredondado.png" type="image/png">	
 		<title>Login - Cozinha Rápida</title>
 		<link href="css/cr_login.css" rel="stylesheet">
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
