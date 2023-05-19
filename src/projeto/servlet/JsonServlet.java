@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
+import projeto.model.Cr_ingredientes;
 import projeto.model.Cr_receita;
 import projeto.model.Cr_usuario;
 import projeto.model.Cr_usuario_receita;
@@ -134,7 +135,42 @@ public class JsonServlet extends HttpServlet {
 			out = response.getWriter();
 			jsonObj.put("retorno",retornasenha);
         	out.print(jsonObj);    		
-		}else if("list_receitas".equals(opcServlet)) {	
+		}else if("list_ingredientes".equals(opcServlet)) {	
+			jsonArray = Cr_ingredientes.listarJSON(new Object[0], new Object[0]);
+			out = response.getWriter();
+    		out.print(jsonArray);
+	  	}else if("apaga_ingrediente".equals(opcServlet)) {
+			int id_ingrediente = null!=request.getParameter("id_ingrediente")?Cast.toInt(request.getParameter("id_ingrediente")):0;
+			Cr_ingredientes cri = new Cr_ingredientes();
+			int retorno_ingrediente = cri.apaga_registro(id_ingrediente);
+			jsonObj = new JSONObject();	
+			if(retorno_ingrediente == -1) {
+				jsonObj.put("ERRO", "Erro ao apagar ingrediente!");
+			}else{
+				jsonObj.put("ERRO", "");
+			}			
+			out = response.getWriter();
+    		out.print(jsonObj);
+		}else if("salva_ingrediente".equals(opcServlet)) {
+			String cr_valor_ingrediente = mapParams.containsKey("cr_valor_ingrediente")?mapParams.get("cr_valor_ingrediente").trim():"";
+			cr_valor_ingrediente = cr_valor_ingrediente.replace(".","");
+			cr_valor_ingrediente = cr_valor_ingrediente.replaceAll(",",".");
+			mapParams.put("cr_valor_ingrediente",Cast.toString(cr_valor_ingrediente));			
+			Cr_ingredientes cri = new Cr_ingredientes(mapParams);
+			int id_ingrediente = cri.salva_registro();
+			jsonObj= new JSONObject();
+			jsonObj.put("id_ingrediente", id_ingrediente);
+			out = response.getWriter();
+    		out.print(jsonObj);
+		}else if("find_ingrediente".equals(opcServlet)) { 
+			int cr_id_ingrediente = null!=request.getParameter("cr_id_ingrediente")?Cast.toInt(request.getParameter("cr_id_ingrediente")):0; 
+			params[0]="cr_id_ingrediente";
+			values[0]= cr_id_ingrediente;
+			jsonArray = Cr_ingredientes.listarJSON(params,values); 
+			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			out = response.getWriter();
+			out.print(jsonObj);
+	   }else if("list_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listarJSON(new Object[0], new Object[0]);
 			out = response.getWriter();
     		out.print(jsonArray);
