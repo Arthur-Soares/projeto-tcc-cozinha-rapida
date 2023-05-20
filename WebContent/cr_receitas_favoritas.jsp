@@ -72,11 +72,8 @@
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
 				font-size: 30px;
-				color: #323232;
-			}
-			div {
-				border-radius: 10px;
-			}
+				color: #b1463c;
+			}					
 			
 			#btnAddUsuario {	
 				border: none;						
@@ -86,16 +83,7 @@
 				cursor: pointer;			
 				transition: 0.2s;
 				font-size: 15px;
-			}	
-			
-			.visual_tit_rec {	
-				font-size: 5vh;			
-				font-weight: 800;
-				font-family: 'Open Sans', sans-serif;
-				color: #b1463c;
-				margin-top: 4%;
-			}
-				
+			}							
 			
 			@media(max-width: 1000px) {
     			.sugestao {
@@ -186,7 +174,23 @@
 						  }
 					});
 				}				
-			});				
+			});
+					
+			//Lógica do Carrinho de Compras
+			const btnAbrirCarrinho = $('#abrir-carrinho');
+		    const btnFecharCarrinho = $('#fechar-carrinho');
+		    const carrinho = $('.carrinho');
+		    carrinho.hide();
+
+		    btnAbrirCarrinho.click(function() {
+		        carrinho.show();
+		        carrinho.addClass('aberto');
+		    });
+
+		    btnFecharCarrinho.click(function() {
+		        carrinho.removeClass('aberto');
+		        carrinho.hide();
+		    });
 		});
 		
 		function pintarCoracao(cr_id_receita){
@@ -306,23 +310,28 @@
 	</script>
 
 	<body>		
-	<%=MenuUtils.buildMenu("receita", cru)%>
+	<%=MenuUtils.buildMenu("usuario", cru)%>
 									
 	<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 		<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 	</form>									
 	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">	
 			
-		<div class="container" style="margin-top: 4%">					
-			<div class="row">							
-				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-					<div class="row mt-3 justify-content-center">																									
-						<div class="visual_tit_rec">Receitas Favoritas</div>
-					</div>	
-				</div>													
-			</div>	
-			<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
-			</div>					
+		<div id="div_tela">
+				<div class="row mt-3">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
+						<div class="row mt-3">
+							<div class="container rounded col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12 well" align="center">
+								<br>
+								<div class="row mt-3">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
+										<h1>
+											Receitas Favoritas
+										</h1>
+									</div>
+								</div>
+								<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+								</div>					
 	 	</div>
 	</form>		
 			  

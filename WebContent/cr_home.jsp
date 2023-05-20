@@ -94,8 +94,7 @@
 			height: 800;
 			color: #FFFFFF;
 			font-weight: 800;
-			font-family: 'Open Sans', sans-serif;
-			font-size: 2em;							
+			font-family: 'Open Sans', sans-serif;									
 		}
 		#btnReceita {	
 			/*margin-top: 10px;	*/		
@@ -626,7 +625,9 @@
 			   </div>	
 								
 				<div class="row justify-content-center col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12 text-align" style="margin-top: 110px; position: absolute;">	
-					<div id="tit_rec_mais_pesquisadas">Receitas Mais Pesquisadas</div>			
+					<div id="tit_rec_mais_pesquisadas">
+						<h4><strong>Receitas mais pesquisadas</strong></h4>
+					</div>			
 					<br>					
 					<div class="owl-carousel">
 				        <div class="item">

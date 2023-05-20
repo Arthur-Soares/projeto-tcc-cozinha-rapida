@@ -32,6 +32,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" href="imagens/cr_logo_guia_ret_arredondado.png" type="image/png">			
 		<title>Cozinha Rápida - Editar Usuário</title>
+		<link href="css/cr_login.css" rel="stylesheet">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="fontawesome/css/all.min.css" rel="stylesheet">
 		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
@@ -48,6 +49,7 @@
 		<script src="js/datatables/dataTables.fixedHeader.min.js"></script>
 		<script src="js/datatables/dataTables.responsive.min.js"></script>
 		<script src="js/datatables/responsive.bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mask.min.js"></script>
 
 		<link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
 		<link rel="stylesheet" href="css/datatables/fixedHeader.bootstrap4.min.css">
@@ -148,8 +150,13 @@
 				float: left;
 			}
 			
-			.div_cadastro_sucesso {
-				background-color: #636f61;
+			.div_cadastro_sucesso {			
+				background: linear-gradient(135deg, rgba(99, 111, 97 , 0));
+			    -webkit-backdrop-filter: blur(20px);
+			    backdrop-filter: blur(20px);
+			    padding: 30px;    		    
+			    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+			    border: 1px solid rgba(255, 255, 255, 0.18);
 				margin: 0px;
 			    height: 100vh;
 			    display: flex;
@@ -326,16 +333,20 @@
 				}				
 			});	
 					
+			//Lógica do Carrinho de Compras
 			const btnAbrirCarrinho = $('#abrir-carrinho');
 		    const btnFecharCarrinho = $('#fechar-carrinho');
 		    const carrinho = $('.carrinho');
+		    carrinho.hide();
 
 		    btnAbrirCarrinho.click(function() {
+		        carrinho.show();
 		        carrinho.addClass('aberto');
 		    });
 
 		    btnFecharCarrinho.click(function() {
 		        carrinho.removeClass('aberto');
+		        carrinho.hide();
 		    });
 			
 		});
@@ -761,162 +772,115 @@
 			
 			<!-- DIV CADASTRO CONTA - PRIMEIRA PARTE -->
 			<div class="div_cadastro">
-			<br><br>			
-				<div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">					
-					<font style="font-size: 0px">										
+				<div class="login-box" style="margin-top:2%;">			
+					<h5><strong>Editar Dados Pessoais:</strong></h5>	
 					<br>								
-						<h2>Editar Dados Pessoais:</h2>					
-					<br>
-					
-					<div class="row mt-3 justify-content-md-center">
-						<div class="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12">
-							<label for="cr_nome_completo_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nome de Usuario</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" maxlength="255" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" placeholder="Digite seu Nome" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/> 
-						</div>					
-					</div>
-						
-					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12">
-							<label for="cr_cpf_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CPF</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cpf_usuario" id="cr_cpf_usuario" placeholder="Digite seu CPF" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
-						</div>	
+					<div class="user-box">
+						<input type="text" name="cr_nome_completo_usuario" id="cr_nome_completo_usuario" maxlength="255" placeholder="&nbsp;"/>												
+						<label for="cr_nome_completo_usuario">Nome Completo</label> 
 					</div>
 					
-					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12">
-							<label for="cr_telefone_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Telefone</strong></label> 
-							<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" class="form-control form-control-lg rounded-50" name="cr_telefone_usuario" placeholder="Digite seu Telefone + DD" maxlength="16" id="cr_telefone_usuario" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
-						</div>	
-					</div>						
-					<br/>
+					<div class="user-box">						
+						<input type="text" name="cr_cpf_usuario" id="cr_cpf_usuario" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" placeholder="&nbsp;"/>
+						<label for="cr_cpf_usuario">CPF</label> 
+					</div>
 					
-					<br/>
+					<div class="user-box">												
+						<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" name="cr_telefone_usuario" maxlength="16" id="cr_telefone_usuario" placeholder="&nbsp;"/>																																													
+						<label for="cr_cpf_usuario">Telefone</label> 
+					</div>
+									
+					<hr noshade="noshade" style="border: 0.5px solid; color: #636f61;">
 					
-					<div class="row mt-3 justify-content-md-center">
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarLoginSucesso();">
-								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-							</button>	
-						
-						</div>	
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
-							<button type="button" class="btn1 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroDois();">
-							<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
-						</button>
-						</div>																				
-							
-					</div>	
-																												
-					</div>	
-					
-																	
-					</font>				
-				</div>				
-			</div>	
+					<div class="row">						
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							<button type="button" class="btn_entrar" onclick="voltarLoginSucesso();">								
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Voltar
+							</button> 							
+						</div>							
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							<button type="button" class="btn_entrar" onclick="chamaCadastroDois();">
+								Continuar&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i>
+							</button> 
+						</div>																												
+					</div>					
+				</div>
+			</div>									
 			
-			<!--  DIV CADASTRO CONTA - SEGUNDA PARTE -->
-			<div class="div_cadastro_dois">			
-				
-				<div class="col-xl-11 col-lg-11 col-md-8 col-sm-12 col-12">				
-					<font style="font-size: 0px">	
-					<br>								
-						<h2>Editar Endereço:</h2>						
-					<br>
-					
-					<div class="row mt-3 justify-content-md-center">
-						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
-							<label for="cr_cep_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>CEP</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_cep_usuario" id="cr_cep_usuario" placeholder = "Digite seu CEP (Sem traços)" maxlength="20" onkeypress="$(this).mask('00000-000')" style="font-size: 15px; height: 40px; color:black;font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;" onchange="pesquisaCEP();"/> 
-						</div>					
+			<!-- DIV CADASTRO CONTA - SEGUNDA PARTE -->
+			<div class="div_cadastro_dois">
+				<div class="login-box"  style="margin-top:3%;">			
+					<h5><strong>Editar Endereço:</strong></h5>											
+					<div class="user-box">																	
+						<input type="text" name="cr_cep_usuario" id="cr_cep_usuario" maxlength="20" onkeypress="$(this).mask('00000-000')" onchange="pesquisaCEP();" placeholder="&nbsp;"/>
+						<label for="cr_cep_usuario">CEP</label> 
 					</div>
 					
-					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-3 col-lg-4 col-md-6 col-sm-10 col-8">
-							<label for="cr_endereco_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Endereço</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endereco_usuario" id="cr_endereco_usuario" placeholder = "Endereço" maxlength="200" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;" readonly/>
+					<div style="display:flex;">	
+						<div class="user-box" style="width: 80%;">																																										
+							<input type="text" name="cr_endereco_usuario" id="cr_endereco_usuario" placeholder="&nbsp;" maxlength="200" readonly/>
+							<label for="cr_endereco_usuario">Endereço</label> 																									
 						</div>
-						<div class="col-xl-1 col-lg-2 col-md-2 col-sm-2 col-4">
-							<label for="cr_nrmcasa_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Nº</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" placeholder = "Nº" maxlength="5" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
-						</div>		
-					</div>		
-																		
-					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
-							<label for="cr_endcomplemento_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Complemento</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" placeholder = "Complemento" maxlength="200" style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
-						</div>	
-					</div>	
-					
-					<div class="row mt-3 justify-content-md-center">					
-						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12">
-							<label for="cr_pontoreferencia_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Ponto de Referência</strong></label> 
-							<input type="text" class="form-control form-control-lg rounded-50" name="cr_pontoreferencia_usuario" placeholder = "Ponto de Referência" id="cr_pontoreferencia_usuario" maxlength="200"  style="font-size: 15px; height: 40px; color:black; font-weight: bold; background: #CCCCCC; opacity: 0.8;  border-radius: 10px;"/>
-						</div>	
-					</div>	
-					
-					<br/>
-					
-					<div class="row mt-3 justify-content-md-center">
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarCadastroUm();">
-								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-							</button>	
-						
-						</div>	
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="chamaCadastroTres();">
-								<strong>Continuar <i class="fa fa-chevron-right" aria-hidden="true"></i></strong> 
-							</button>
+						&nbsp;
+						<div class="user-box" style="width: 18%;">
+							<input type="text" name="cr_nrmcasa_usuario" id="cr_nrmcasa_usuario" placeholder="&nbsp;" maxlength="5"/>
+							<label for="cr_nrmcasa_usuario">Nº</label>
 						</div>
-																												
-					</div>														
-					</font>				
+					</div>
+					 
+					<div class="user-box">												
+						<input type="text" name="cr_endcomplemento_usuario" id="cr_endcomplemento_usuario" placeholder="&nbsp;" maxlength="200">
+						<label for="cr_endcomplemento_usuario">Complemento</label> 						
+					</div>
+					
+					<div class="user-box">																		
+						<input type="text" name="cr_pontoreferencia_usuario" placeholder="&nbsp;" id="cr_pontoreferencia_usuario" maxlength="200"/>
+						<label for="cr_pontoreferencia_usuario">Ponto de Referência</label> 						
+					</div>									
+					
+					<hr noshade="noshade" style="border: 0.5px solid; color: #636f61;">			
+																
+					<div class="row" style="padding-top: 0px;">						
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							<button type="button" class="btn_entrar" onclick="voltarCadastroUm();">								
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Voltar
+							</button> 							
+						</div>							
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							<button type="button" class="btn_entrar" onclick="chamaCadastroTres();">
+								Continuar&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i>
+							</button> 
+						</div>																												
+					</div>					
 				</div>
-			</div>
-		
+			</div>		
+			
 			<!-- DIV CADASTRO CONTA - TERCEIRA PARTE -->
-			<div class="div_cadastro_tres">								
-				
-				<div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">						
-					<font style="font-size: 0px">														
+			<div class="div_cadastro_tres">	
+				<div class="login-box">			
+					<h5><strong>Atualizar Email:</strong></h5>	
 					<br>								
-						<h2>Atualizar Email:</h2>						
-					<br>																
-					<div class="row mt-3 justify-content-md-center"></div>
-					
-					<div class="row mt-3 justify-content-md-center">
-						<div class="col-xl-5 col-lg-6 col-md-8 col-sm-12 col-12">
-							<label for="cr_email_usuario" style="color: #EEEEEE; font-size: 15px;  float: left; font-weight: bold;"><strong>Email</strong></label> 
-							<input type="email" class="form-control form-control-lg rounded-50" name="cr_email_usuario" id="cr_email_usuario" onchange="validacaoEmail()" placeholder = "Digite seu E-mail" style="font-size: 15px; height: 40px; color:black; font-weight: bold;  background: #CCCCCC; opacity: 0.8; border-radius: 10px;"/> 
-						</div>					
-					</div>
-					
-					<br/>
-					<div class="row mt-3 justify-content-md-center">
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px;width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="voltarCadastroDois();">
-								<strong><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</strong> 
-							</button>	
-						
-						</div>	
-						
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
-							<button type="button" class="btn2 btn btn-success btn-lg float-center" id="btnSalvarDados" style="margin-top: 3px; font-size: 15px; width:185px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
-								<strong>Atualizar</strong> 
-							</button>
-						</div>
-																												
-					</div>		
+					<div class="user-box">																							
+						<input type="email" name="cr_email_usuario" id="cr_email_usuario" placeholder="&nbsp;"/>
+						<label for="cr_cep_usuario">Email</label> 						
+					</div>										 											
 														
-					</font>				
+					<hr noshade="noshade" style="border: 0.5px solid; color: #636f61;">
+					
+					<div class="row">						
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							<button type="button" class="btn_entrar" onclick="voltarCadastroDois();">								
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Voltar
+							</button> 							
+						</div>							
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							<button type="button" class="btn_entrar" onclick="salvarRegistro();">
+								Atualizar&nbsp;<i class="fa fa-save" aria-hidden="true"></i>
+							</button> 
+						</div>																												
+					</div>					
 				</div>
-			</div>													
+			</div>														
 			
 			<!-- DIV CADASTRO CONTA - CONTA CRIADA COM SUCESSO -->
 			<div class="div_cadastro_sucesso">
@@ -926,9 +890,9 @@
 						<h2>Sua conta foi atualizada com sucesso!</h2>					
 					<br>					
 					<br/>			
-					<div class="row mt-3 justify-content-md-center">															
+					<div class="row mt-3 justify-content-center">															
 						<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;"  onclick="voltarLoginSucesso();">
-							<strong>Inicio</strong>
+							<strong>Voltar para Home</strong>
 						</button>	
 					</div>													
 					</font>				

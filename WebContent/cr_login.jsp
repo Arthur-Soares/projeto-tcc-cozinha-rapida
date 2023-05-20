@@ -773,7 +773,7 @@
 					
 					<div class="user-box">												
 						<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" name="cr_telefone_usuario" maxlength="16" id="cr_telefone_usuario" placeholder="&nbsp;"/>																																													
-						<label for="cr_cpf_usuario">Telefone</label> 
+						<label for="cr_telefone_usuario">Telefone</label> 
 					</div>
 									
 					<hr noshade="noshade" style="border: 0.5px solid; color: #636f61;">
@@ -887,7 +887,7 @@
 						<h2><strong>Sua conta foi criada com sucesso!</strong></h2>					
 					<br>					
 					<br/>			
-					<div class="row mt-3 justify-content-md-center">															
+					<div class="row mt-3 justify-content-center">															
 						<button type="button" class="btn btn-success btn-lg float-center" id="btnLogin" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;"  onclick="voltarLoginSucesso();">
 							<strong>Entrar</strong>
 						</button>	

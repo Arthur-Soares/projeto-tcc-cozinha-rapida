@@ -139,6 +139,22 @@
 					});
 				}				
 			});
+					
+			//Lógica do Carrinho de Compras
+			const btnAbrirCarrinho = $('#abrir-carrinho');
+		    const btnFecharCarrinho = $('#fechar-carrinho');
+		    const carrinho = $('.carrinho');
+		    carrinho.hide();
+
+		    btnAbrirCarrinho.click(function() {
+		        carrinho.show();
+		        carrinho.addClass('aberto');
+		    });
+
+		    btnFecharCarrinho.click(function() {
+		        carrinho.removeClass('aberto');
+		        carrinho.hide();
+		    });
 		});
 		
 		function carregaListaIngredientes(crep){
@@ -203,8 +219,8 @@
 			$("#frm_tela_ingrediente").submit();	
 		}
 		
-		function listaIngredientes(){
-			$("#frmlistaIngredientes").submit();
+		function listaReceitas(){
+			$("#frmlistaReceitas").submit();
 		}
 	</script>
 
@@ -216,7 +232,7 @@
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 		</form>		
 		<form id="frmlogin" name="frmlogin" method="post" action="cr_login.jsp"></form>
-		<form id="frmlistaIngredientes" name="frmlistaIngredientes" method="post" action="cr_lista_ingredientes.jsp"></form>								
+		<form id="frmlistaReceitas" name="frmlistaReceitas" method="post" action="cr_lista_receitas.jsp"></form>								
 		<form id="frm_tela_ingrediente" name="frm_tela_ingrediente" method="post" action="cr_cadastro_ingredientes.jsp">
 			<input type="hidden" id="cr_id_ingrediente" name="cr_id_ingrediente"/>
 			<div id="div_tela">
@@ -232,14 +248,16 @@
 										</h1>
 									</div>
 								</div>																							
-								<br>
-								<div class="row mt-3 justify-content-md-center">																															
-									<button type="button" class="btn btn-success btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="novoIngrediente();">
-										<strong> <i class="fas fa-plus"></i> Novo Ingrediente</strong> 
-									</button>
-									<button type="button" class="btn btn-info btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="listaIngredientes();">
-										<strong> <i class="fas fa-list"></i> Lista de Ingredientes </strong> 
-									</button>
+								<br>								
+								<div class="row text-center mt-3">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+										<button class="btn btn-success text-center" type="button" onclick="novoIngrediente();"> 
+											<i class="fa fa-plus" aria-hidden="true"></i> <strong> Novo Ingrediente </strong> 
+										</button>
+										<button type="button" class="btn btn-info" data-dismiss="modal" onclick="listaReceitas();">
+										  	<i class="fa fa-list" aria-hidden="true"></i> <strong>Lista de Receitas </strong>
+										 </button>																																																		
+									</div>
 								</div>
 								<div class="row mt-3">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

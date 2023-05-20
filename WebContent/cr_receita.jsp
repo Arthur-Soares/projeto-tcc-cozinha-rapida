@@ -16,7 +16,7 @@
 	//logoff=S
 	String msgIndex = null != session.getAttribute("errologin") ? (String) session.getAttribute("errologin") : "";
 	
-	//System.out.println("VENDO O ID DO USU√ÅRIO :: "+cuserid);
+	//System.out.println("VENDO O ID DO USU¡ÅRIO :: "+cuserid);
 			
 	if("S".equals(opclogoff) || !"".equals(msgIndex)){
 		session.setAttribute("errologin", null);
@@ -58,7 +58,7 @@
 		<!-- Final Data Tables -->
 		<style type="text/css">
 			select[readonly] {
-			  background: #eee; /*Simular campo inativo - Sugest√£o @GabrielRodrigues*/
+			  background: #eee; /*Simular campo inativo - Sugest„o @GabrielRodrigues*/
 			  pointer-events: none;
 			  touch-action: none;
 			}
@@ -88,16 +88,18 @@
 				height: 200px;
 			}
 			.visual_tit_rec {	
-				font-size: 40px;			
+				font-size: 2em;			
 				font-weight: 800;
 				font-family: 'Open Sans', sans-serif;
 				color: #b1463c;
 			}
+			
 			@media(max-width: 1000px) {
     			.sugestao {
         			display: none;
     			}
 			}
+			
 			@media(max-width: 993px) {
 				.spc {
 	        			display: none;
@@ -108,10 +110,7 @@
 	        			display: none;
 	    		}
 	    		
-			}
-			
-			
-			
+			}							
 			
 			.hr-line {
 			  	border: none;
@@ -120,13 +119,13 @@
 			  	margin: 10px 0;
 			}
 			.img_receita {
-			    position: relative; /* definir posi√ß√£o relativa para que a imagem possa ser centralizada verticalmente */
+			    position: relative; /* definir posiÁ„o relativa para que a imagem possa ser centralizada verticalmente */
 			    height: 0; /* definir altura inicial como 0 para o aspect-ratio funcionar */
-			    padding-bottom: 56.25%; /* propor√ß√£o 16:9 (ou 9:16 para retrato) */
+			    padding-bottom: 56.25%; /* proporÁ„o 16:9 (ou 9:16 para retrato) */
 			    overflow: hidden; /* esconder a parte da imagem que exceder a div */
 			}
 			.img_receita iframe {
-			    position: absolute; /* definir posi√ß√£o absoluta para a imagem ficar no topo */
+			    position: absolute; /* definir posiÁ„o absoluta para a imagem ficar no topo */
 			    top: 0;
 			    left: 0;
 			    width: 100%; /* ajustar a largura para 100% */
@@ -176,21 +175,21 @@
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
 			
-			//Isto est√° definido diretamente no nosso <select> e tem o objetivo de carregar as poss√≠veis op√ß√µes do nosso autocomplete
+			//Isto est· definido diretamente no nosso <select> e tem o objetivo de carregar as possÌveis opÁıes do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
 			//Implementando componente de AUTOCOMPLETE em um <select com o ID = "sel_receita"
 			$('#sel_receita').autoComplete({
-			  // configura√ß√µes do autocomplete aqui
+			  // configuraÁıes do autocomplete aqui
 			  noResultsText: 'Nenhum resultado encontrado'
 			});
-			//O AUTOCOMPLETE cont√©m um evento que √© chamado ao selecionarmos uma linha dele = 'autocomplete.select'
+			//O AUTOCOMPLETE contÈm um evento que È chamado ao selecionarmos uma linha dele = 'autocomplete.select'
 			$('#sel_receita').on('autocomplete.select', function (evt, item) {
-				//ITEM √© o item em espec√≠fico que selecionamos do nosso autocomplete (possui as propriedades relativas a aquela linha)
+				//ITEM È o item em especÌfico que selecionamos do nosso autocomplete (possui as propriedades relativas a aquela linha)
 				//item.text e item.value
 				//Checa se foi selecionada uma LINHA e se ela EXISTE
 				console.log('Passei evt :: '+evt+' -- item.value :: '+item.value+' -- item.text :: '+item.text);
 				if(item){										
-					//CHAMANDO outra URL para buscar os dados espec√≠ficos do CLIENTE que selecionamos
+					//CHAMANDO outra URL para buscar os dados especÌficos do CLIENTE que selecionamos
 					//$.getJSON( "./jsonservlet?opc_servlet=find_pesquisa_receita&q="+item.value, function( data ) {
 						
 					var cr_id_receita = "";
@@ -209,7 +208,23 @@
 						  }
 					});
 				}				
-			});				
+			});	
+					
+			//LÛgica do Carrinho de Compras
+			const btnAbrirCarrinho = $('#abrir-carrinho');
+		    const btnFecharCarrinho = $('#fechar-carrinho');
+		    const carrinho = $('.carrinho');
+		    carrinho.hide();
+
+		    btnAbrirCarrinho.click(function() {
+		        carrinho.show();
+		        carrinho.addClass('aberto');
+		    });
+
+		    btnFecharCarrinho.click(function() {
+		        carrinho.removeClass('aberto');
+		        carrinho.hide();
+		    });
 		});
 		
 		function pintarCoracao(cr_id_receita){
@@ -234,7 +249,7 @@
 			var id = '<%=cuserid%>';
 			
 			if(id == 0){
-				alert("Fa√ßa o login antes de prosseguir!");
+				alert("FaÁa o login antes de prosseguir!");
 				return false;
 			}
 			
@@ -374,25 +389,17 @@
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_receita"/>
 			
-		<div class="container" style="margin-top: 100px">
-			
-			
-			<div class="row">
-			
-			<!-- Titulo da Receita -->
-				<div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8" style="height: 100px; text-align:left;">
-					<div class="row mt-3 justify-content-md-center">																									
-						<div id="cr_titulo_receita" class="visual_tit_rec"></div>
-					</div>	
+		<div class="container" style="margin-top: 100px">					
+			<div class="row mt-3">			
+				<!-- Titulo da Receita -->
+				<div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-9" style="padding-top:2%;">																												
+					<div id="cr_titulo_receita" class="visual_tit_rec"></div>					
 				</div>
 				
-			<!-- Icone da Receita -->
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2" style="height: 100px; text-align:right;">
+				<!-- Icone da Receita -->
+				<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
 					<div class="btn btn-link bi bi-heart" id="btnFavoritar" style="color: #b1463c;font-size:50px; border:none;" onclick="favoritarReceita();"></div>
-					</div>
-					
-				<div class="col-xl-2"></div>
-
+				</div>							
 			</div>
 			
 			<div class="row justify-content-between mt-1">
@@ -402,7 +409,7 @@
 					</div>	
 				</div>	
 							
-				<!-- Div de sugest√£o a ser implementado -->
+				<!-- Div de sugest„o a ser implementado -->
 				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
 					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
 						<strong>Sugestıes:</strong>
@@ -582,7 +589,7 @@
 		<div id="div_loading">
 			<div class="row h-100">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 align-self-center" align="center">
-					<strong>Processando solicita√ß√£o... &nbsp;</strong>
+					<strong>Processando solicitaÁ„o... &nbsp;</strong>
 					<div class="spinner-border text-primary ml-auto" role="status"
 						aria-hidden="true"></div>
 				</div>

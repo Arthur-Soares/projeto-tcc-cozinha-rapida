@@ -140,6 +140,22 @@
 					});
 				}				
 			});
+					
+			//Lógica do Carrinho de Compras
+			const btnAbrirCarrinho = $('#abrir-carrinho');
+		    const btnFecharCarrinho = $('#fechar-carrinho');
+		    const carrinho = $('.carrinho');
+		    carrinho.hide();
+
+		    btnAbrirCarrinho.click(function() {
+		        carrinho.show();
+		        carrinho.addClass('aberto');
+		    });
+
+		    btnFecharCarrinho.click(function() {
+		        carrinho.removeClass('aberto');
+		        carrinho.hide();
+		    });
 		});
 		
 		function carregaListaReceitas(crep){
@@ -201,6 +217,10 @@
 			$("#frm_tela_receita").submit();		
 		}
 		
+		function listaIngredientes(){
+			$("#frmlistaIngredientes").submit();
+		}
+		
 	</script>
 
 	<body>	
@@ -210,6 +230,7 @@
 		<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
 		</form>
+		<form id="frmlistaIngredientes" name="frmlistaIngredientes" method="post" action="cr_lista_ingredientes.jsp"></form>										
 		<form id="frmlogin" name="frmlogin" method="post" action="cr_login.jsp"></form>							
 		<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_cadastro_receita.jsp">
 			<input type="hidden" id="id_receita" name="id_receita"/>
@@ -227,10 +248,15 @@
 									</div>
 								</div>																							
 								<br>
-								<div class="row mt-3 justify-content-md-center">																															
-									<button type="button" class="btn btn-success btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="novaReceita();">
-										<strong>Nova Receita</strong> 
-									</button>
+								<div class="row text-center mt-3">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+										<button class="btn btn-success text-center" type="button" onclick="novaReceita();"> 
+											<i class="fa fa-plus" aria-hidden="true"></i> <strong> Nova Receita </strong> 
+										</button>
+										<button type="button" class="btn btn-info" data-dismiss="modal" onclick="listaIngredientes();">
+										  	<i class="fa fa-list" aria-hidden="true"></i> <strong>Lista de Ingredientes </strong>
+										 </button>																																																		
+									</div>
 								</div>
 								<div class="row mt-3">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
