@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import br.com.neorelato.util.Cast;
 import projeto.model.Cr_ingredientes;
 import projeto.model.Cr_receita;
+import projeto.model.Cr_receita_ingrediente;
 import projeto.model.Cr_usuario;
 import projeto.model.Cr_usuario_receita;
 
@@ -170,7 +171,13 @@ public class JsonServlet extends HttpServlet {
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
 			out = response.getWriter();
 			out.print(jsonObj);
-	   }else if("list_receitas".equals(opcServlet)) {	
+	   }else if("find_receita_ingrediente".equals(opcServlet)) {
+			int cr_id_receita = null!=request.getParameter("cr_id_receita")?Cast.toInt(request.getParameter("cr_id_receita")):0;
+			jsonObj= new JSONObject();
+			JSONArray arrayJson = Cr_receita_ingrediente.listarJSON(cr_id_receita);
+			out = response.getWriter();
+   		out.print(arrayJson);
+		}else if("list_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listarJSON(new Object[0], new Object[0]);
 			out = response.getWriter();
     		out.print(jsonArray);
@@ -193,6 +200,12 @@ public class JsonServlet extends HttpServlet {
 			mapParams.put("cr_valor_receita",Cast.toString(cr_valor_receita));			
 			Cr_receita crr = new Cr_receita(mapParams);
 			int id_receita = crr.salva_registro();
+			
+			//Salvando Relacionamento entre Receita e Ingredientes
+			String ids_ingredientes = null!=request.getParameter("ids_ingredientes")?request.getParameter("ids_ingredientes"):"";
+			Cr_receita_ingrediente cri = new Cr_receita_ingrediente();			
+			cri.salvaRelacionamento(ids_ingredientes, id_receita);
+			
 			jsonObj= new JSONObject();
 			jsonObj.put("id_receita", id_receita);
 			out = response.getWriter();

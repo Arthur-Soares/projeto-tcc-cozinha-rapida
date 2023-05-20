@@ -195,13 +195,13 @@ public class Cr_receita_ingrediente {
 		JSONArray arrayRetorno = new JSONArray();
 		
 		String sql = " SELECT " +
-					 " r1_receita.id_receita, " +
-					 " r1_receita.nome_completo " +
-					 " from r1_receita " +
-					 " left outer join digitador_supervisor on digitador_supervisor.id_supervisor = r1_receita.id_receita " +					 
-					 " where digitador_supervisor.id_digitador = "+id_receita;
+					 " cr_ingredientes.cr_id_ingrediente, " +
+					 " cr_ingredientes.cr_desc_ingrediente " +
+					 " from cr_ingredientes " +
+					 " left outer join cr_receita_ingrediente on cr_receita_ingrediente.cr_id_ingrediente = cr_ingredientes.cr_id_ingrediente " +					 
+					 " where cr_receita_ingrediente.cr_id_receita = "+id_receita;
 		
-		sql+= " order by r1_receita.nome_completo ";
+		sql+= " order by cr_ingredientes.cr_desc_ingrediente ";
 		
 		System.out.println(" query :: "+sql);
 		try {
@@ -251,45 +251,17 @@ public class Cr_receita_ingrediente {
 		}
 
 		return arrayRetorno;
-	}
+	}	
 	
-	public int favoritarReceita(int cr_id_ingrediente, int cr_id_receita) {
-		int retorno = 0;
-		
-		String sql = INS_PADRAO;
-		
-		try {
-			Connection c = ProjetoDatabase.getConnection();
-			PreparedStatement p = c.prepareStatement(sql);
-			p.setInt(1, cr_id_receita);
-			p.setInt(2, cr_id_ingrediente);
-			p.executeUpdate();
-			
-			if(null!=p) {
-				p.close();
-				p=null;
-			}
-			if(null!=c) {
-				c.close();
-				c=null;
-			}
-		}catch(Exception ex) {
-			ex.printStackTrace();
-			retorno = -1;
-		}
-		
-		return retorno;
-	}
-	
-	public int salvaRelacionamento(String ids_supervisores, int id_receita) {
+	public int salvaRelacionamento(String ids_ingredientes, int id_receita) {
 		Set<Integer> setIdsSQL = new HashSet<Integer>();
 		int idRetorno = 0;
-		String ids_del = ids_supervisores;
+		String ids_del = ids_ingredientes;
 		
 		String sql_ins = INS_PADRAO;
 		
 		String sql = SQL_PADRAO;
-		sql += " and id_digitador = "+id_receita;
+		sql += " and cr_id_receita = "+id_receita;
 		
 		System.out.println(" query sql :: "+sql);
 		try {
@@ -297,18 +269,18 @@ public class Cr_receita_ingrediente {
 			Statement st = c.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while(rs.next()) {
-				int id_supervisor = null!=rs.getObject(3)?rs.getInt(3):0;		
-				setIdsSQL.add(id_supervisor);
+				int cr_id_ingrediente = null!=rs.getObject(3)?rs.getInt(3):0;		
+				setIdsSQL.add(cr_id_ingrediente);
 			}
 
 			String[] idsseparados = null;
-			idsseparados = ids_supervisores.split(",");
+			idsseparados = ids_ingredientes.split(",");
 			for(int i=0; i< idsseparados.length; i++){
-				int idsup = Cast.toInt(idsseparados[i]);
-				if(!setIdsSQL.contains(idsup)) {
+				int iding = Cast.toInt(idsseparados[i]);
+				if(!setIdsSQL.contains(iding)) {
 					PreparedStatement pupd = c.prepareStatement(sql_ins);
 					pupd.setInt(1, id_receita);
-					pupd.setInt(2, idsup);
+					pupd.setInt(2, iding);
 					pupd.executeUpdate();
 					if(null != pupd) {
 						pupd.close();
@@ -327,24 +299,27 @@ public class Cr_receita_ingrediente {
 			}
 			
 			String sql_sec = SQL_PADRAO;
-			sql_sec +=  " and id_digitador = "+id_receita +
-						" and id_supervisor not in ("+ids_del+")";
-			
-			String del = " delete from digitador_supervisor " +
-						 " where id_digitador_supervisor = ? " +
-						 " and id_supervisor = ? " ;
+			sql_sec +=  " and cr_id_receita = "+id_receita;
+					
+			if(!ids_del.equals("")) {
+				sql_sec += " and cr_id_ingrediente not in ("+ids_del+")";
+			}
+						
+			String del = " delete from cr_receita_ingrediente " +
+						 " where cr_id_receita_ingrediente = ? " +
+						 " and cr_id_ingrediente = ? " ;
 			
 			System.out.println(" query sql_sec :: "+sql_sec);
 			Statement stsec = c.createStatement();
 			ResultSet rssec = stsec.executeQuery(sql_sec);
 			while(rssec.next()) {
-				int id_digitador_supervisor = null!=rssec.getObject(1)?rssec.getInt(1):0;	
-				int id_digitador = null!=rssec.getObject(2)?rssec.getInt(2):0;	
-				int id_supervisor = null!=rssec.getObject(3)?rssec.getInt(3):0;
+				int cr_receita_ingrediente = null!=rssec.getObject(1)?rssec.getInt(1):0;	
+				//int cr_id_receita = null!=rssec.getObject(2)?rssec.getInt(2):0;	
+				int cr_id_ingrediente = null!=rssec.getObject(3)?rssec.getInt(3):0;
 				
 				PreparedStatement pdel = c.prepareStatement(del);
-				pdel.setInt(1, id_digitador_supervisor);
-				pdel.setInt(2, id_supervisor);
+				pdel.setInt(1, cr_receita_ingrediente);
+				pdel.setInt(2, cr_id_ingrediente);
 				pdel.executeUpdate();
 				if(null != pdel) {
 					pdel.close();

@@ -84,17 +84,18 @@
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
 			
-			$('input[type="file"]').on("change", function() {
-			    var filenames = [];
-			    var files = this.files;
-			   if(files.length > 1) {
-			      filenames.push("Selecionados(" + files.length + ")");
-		 	      $('#file').val(filenames);
-			    }else{
-			    	var filename = files[0].name;
-					$("#file").val(filename);
-			    }
-			  });
+			var dtable = $('#table_ingredientes').DataTable(
+					{
+						responsive: true,
+			            "language": {
+			               url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json'
+			            },
+			            //"order": [[ 0, 'desc' ]],
+			            searching: true, 
+			            paging: true, 
+			            info: false
+					}
+				); 
 		});
 		
 		function carregaReceita(idrec){
@@ -132,6 +133,8 @@
 						$("#cr_rendimento_receita").val(cr_rendimento_receita);
 						$("#cr_valor_receita").val(cr_valor_receita);
 						$("#cr_receita_nome_img").val(cr_receita_nome_img);
+						
+						carregaIngrediente(cr_id_receita);
 					}
 				);
 			}else{								
@@ -156,13 +159,17 @@
 		 * Caso essas duas funções sejam verdadeiras ele irá salvar.
 		 */
 		function salvarRegistro(){
+			 
+			//Cr_receita_ingrediente
+			var ids_ingredientes = arrIngredientes.toString();
+	        $("#ids_ingredientes").val(ids_ingredientes);	        
+	        
 			var arrayJSON = $('#frmreceita').serializeArray();
 			$.postJSON("./jsonservlet",arrayJSON,
 				function(data,status){
 					if(data.id_receita!="0" && data.id_receita != ""){
 						alert("Receita atualizada com Sucesso!");						
-						carregaReceita(data.id_receita);
-						$("#frmreceita").submit();
+						carregaReceita(data.id_receita);											
 					}else{
 						alert("Problema ao salvar registro!");
 						return false;
@@ -170,6 +177,68 @@
 				}
 			);			
 		}
+		 
+		 
+		//PARTE DO CÓDIGO RELACIONADO A PARTE DE VINCULAR INGREDIENTE A RECEITA
+			function limpaSearch(){
+				$('#table_ingredientes').DataTable().search( "" ).draw();			
+			}
+			
+			function vincularIngrediente(){			
+				limpaSearch();
+				carregaListaIngredientes();
+				$("#ModalIngredientes").modal("show");
+			}
+
+
+			
+			//VINCULAR INGREDIENTES A RECEITA
+			var arrIngredientes = [];
+			var nomIngredientes = [];
+			
+			function checarIngredientes(objcheck, nome_ingredientes){
+				if(objcheck.checked){
+					arrIngredientes.push((objcheck.id).toString());
+					nomIngredientes.push(nome_ingredientes);
+				}else{							
+					for (var i = arrIngredientes.length; i--;) {
+						   if (arrIngredientes[i] == objcheck.id){ 
+							   arrIngredientes.splice(i, 1);
+						   }
+					}
+					for (var i = nomIngredientes.length; i--;) {
+						   if (nomIngredientes[i] == nome_ingredientes){ 
+							   nomIngredientes.splice(i, 1);
+						   }
+					}
+				}
+				console.log("check arrIngredientes :: "+arrIngredientes.toString());
+				console.log("check nomIngredientes :: "+nomIngredientes.toString());
+			}
+		
+			function carregaIngrediente(cr_id_receita){
+				arrIngredientes = [];
+				nomIngredientes = [];
+				$.postJSON("./jsonservlet",{opc_servlet:'find_receita_ingrediente',cr_id_receita:cr_id_receita},
+					function(datalin,statuslin){
+						if(datalin.length > 0){
+							for(var cx=0;cx<datalin.length;cx++){
+								cr_id_ingrediente = datalin[cx].cr_id_ingrediente;								
+								cr_desc_ingrediente = datalin[cx].cr_desc_ingrediente;
+								
+								arrIngredientes.push(cr_id_ingrediente.toString());
+								nomIngredientes.push(cr_desc_ingrediente);
+								var nomes_completo = nomIngredientes.toString();
+								nomes_completo = nomes_completo.replaceAll(",",", ");
+								$("#ingredientes_vinculados").val(nomes_completo);
+								console.log("arrIngredientes ca:: "+arrIngredientes.toString());
+								console.log("nomIngredientes ca:: "+nomIngredientes.toString());
+							}
+						}
+					}
+				);
+			}
+			
 	</script>
 
 	<body>		
@@ -179,6 +248,7 @@
 		
 		<form id="frmreceita" name="frmreceita" method="post" action="cr_lista_receitas.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita" value="0"/>
+			<input type="hidden" id="ids_ingredientes" name="ids_ingredientes" value=""/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_receita"/>
 			
 			<div id="div_tela">
@@ -245,23 +315,30 @@
 												<label for="cr_tempo_preparo_receita" style="font-size: 15px; font-weight: bold;"><strong>Tempo de preparo</strong></label> 
 												<input type="text" class="form-control" name="cr_tempo_preparo_receita" id="cr_tempo_preparo_receita">
 											</div>		
-													
-										</div>
-										
-										<div class="row mt-3 justify-content-md-center">
-										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 												<label for="cr_valor_receita" style="font-size: 15px; font-weight: bold;"><strong>Valor</strong></label> 
 												<input type="text" class="form-control" name="cr_valor_receita"  id="cr_valor_receita" >
-											</div>		
+											</div>	
 										</div>
-																																																			
+										
+										<div class="row mt-3 text-center justify-content-center">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+												<label for="ingredientes_vinculados"><b>Ingredientes Vinculados</b></label>												
+												<div class="input-group">
+													<input readonly type="text" class="form-control" id="ingredientes_vinculados" name="ingredientes_vinculados" placeholder="Vincule Ingredientes...">
+												  <div class="input-group-append">
+													<button type="button" class="browse btn btn-dark" id="btn_seleciona_ingrediente" onclick="javascript:vincularIngrediente();"><strong><i class="fas fa-link"></i> Vincular</strong></button>
+												  </div>
+												</div>
+											</div>
+										</div>																																																													
 										<br/>
-										<div class="row mt-3 justify-content-md-center">																					
+										<div class="row mt-3 justify-content-center">																					
 											<button type="button" class="btn btn-success btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;" onclick="salvarRegistro();">
 												<strong>Salvar <i class="fa fa-save" aria-hidden="true"></i></strong> 
 											</button>										
 										</div>
-										<div class="row mt-3 justify-content-md-center">																															
+										<div class="row mt-3 justify-content-center">																															
 											<button type="submit" class="btn btn-info btn-lg" id="btnAddUsuario" style="font-size: 15px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px;">
 												<strong>Voltar para Lista</strong> 
 											</button>
@@ -274,6 +351,83 @@
 					</div>
 				</div>
 			</div>
+			
+					<!-- PARTE SCRITP E MODAL SELECIONA SUPERVISOR -->
+		<script type="text/javascript">
+		
+			function carregaListaIngredientes(){				
+				var table = $('#table_ingredientes').DataTable();
+				table.clear().draw();
+											
+				$.postJSON("./jsonservlet",{opc_servlet:'list_ingredientes'},
+					function(datalin,statuslin){
+						if(datalin.length > 0){
+							for(var cx=0;cx<datalin.length;cx++){
+								var cr_id_ingrediente = datalin[cx].cr_id_ingrediente;
+								var cr_desc_ingrediente = datalin[cx].cr_desc_ingrediente;
+
+								//console.log("list cr_id_ingrediente:'"+cr_id_ingrediente+"' arrIngredientes :: "+arrIngredientes.toString());
+								//console.log("list nomIngredientes :: "+nomIngredientes.toString());
+
+								var arrayRow = [];
+								arrayRow.push(cr_desc_ingrediente);
+								if(arrIngredientes.includes(cr_id_ingrediente.toString())){
+									arrayRow.push("<input style=\"width: 20px; height: 20px;\" type=\"checkbox\" id=\""+cr_id_ingrediente+"\" name=\"check\" onclick='javascript:checarIngredientes(this,\""+cr_desc_ingrediente+"\")' checked/>");
+				                }else{
+				                	arrayRow.push("<input style=\"width: 20px; height: 20px;\" type=\"checkbox\" id=\""+cr_id_ingrediente+"\" name=\"check\" onclick='javascript:checarIngredientes(this,\""+cr_desc_ingrediente+"\")' />");
+				                }									
+								table.row.add(arrayRow).draw();
+							}
+						}
+					}
+				);
+			}
+			
+			function adicionarIngredientes(){				
+				var ingredientes = nomIngredientes.toString();
+				ingredientes = ingredientes.replaceAll(",",", ");				
+				$("#ingredientes_vinculados").val(ingredientes);	
+				salvarRegistro('');
+				$("#ModalIngredientes").modal("hide");				
+			}
+		</script>
+		
+		<div class="modal" id="ModalIngredientes" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-xl" style="max-width:90%; margin-left: 70;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle"><strong>Vincular Ingredientes</strong></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>			           
+				 </div>
+				  <div class="modal-body">
+					<div class="row text-center">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+							<button class="btn btn-success" type="button" onclick="javascript:adicionarIngredientes();"><strong><i class="fas fa-plus"></i> Adicionar Ingredientes Selecionados</strong></button>
+						</div>
+					</div>
+						<br>
+					   <div class="row mt-3">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+								<table id="table_ingredientes" class="table table-striped table-bordered" style="width: 100%; text-align:center;">
+									<thead>
+										<tr>
+											<th>Ingrediente</th>
+											<th>Selecionar</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+					  </div>
+				  </div>
+				  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Fechar</strong></button>
+				  </div>
+			</div>
+		  </div>
+	 	</div>
+					
 			<div id="div_loading">
 				<div class="row h-100">
 					<div
