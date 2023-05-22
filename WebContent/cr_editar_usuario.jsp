@@ -415,8 +415,9 @@
 			var cr_telefone_usuario = $("#cr_telefone_usuario").val();					
 			
 			if(cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == ""){
-				alert('Preencha todos os campos!');
-				return false;					
+				$("#mensagemErro").text('Preencha todos os campos');
+			    $("#modalErro").modal('show');
+			    return false;				
 			}else{
 				$(".div_cadastro").toggle('slide');
 			    $(".div_cadastro_dois").toggle('slide');
@@ -430,7 +431,8 @@
 			var cr_endereco_usuario = $("#cr_endereco_usuario").val();					
 			
 			if(cr_cep_usuario == "" || cr_nrmcasa_usuario == "" || cr_endereco_usuario == ""){
-				alert('Preencha todos os campos!');
+				$("#mensagemErro").text('Preencha todos os campos');
+			    $("#modalErro").modal('show');
 				return false;					
 			}else{
 			    $(".div_cadastro_dois").toggle('slide');
@@ -480,7 +482,8 @@
 			var cr_email_usuario = $("#cr_email_usuario").val();							
 			
 			if(cr_email_usuario == ""){
-				alert('Email em Branco!');
+				$("#mensagemErro").text('Email em branco');
+			    $("#modalErro").modal('show');
 				$("#cr_email_usuario").focus();
 				return false;
 			}
@@ -494,7 +497,8 @@
 					    $(".div_cadastro_sucesso").slideDown(200);	
 					    limpaCamposCadastro();
 					}else{
-						alert("Problema ao salvar registro!");
+						$("#mensagemErro").text('Problema ao salvar Registro!');
+					    $("#modalErro").modal('show');
 						return false;
 					}
 				}
@@ -528,12 +532,15 @@
 				} else {
 					//cep é inválido.
 					limpaCamposCEP();
-					alert("Formato de CEP inválido.");
+					$("#mensagemErro").text('Formato de Cep Inválido!');
+				    $("#modalErro").modal('show');
+				    return false;
 				}
 			} else {
 				//cep sem valor, limpa formulário.
 				limpaCamposCEP();
-				alert("Digite o CEP antes de pesquisar!");
+				$("#mensagemErro").text('Digite o CEP antes de pesquisar!');
+			    $("#modalErro").modal('show');
 				return false;
 			}
 		}
@@ -550,7 +557,8 @@
 			} else {
 				//CEP não Encontrado.
 				limpaCamposCEP();
-				alert("CEP não encontrado!");
+				$("#mensagemErro").text('Cep não encontrado!');
+			    $("#modalErro").modal('show');
 			}
 		}	      
 		
@@ -616,7 +624,8 @@
 			var cpf_cnpj = $("#cr_cpf_usuario").val();
 			ret = verifica_cpf_cnpj(retira_mascara(cpf_cnpj));		
 			if(!falsidade){
-				alert("CPF/CNPJ inválido!");
+				$("#mensagemErro").text('Cpf/Cnpj inválido!');
+			    $("#modalErro").modal('show');
 				$("#cr_cpf_usuario").val("");
 				$("#cr_cpf_usuario").focus();
 				return false;
@@ -752,7 +761,9 @@
 		    // email válido			   
 		  } else {
 		    // email inválido
-		    alert('Por favor, insira um email válido.');
+			  $("#mensagemErro").text('Por favor, insira um email válido.');
+			  $("#modalErro").modal('show');
+			  return false;
 		  }
 		}			
 	</script>
@@ -881,6 +892,26 @@
 					</div>					
 				</div>
 			</div>														
+			
+			<!-- Modal de mensagem de tratamento de Alerta -->
+			<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header text-white" style="background-color:#b1463c;">
+			        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+			          <span aria-hidden="true" class="text-white">&times;</span>
+			        </button>
+			      </div>
+			      <div class="mt-3 modal-body">    			      	   	  		        			    
+		       		 <p id="mensagemErro"></p>			         
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+			      </div>
+			    </div>
+			   </div>
+			 </div>
 			
 			<!-- DIV CADASTRO CONTA - CONTA CRIADA COM SUCESSO -->
 			<div class="div_cadastro_sucesso">

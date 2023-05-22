@@ -200,8 +200,10 @@
 				$.postJSON("./jsonservlet",{opc_servlet:'apaga_ingrediente',id_ingrediente:id_ingrediente},
 					function(data,status){
 						if(data.ERRO == ""){						
-						   alert("Ingrediente deletado com sucesso!");
-						   carregaListaIngredientes();
+							$("#mensagemErro").text('Ingrediente deletado com sucesso!');
+						    $("#modalErro").modal('show');
+						    return carregaListaIngredientes();
+						   
 						}else{
 							alert(data.ERRO);
 							return false;
@@ -294,5 +296,25 @@
 				</div>
 			</div>
 		</form>		
+		
+		<!-- Modal de mensagem de tratamento de Alerta -->
+		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#b1463c;">
+		        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemErro"></p>			         
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
 	</body>
 </html>

@@ -249,8 +249,9 @@
 			var id = '<%=cuserid%>';
 			
 			if(id == 0){
-				alert("Faça o login antes de prosseguir!");
-				return false;
+				$("#mensagemErro").text('Faça o login antes de prosseguir!');
+			    $("#modalErro").modal('show');
+			    return false;
 			}
 			
 			var opc_favorito = "";
@@ -275,7 +276,10 @@
 						}else if(opc_favorito == "desfavoritar"){
 							document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart';
 						}
-						alert("Receita "+txt+" com sucesso!");
+						
+						$("#mensagemErro").text("Receita "+txt+" com sucesso!");
+					    $("#modalErro").modal('show');
+					    return false;
 					}
 				}
 			);
@@ -595,7 +599,26 @@
 				</div>
 			</div>
 		</div>
-	</form>				
+	</form>	
+	<!-- Modal de mensagem de tratamento de Alerta -->
+		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemErro"></p>			         
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>			
   <footer class="bg-dark text-light">	    
     <div class="text-center" style="background-color: #636f61; padding: 20px;margin-top: 5px" >
       &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
