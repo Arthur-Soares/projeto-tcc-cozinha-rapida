@@ -360,31 +360,31 @@ public class Cr_receita {
 				while(r.next()) {
 					JSONObject jsonObj = new JSONObject();
 					for(int xc = 1;xc<=cols;xc++){
-						if(xc == 3) {
-							ingrediente = null!=r.getObject(3)?r.getString(3):"";
-							tamanho_ingrediente = ingrediente.lines().count();
-						}
-						if(xc == 4) {
-							modo_preparo = null!=r.getObject(4)?r.getString(4):"";
-							if(!modo_preparo.equals("")) {
-								tamanho_modo_preparo = modo_preparo.lines().count();
-								if(modo_preparo.contains("\n")) {
-									String[] linhas = modo_preparo.split("\n");
-									for (String linha : linhas) {
-									    if(linha.length() > 125) {
-									    	tamanho_modo_preparo += 1L;
-									    }
-									}
-								}else if(modo_preparo.contains("\n\n")) {
-									String[] linhas = modo_preparo.split("\n\n");
-									for (String linha : linhas) {
-										if(linha.length() > 125) {
-									    	tamanho_modo_preparo += 1L;
-									    }
-									}
-								}
-							}
-						}
+//						if(xc == 3) {
+//							ingrediente = null!=r.getObject(3)?r.getString(3):"";
+//							tamanho_ingrediente = ingrediente.lines().count();
+//						}
+//						if(xc == 4) {
+//							modo_preparo = null!=r.getObject(4)?r.getString(4):"";
+//							if(!modo_preparo.equals("")) {
+//								tamanho_modo_preparo = modo_preparo.lines().count();
+//								if(modo_preparo.contains("\n")) {
+//									String[] linhas = modo_preparo.split("\n");
+//									for (String linha : linhas) {
+//									    if(linha.length() > 125) {
+//									    	tamanho_modo_preparo += 1L;
+//									    }
+//									}
+//								}else if(modo_preparo.contains("\n\n")) {
+//									String[] linhas = modo_preparo.split("\n\n");
+//									for (String linha : linhas) {
+//										if(linha.length() > 125) {
+//									    	tamanho_modo_preparo += 1L;
+//									    }
+//									}
+//								}
+//							}
+//						}
 
 						if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
 							try {

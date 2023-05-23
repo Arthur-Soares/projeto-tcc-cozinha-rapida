@@ -181,8 +181,7 @@ public class EmailHelperEsqSenha {
 	         multipart.addBodyPart(htmlBodyPart);
 	         
 	         BodyPart messageBodyPart = new MimeBodyPart();
-	         
-	         //String PATH_IMG = "C:\\r1ti\\livemusik\\img\\";
+	         	         
 	         String PATH_IMG = AppSecrets.PATH_IMG;
 	         
 	         messageBodyPart = new MimeBodyPart();
