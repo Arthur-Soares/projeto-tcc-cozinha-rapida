@@ -408,21 +408,79 @@
 			}		
 		}
 		
-		//Chama a segunda tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes ao endereço
-		function chamaCadastroDois(){   		
-			var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
-			var cr_cpf_usuario = $("#cr_cpf_usuario").val();
-			var cr_telefone_usuario = $("#cr_telefone_usuario").val();					
-			
-			if(cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == ""){
-				$("#mensagemErro").text('Preencha todos os campos');
-			    $("#modalErro").modal('show');
-			    return false;				
-			}else{
-				$(".div_cadastro").toggle('slide');
-			    $(".div_cadastro_dois").toggle('slide');
-			}						   
+		//Chama a tela de cadastro
+		function chamaCadastroDois() {   		
+		    var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
+		    var cr_cpf_usuario = $("#cr_cpf_usuario").val();
+		    var cr_telefone_usuario = $("#cr_telefone_usuario").val();
+		    var nomeRegex = /^[A-Za-z]+([\ A-Za-z]+)*$/; //expressão regular para nome
+		    
+		    if (cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == "") {
+		    	$("#mensagemErro").text('Preencha todos os campos!');
+		        $("#modalErro").modal('show');
+		        $("#cr_nome_completo_usuario").focus();
+		        return false;
+		    }
+		    else if(!nomeRegex.test(cr_nome_completo_usuario)){
+		    	$("#mensagemErro").text('Digite o nome corretamente!');
+		        $("#modalErro").modal('show');
+		        $("#cr_nome_completo_usuario").focus();
+		        return false;
+		    }
+		    else if (validarCPF(cr_cpf_usuario) == false) {
+		    	$("#mensagemErro").text('Insira um CPF valido!');
+		        $("#modalErro").modal('show');
+		        $("#cr_cpf_usuario").focus();
+		        return false;
+		    }
+		    else if (!/\(\d{2}\)\s\d{4,5}-\d{4}/.test(cr_telefone_usuario)) {
+		    	$("#mensagemErro").text('Insira um telefone valido!');
+		        $("#modalErro").modal('show');
+		        $("#cr_telefone_usuario").focus();
+		        return false;
+		    }
+		    else {
+		        $(".div_cadastro").toggle('slide');
+		        $(".div_cadastro_dois").toggle('slide');
+		    }						   
 		}
+		
+		//Função para validação de CPF
+		function validarCPF(cpf) {
+			  cpf = cpf.replace(/[^\d]+/g,'');
+			  // Elimina CPFs invalidos conhecidos
+			  if (cpf.length != 11 ||
+			    cpf == "00000000000" ||
+			    cpf == "11111111111" ||
+			    cpf == "22222222222" ||
+			    cpf == "33333333333" ||
+			    cpf == "44444444444" ||
+			    cpf == "55555555555" ||
+			    cpf == "66666666666" ||
+			    cpf == "77777777777" ||
+			    cpf == "88888888888" ||
+			    cpf == "99999999999")
+			        return false;
+			  // Valida 1º digito
+			  add = 0;
+			  for (i=0; i < 9; i ++)
+			    add += parseInt(cpf.charAt(i)) * (10 - i);
+			  rev = 11 - (add % 11);
+			  if (rev == 10 || rev == 11)
+			      rev = 0;
+			  if (rev != parseInt(cpf.charAt(9)))
+			      return false;
+			  // Valida 2º digito
+			  add = 0;
+			  for (i = 0; i < 10; i ++)
+			    add += parseInt(cpf.charAt(i)) * (11 - i);
+			  rev = 11 - (add % 11);
+			  if (rev == 10 || rev == 11)
+			      rev = 0;
+			  if (rev != parseInt(cpf.charAt(10)))
+			      return false;
+			  return true;
+			}
 	
 		//Chama a terceira tela para preenchimento dos dados, nessa tela são cadastrado as partes referentes a Email e Senha
 		function chamaCadastroTres(){   									    
@@ -478,16 +536,23 @@
 		 * - Se as senhas digitadas pelo usuário são iguais;
 		 * Caso essas duas funções sejam verdadeiras ele irá salvar.
 		 */
+		//Chama a terceira e ultima tela de cadastro
 		function salvarRegistro(){
-			var cr_email_usuario = $("#cr_email_usuario").val();							
+			var cr_email_usuario = $("#cr_email_usuario").val();
+			var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; //expressão regular para email
 			
 			if(cr_email_usuario == ""){
-				$("#mensagemErro").text('Email em branco');
-			    $("#modalErro").modal('show');
+				$("#mensagemErro").text('Email em branco!');
+		        $("#modalErro").modal('show');
 				$("#cr_email_usuario").focus();
 				return false;
 			}
-			
+			if(!emailRegex.test(cr_email_usuario)){
+				$("#mensagemErro").text('Insira um email Valido!');
+		        $("#modalErro").modal('show');
+				$("#cr_email_usuario").focus();
+				return false;
+			}
 			var arrayJSON = $('#login_cadastro').serializeArray();
 			$.postJSON("./jsonservlet",arrayJSON,
 				function(data,status){
@@ -497,8 +562,8 @@
 					    $(".div_cadastro_sucesso").slideDown(200);	
 					    limpaCamposCadastro();
 					}else{
-						$("#mensagemErro").text('Problema ao salvar Registro!');
-					    $("#modalErro").modal('show');
+						$("#mensagemErro").text('Erro inesperado ao salvar registro!');
+				        $("#modalErro").modal('show');
 						return false;
 					}
 				}
@@ -620,113 +685,6 @@
 		    }
 		}
 		
-		function retorna_verifica_cpfcnpj(){
-			var cpf_cnpj = $("#cr_cpf_usuario").val();
-			ret = verifica_cpf_cnpj(retira_mascara(cpf_cnpj));		
-			if(!falsidade){
-				$("#mensagemErro").text('Cpf/Cnpj inválido!');
-			    $("#modalErro").modal('show');
-				$("#cr_cpf_usuario").val("");
-				$("#cr_cpf_usuario").focus();
-				return false;
-			}
-		}
-		
-		//Verifica se CPF ou CGC e encaminha para a devida função, no caso do cpf/cgc estar digitado sem mascara
-		function verifica_cpf_cnpj(cpf_cnpj) {
-		    if (cpf_cnpj.length == 11) {
-		        return(verifica_cpf(cpf_cnpj));
-		    } else if (cpf_cnpj.length == 14) {
-		        return(verifica_cnpj(cpf_cnpj));
-		    } else { 
-		        return false;
-		    }		   
-		}
-	
-		//Verifica se o número de CPF informado é válido
-		function verifica_cpf(sequencia) {
-		    if ( Procura_Str(1,sequencia,'00000000000,11111111111,22222222222,33333333333,44444444444,55555555555,66666666666,77777777777,88888888888,99999999999,00000000191,19100000000') > 0 ) {
-		        return false;
-		    }
-		    seq = sequencia;
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 3;f >= 0;f--) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        multiplicador++;
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 2,seq.length - 1)) {
-		        return false;
-		    }
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 2;f >= 0;f--) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        multiplicador++;
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 1,seq.length)) {
-		        return false;
-		    }
-		    return true;
-		}
-	
-		//Verifica se o número de CNPJ informado é válido
-		function verifica_cnpj(sequencia) {
-		    seq = sequencia;
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 3;f >= 0;f-- ) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        if ( multiplicador < 9 ) {
-		            multiplicador++;
-		        } else {
-		            multiplicador = 2;
-		        }
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 2,seq.length - 1)) {
-		        return false;
-		    }
-	
-		    soma = 0;
-		    multiplicador = 2;
-		    for (f = seq.length - 2;f >= 0;f--) {
-		        soma += seq.substring(f,f + 1) * multiplicador;
-		        if (multiplicador < 9) {
-		            multiplicador++;
-		        } else {
-		            multiplicador = 2;
-		        }
-		    }
-		    resto = soma % 11;
-		    if (resto == 1 || resto == 0) {
-		        digito = 0;
-		    } else {
-		        digito = 11 - resto;
-		    }
-		    if (digito != seq.substring(seq.length - 1,seq.length)) {
-		        return false;
-		    }
-		    return true;
-		}
-		
 		//Procura uma string dentro de outra string
 		function Procura_Str(param0,param1,param2) {
 		    for (a = param0 - 1;a < param1.length;a++) {
@@ -742,30 +700,7 @@
 		//Retira a máscara do valor de cpf_cnpj
 		function retira_mascara(cpf_cnpj) {
 		    return cpf_cnpj.replace(/\./g,'').replace(/-/g,'').replace(/\//g,'')
-		}
-		
-		function validacaoEmail() {			  
-		  var email = $("#cr_email_usuario").val();			  
-		  var usuario = email.substring(0, email.indexOf("@"));
-		  var dominio = email.substring(email.indexOf("@")+ 1, email.length);
-
-		  if ((usuario.length >=1) &&
-		      (dominio.length >=3) &&
-		      (usuario.search("@")==-1) &&
-		      (dominio.search("@")==-1) &&
-		      (usuario.search(" ")==-1) &&
-		      (dominio.search(" ")==-1) &&
-		      (dominio.search(".")!=-1) &&
-		      (dominio.indexOf(".") >=1)&&
-		      (dominio.lastIndexOf(".") < dominio.length - 1)) {
-		    // email válido			   
-		  } else {
-		    // email inválido
-			  $("#mensagemErro").text('Por favor, insira um email válido.');
-			  $("#modalErro").modal('show');
-			  return false;
-		  }
-		}			
+		}		
 	</script>
 
 	<body>	
@@ -792,7 +727,7 @@
 					</div>
 					
 					<div class="user-box">						
-						<input type="text" name="cr_cpf_usuario" id="cr_cpf_usuario" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" placeholder="&nbsp;"/>
+						<input type="text" name="cr_cpf_usuario" id="cr_cpf_usuario" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" placeholder="&nbsp;"/>
 						<label for="cr_cpf_usuario">CPF</label> 
 					</div>
 					
@@ -930,5 +865,25 @@
 				</div>
 			</div>					
 		</form>
+		
+		<!-- Modal de mensagem de tratamento de Alerta -->
+		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#b1463c;">
+		        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemErro"></p>			         
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
 	</body>
 </html>

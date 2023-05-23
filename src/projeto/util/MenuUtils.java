@@ -23,6 +23,16 @@ public class MenuUtils {
 							"			$('#frmchama').attr('action', actionSel); " +
 							"			$('#frmchama').submit(); " +
 							"		} " +
+							"		function sair(){ " +
+							"			$(\"#mensagemSucesso\").text('Deseja realmente sair?'); " +
+							"			$(\"#modalSucesso\").modal('show');" +
+							"			" +
+							"			" +
+							"			return false;" +
+							"		} " +
+							"		function redirecionarHome() { " +
+							"   		 return window.location.href = \"cr_home.jsp?logoff=S\"; " +
+							"  		} " +
 							"	</script> " +	
 							"	<style> " +	
 							" " +
@@ -118,6 +128,12 @@ public class MenuUtils {
 							"			    backdrop-filter: blur(40px); "+
 							"				-webkit-backdrop-filter: blur(40px); " +
 							"			} "+
+							" " +
+							"			@media(min-width: 1000px) { " +
+							"				.pesquisa_receita { " +
+							"					width: 500px; " +
+							"				} " +
+							"			} "+
 							"	</style> " +
 							"	<form id='frmchama' method='post' action=''> " +
 							"	</form> " +								 							
@@ -129,8 +145,8 @@ public class MenuUtils {
 							"				<span class='navbar-toggler-icon'></span> " +
 							"			</button> " +																				
 							"			<div class='collapse navbar-collapse justify-content-center' id='navbarNav'> "+
-							"				<form class='form-inline ml-auto mr-0'> " +
-							"				   <div class='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12' style='width: 500px;'> "+	
+							"				<form class='form-inline col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 justify-content-center'> " +
+							"				   <div class='col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 pesquisa_receita'> "+	
 							"    				<div class='input-group rounded'> " +
 							"     					 <div class='input-group-append rounded'> " +							
 							"       					<span class='input-group-text badge-dark rounded-right-0 rounded-left' id='basic-addon1' style='border: none;'><i class='fas fa-search'></i></span> " +
@@ -143,14 +159,15 @@ public class MenuUtils {
 							"							</select> "+
 							"    				</div> " +
 							"    			  </div> " +
-							"  				</form> " +	
-							" 				<ul class='navbar-nav ml-auto mr-md-5'> ";
+							"  				</form> " +
+					        " 		   <div class='col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12'> "+	
+							" 				<ul class='navbar-nav'> ";
 			if(cru == null) {
 				menuHtml += "						<li class='nav-item "+(pagAtual.equals("login")?"active":"")+"'> " +
 							"							<a class='nav-link' onclick=\"javascript:chamaMenu('cr_login.jsp?logoff=S');\">Entre ou Cadastre-se</a> " +
 							"						</li> ";
 			}else {
-				menuHtml +=	"						<li class='nav-item "+(pagAtual.equals("usuario")?"active":"")+" dropdown'><a class='nav-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='#'><i class='fas fa-user'></i> "+nome_usuario+"</a>  " +						   
+				menuHtml +=	"						<li class='nav-item "+(pagAtual.equals("usuario")?"active":"")+" dropdown'><a class='nav-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='#'><i class='fas fa-user fa-lg'></i> "+nome_usuario+"</a>  " +						   
 			            	"						    <ul class='navbarLinkDropdown dropdown-menu'> "  +
 			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"javascript:chamaMenu('cr_editar_usuario.jsp');\"> " +
 			            	"								    <i class='fas fa-edit'></i> Editar Dados</a> " +
@@ -158,7 +175,7 @@ public class MenuUtils {
 			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"javascript:chamaMenu('cr_receitas_favoritas.jsp');\"> " +
 			            	"								    <i class='fas fa-heart'></i> Receitas Salvas</a> " +
 			            	"							    </li> " +
-			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"return confirm('Deseja sair do ambiente?')\"  href='cr_home.jsp?logoff=S'> " +
+			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"sair();\">" +
 			            	"								    <i class='fas fa-sign-out-alt'></i> Sair</a> " +
 			            	"							    </li> "+							   
 			            	"						    </ul> " +						   
@@ -169,10 +186,11 @@ public class MenuUtils {
 							"						</li> ";													
 			if(cru != null && "1".equals(tipo_acesso)) {			        			            	
 				menuHtml += "						<li class='nav-item "+(pagAtual.equals("receita")?"active":"")+"'> " +
-							"							<a class='nav-link' onclick=\"javascript:chamaMenu('cr_lista_receitas.jsp');\"><i class='fas fa-receipt'></i> Cadastro de Receitas</a> " +
+							"							<a class='nav-link' onclick=\"javascript:chamaMenu('cr_lista_receitas.jsp');\"><i class='fas fa-receipt'></i> Receita</a> " +
 							"						</li> ";
 			}							
                 menuHtml += "				</ul> "+
+            			    "    		 </div> " +
 						    "			</div>"+						    
 						    " 	</nav>"+
 							"	<!-- Fim Navbar Projeto --> ";
@@ -197,7 +215,26 @@ public class MenuUtils {
 	                		"   </div> " +
 	                		"   <button class=\"pagar\">Pagar</button> " +
 	                		"</div> ";
-	
+                menuHtml += "<!-- Modal de mensagem de tratamento de Alerta --> " +
+                		"		<div class=\"modal fade\" id=\"modalSucesso\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
+                		"		  <div class=\"modal-dialog\" role=\"document\"> " +
+                		"		    <div class=\"modal-content\"> " +
+                		"		      <div class=\"modal-header text-white\" style=\"background-color:#636f61;\"> " +
+                		"		        <h5 class=\"modal-title\" id=\"modalErroLabel\">Alerta</h5> " +
+                		"		        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Fechar\"> " +
+                		"		          <span aria-hidden=\"true\" class=\"text-white\">&times;</span> " +
+                		"		        </button> " +
+                		"		      </div> " +
+                		"		      <div class=\"mt-3 modal-body\"> " +
+                		"	       		 <p id=\"mensagemSucesso\"></p> " +
+                		"		      </div> " +
+                		"		      <div class=\"modal-footer\"> " +
+                	    "		        <button type=\"button\" class=\"btn btn-outline-dark\" data-dismiss=\"modal\">Não</button> " +
+                	    "		        <button type=\"button\" class=\"btn btn-dark\" id=\"btnSim\" onclick=\"redirecionarHome()\">Sim</button> " +
+                	    "		      </div> " +
+                		"		    </div> " +
+                		"		   </div> " +
+                		"		 </div> ";
 			 return menuHtml;		
 	}
 	

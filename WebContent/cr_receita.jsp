@@ -74,9 +74,6 @@
 				font-size: 30px;
 				color: #323232;
 			}
-			div {
-				border-radius: 10px;
-			}
 			div.ingQtd{
 				height: 80px;
 				margin: auto;

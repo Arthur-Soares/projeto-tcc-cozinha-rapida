@@ -15,7 +15,6 @@ import projeto.util.AppSecrets;
 
 public class LoginServlet extends HttpServlet {
 	
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 		throws ServletException, IOException {							
 		String cr_email_usuario_login = null!=request.getParameter("cr_email_usuario_login")?request.getParameter("cr_email_usuario_login"):"";
@@ -42,15 +41,24 @@ public class LoginServlet extends HttpServlet {
 					}else {
 						//Senha Incorreta
 						//throw new InvalidRequestException("Usuário ou senha inválidos!");
-						throw new InvalidRequestException("Senha incorreta.");
+						//throw new InvalidRequestException("Senha incorreta.");
+						throw new InvalidRequestException("Senha incorreta.", true);
 					}					
 				}
 			
 		}catch(InvalidRequestException i) {
+			/*
 			request.getSession().setAttribute("errologin", i.getMessage());
-			request.getSession().setAttribute(AppSecrets.USER_KEY, null);			
-			
+			request.getSession().setAttribute(AppSecrets.USER_KEY, null);
 			response.sendRedirect(AppSecrets.SISTEMA_URL+"/cr_login.jsp");
+			*/
+			
+		    
+		    request.getSession().setAttribute("errologin", i.getMessage());
+		   
+		    request.getSession().setAttribute(AppSecrets.USER_KEY, null);
+		    response.sendRedirect(AppSecrets.SISTEMA_URL+"/cr_login.jsp");
+			
 		}
 	}
 }

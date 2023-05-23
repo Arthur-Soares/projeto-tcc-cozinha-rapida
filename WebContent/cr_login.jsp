@@ -1,3 +1,4 @@
+<%@page import="org.apache.poi.util.SystemOutLogger"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-BR, pt">
@@ -33,25 +34,13 @@
 		<%
 		String redir = null!=request.getParameter("redir")?request.getParameter("redir"):"";
 		String opclogoff = null!=request.getParameter("logoff")?request.getParameter("logoff"):"";
-		//logoff=S
 		String msgIndex = null != session.getAttribute("errologin") ? (String) session.getAttribute("errologin") : "";
-				
+		//System.out.println("Mensagem Index :: "+msgIndex);
 		if("S".equals(opclogoff) || !"".equals(msgIndex)){
 			session.setAttribute("errologin", null);
 			session.setAttribute("projeto.model.Cr_usuario", null);			
 		}
 		%>
-		
-		<script type="text/javascript">
-			<%
-			if(!"".equals(msgIndex)){
-			%>
-			alert('<%=msgIndex%>');	
-			<%
-			}
-			%>
-		</script>
-		
 		<style>		
 		h1 {	
 			color: #945d60;
@@ -231,8 +220,19 @@
 		    div_cadastro.hide();
 		    div_cadastro_dois.hide();				  			
 		    div_cadastro_tres.hide();	
-		    div_cadastro_sucesso.hide();	
+		    div_cadastro_sucesso.hide();
+		    
+		    retornaMsgErro('<%=msgIndex%>');
 		});
+		
+		function retornaMsgErro(msg_erro){
+			if(msg_erro != ""){
+				$("#mensagemErro").text(msg_erro);
+			    $("#modalErro").modal('show');
+			    $("#cr_email_usuario_login").focus();
+			    return false;
+			}
+		}
 		
 		function voltarHome(){
 			window.location.href = "cr_home.jsp";
@@ -767,7 +767,7 @@
 					</div>
 					
 					<div class="user-box">						
-						<input type="text" name="cr_cpf_usuario" id="cr_cpf_usuario" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onchange="javascript:retorna_verifica_cpfcnpj();" placeholder="&nbsp;"/>
+						<input type="text" name="cr_cpf_usuario" id="cr_cpf_usuario" maxlength="14" onkeydown="javascript:return aplica_mascara_cpfcnpj(this,18,event)" onkeyup="javascript:return aplica_mascara_cpfcnpj(this,18,event)" placeholder="&nbsp;"/>
 						<label for="cr_cpf_usuario">CPF</label> 
 					</div>
 					
