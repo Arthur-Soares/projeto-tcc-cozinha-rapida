@@ -732,7 +732,7 @@
 					</div>
 					
 					<div class="user-box">												
-						<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" name="cr_telefone_usuario" maxlength="16" id="cr_telefone_usuario" placeholder="&nbsp;"/>																																													
+						<input type="text" oninput="$(this).mask('(99) 99999-9999');" name="cr_telefone_usuario" maxlength="16" id="cr_telefone_usuario" placeholder="&nbsp;"/>																																													
 						<label for="cr_cpf_usuario">Telefone</label> 
 					</div>
 									
@@ -758,7 +758,7 @@
 				<div class="login-box"  style="margin-top:3%;">			
 					<h5><strong>Editar Endereço:</strong></h5>											
 					<div class="user-box">																	
-						<input type="text" name="cr_cep_usuario" id="cr_cep_usuario" maxlength="20" onkeypress="$(this).mask('00000-000')" onchange="pesquisaCEP();" placeholder="&nbsp;"/>
+						<input type="text" name="cr_cep_usuario" id="cr_cep_usuario" maxlength="20" oninput="$(this).mask('00000-000')" onchange="pesquisaCEP();" placeholder="&nbsp;"/>
 						<label for="cr_cep_usuario">CEP</label> 
 					</div>
 					

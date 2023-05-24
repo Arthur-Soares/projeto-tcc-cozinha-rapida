@@ -145,7 +145,7 @@ public class MenuUtils {
 							"				<span class='navbar-toggler-icon'></span> " +
 							"			</button> " +																				
 							"			<div class='collapse navbar-collapse justify-content-center' id='navbarNav'> "+
-							"				<form class='form-inline col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 justify-content-center'> " +
+							"				<form class='form-inline mt-3 mt-md-0 col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 justify-content-center'> " +
 							"				   <div class='col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 pesquisa_receita'> "+	
 							"    				<div class='input-group rounded'> " +
 							"     					 <div class='input-group-append rounded'> " +							
@@ -161,13 +161,13 @@ public class MenuUtils {
 							"    			  </div> " +
 							"  				</form> " +
 					        " 		   <div class='col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12'> "+	
-							" 				<ul class='navbar-nav'> ";
+							" 				<ul class='navbar-nav justify-content-md-center'> ";
 			if(cru == null) {
-				menuHtml += "						<li class='nav-item "+(pagAtual.equals("login")?"active":"")+"'> " +
+				menuHtml += "						<li class='nav-item mt-3 mt-md-0 "+(pagAtual.equals("login")?"active":"")+"'> " +
 							"							<a class='nav-link' onclick=\"javascript:chamaMenu('cr_login.jsp?logoff=S');\">Entre ou Cadastre-se</a> " +
 							"						</li> ";
 			}else {
-				menuHtml +=	"						<li class='nav-item "+(pagAtual.equals("usuario")?"active":"")+" dropdown'><a class='nav-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='#'><i class='fas fa-user fa-lg'></i> "+nome_usuario+"</a>  " +						   
+				menuHtml +=	"						<li class='nav-item mt-3 mt-md-0 "+(pagAtual.equals("usuario")?"active":"")+" dropdown'><a class='nav-link dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='#'><i class='fas fa-user fa-lg'></i> "+nome_usuario+"</a>  " +						   
 			            	"						    <ul class='navbarLinkDropdown dropdown-menu'> "  +
 			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"javascript:chamaMenu('cr_editar_usuario.jsp');\"> " +
 			            	"								    <i class='fas fa-edit'></i> Editar Dados</a> " +
@@ -181,7 +181,8 @@ public class MenuUtils {
 			            	"						    </ul> " +						   
 			            	"						</li>";
 			}
-				menuHtml += "						<li class='nav-item "+(pagAtual.equals("carrinho")?"active":"")+"'> " +
+			
+				menuHtml += "						<li class='nav-item mt-3 mt-md-0 "+(pagAtual.equals("carrinho")?"active":"")+"'> " +
 							"							<a id='abrir-carrinho' class='nav-link' href='#'><i class='fas fa-shopping-cart fa-lg'></i></a> " +
 							"						</li> ";													
 			if(cru != null && "1".equals(tipo_acesso)) {			        			            	

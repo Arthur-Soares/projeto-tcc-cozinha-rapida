@@ -772,7 +772,7 @@
 					</div>
 					
 					<div class="user-box">												
-						<input type="text" onkeypress="$(this).mask('(99) 99999-9999');" name="cr_telefone_usuario" maxlength="16" id="cr_telefone_usuario" placeholder="&nbsp;"/>																																													
+						<input type="text" oninput="$(this).mask('(99) 99999-9999');" name="cr_telefone_usuario" maxlength="16" id="cr_telefone_usuario" placeholder="&nbsp;"/>																																													
 						<label for="cr_telefone_usuario">Telefone</label> 
 					</div>
 									
@@ -799,7 +799,7 @@
 					<h5><strong>Criando sua conta<br/>Preencha os dados abaixo:</strong></h5>	
 					<br>								
 					<div class="user-box">																	
-						<input type="text" name="cr_cep_usuario" id="cr_cep_usuario" maxlength="20" onkeypress="$(this).mask('00000-000')" onchange="pesquisaCEP();" placeholder="&nbsp;"/>
+						<input type="text" name="cr_cep_usuario" id="cr_cep_usuario" maxlength="20" oninput="$(this).mask('00000-000')" onchange="pesquisaCEP();" placeholder="&nbsp;"/>
 						<label for="cr_cep_usuario">CEP</label> 
 					</div>
 					

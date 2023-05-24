@@ -123,7 +123,11 @@
 				cursor: pointer;			
 				transition: 0.2s;
 				font-size: 20px;
-			}							
+			}
+			.div-com-fundo-transparente {
+			  background-color: rgba(0, 0, 0, 0.4); /* Valor alfa de 0.5 representa 50% de transparência */
+			}
+										
 		</style>		
 	</head>
 
@@ -250,6 +254,17 @@
 		    };
 		}
 		
+		function createVerReceitaFunction(idReceita) {
+		    return function() {
+		    	verReceita(idReceita);
+		    };
+		}
+		
+		function verReceita(cr_id_receita){									
+			$("#cr_id_receita").val(cr_id_receita);
+			$("#frmreceita").submit();		
+		}
+		
 		function carregaListaReceitasFav(cuserid) {
 		    var num = 1;
 		    var div_receitas_favoritas = $(".div_receitas_favoritas");
@@ -266,8 +281,8 @@
 
 		                var divContainer = $("<div>").addClass("container");
 		                var divRow = $("<div>").addClass("row mt-3 align-items-center");
-		                var divColImg = $("<div>").addClass("col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num);
-		                var divColTitulo = $("<div>").addClass("col-xl-6 col-lg-6 col-md-6 col-sm-9 col-9").attr("id", "cr_titulo_receita_" + num);
+		                var divColImg = $("<div>").addClass("col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num).css("border-radius", "30px");
+		                var divColTitulo = $("<div>").addClass("col-xl-6 col-lg-6 col-md-6 col-sm-9 col-9").attr("id", "cr_titulo_receita_" + num).click(createVerReceitaFunction(cr_id_receita));
 		                var inputTitulo = $("<input>").attr({
 		                    type: "text",
 		                    class: "form-control",
@@ -328,21 +343,25 @@
 	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">	
 			
 		<div id="div_tela">
-				<div class="row mt-3">
-					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
-						<div class="row mt-3">
-							<div class="container rounded col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12 well" align="center">
-								<br>
-								<div class="row mt-3">
-									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
-										<h1>
-											Receitas Favoritas
-										</h1>
-									</div>
+			<div class="row mt-3">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
+					<div class="row mt-3">
+						<div class="container rounded col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12 div-com-fundo-transparent" align="center">
+							<br>
+							<div class="row mt-3">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
+									<h1>
+										Receitas Favoritas
+									</h1>
 								</div>
-								<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
-								</div>					
-	 	</div>
+							</div>
+							<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>					
+ 		</div>
 	</form>		
 			  
 <!--   	<footer class="text-light" style="background-color: #636f61; padding: 20px;margin-top: 4%">	    

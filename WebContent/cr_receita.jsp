@@ -154,8 +154,7 @@
 				cursor: pointer;			
 				transition: 0.2s;
 				font-size: 20px;
-			}
-				
+			}					
 		</style>		
 	</head>
 
@@ -314,16 +313,38 @@
 								tamanho_modo_preparo = datalin.tamanho_modo_preparo;
 							}
 						}
+						
+						//Trazendo Ingredientes em Tópicos abaixo:
+						var ingredientes = cr_ingrediente_receita.split("\r\n");
+						var listaIngredientes = "<ul style='list-style-type: none; padding-left: 0;'>";
+						
+						for (var i = 0; i < ingredientes.length; i++) {
+						  if (ingredientes[i] !== "") {
+						    listaIngredientes += "<li style='margin-bottom: 5px;'><span style='color: #B1463C; font-weight: bold;'>&#8226;</span> " + ingredientes[i] + "</li>";
+						  }
+						}
+						
+						listaIngredientes += "</ul>";
+						$("#cr_ingrediente_receita").html(listaIngredientes);
+
+						//Trazendo Modo de Preparo:
+						var paragrafos = cr_modo_preparo_receita.split("\r\n");
+						var modoPreparoHTML = "";						
+						for (var i = 0; i < paragrafos.length; i++) {
+						  if (paragrafos[i] !== "") {
+						    modoPreparoHTML += "<span style='color: #B1463C;  font-weight: bold;'>" + (i + 1) + ".</span> " + paragrafos[i] + "<br>";
+						  }
+						}						
+						$("#cr_modo_preparo_receita").html(modoPreparoHTML);
+
+
 						$("#cr_id_receita").val(cr_id_receita);
-						$("#cr_titulo_receita").text(cr_titulo_receita);
-						$("#cr_titulo_receita").val(cr_titulo_receita);
-						$("#cr_ingrediente_receita").val(cr_ingrediente_receita);
-						$("#cr_modo_preparo_receita").val(cr_modo_preparo_receita);
-						$("#cr_tempo_preparo_receita").val(cr_tempo_preparo_receita);
-						$("#cr_rendimento_receita").val(cr_rendimento_receita);
-						$("#cr_valor_receita").val("R$ "+cr_valor_receita);
-						$("#cr_ingrediente_receita").attr("rows",tamanho_ingrediente);
-						$("#cr_modo_preparo_receita").attr("rows",tamanho_modo_preparo);
+						$("#cr_titulo_receita").html(cr_titulo_receita);											
+						//$("#cr_ingrediente_receita").html(cr_ingrediente_receita.replace(/\r\n/g, "<br>"));
+						//$("#cr_modo_preparo_receita").html(cr_modo_preparo_receita.replace(/\r\n/g, "<br>"));						
+						$("#cr_tempo_preparo_receita").html(cr_tempo_preparo_receita);
+						$("#cr_rendimento_receita").html(cr_rendimento_receita);
+						$("#cr_valor_receita").html("R$ "+cr_valor_receita);					
 						
 						var div_image = $("#cr_receita_nome_img");
 						
@@ -406,12 +427,11 @@
 			<div class="row justify-content-between mt-1">
 				<!-- Imagem da Receita -->
 				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12"> 
-					<div class="img_receita" id="cr_receita_nome_img">	
-					</div>	
+					<div class="img_receita" id="cr_receita_nome_img" style="border-radius: 20px;"></div>		
 				</div>	
 							
 				<!-- Div de sugestão a ser implementado -->
-				<div class="sugestao" style="border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
+				<div class="sugestao" style="border-radius: 20px; border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
 					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
 						<strong>Sugestões:</strong>
 					</label> 
@@ -419,29 +439,28 @@
 			</div>
 			
 			<div class="row mt-3 justify-content-md-center text-center col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">		
-				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+				<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
 					<label for="cr_rendimento_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
-						<strong>Rendimento</strong>
-					</label> 			
-					<textarea disabled  class="form-control" name="cr_rendimento_receita" id="cr_rendimento_receita" rows="1" 
-						style="resize: none; background: #FFFFFF; font-size: 18px; border: none; text-align: center;">
-					</textarea> 
+						<strong><i class="fas fa-utensils"></i> Rendimento</strong>
+					</label> 								
+					<div class="cr_rendimento_receita" id="cr_rendimento_receita" style="font-size: 18px;">	
+					</div> 
 				</div>
 				
 				<!-- Tempo de preparo da Receita -->
-			 	<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
-					<label style="font-size: 18px; font-weight: bold; color: #b1463c;"><strong> Tempo de Preparo </strong></label>
-					<input disabled type="text" class="form-control" name="cr_tempo_preparo_receita" id="cr_tempo_preparo_receita" 
-					style="border:none; background: #FFFFFF; font-size: 18px; text-align: center; ">					
+			 	<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+					<label style="font-size: 18px; font-weight: bold; color: #b1463c;"><strong><i class="fas fa-clock"></i> Tempo de Preparo </strong></label>					
+					<div class="cr_tempo_preparo_receita" id="cr_tempo_preparo_receita" style="font-size: 18px;">	
+					</div> 					
 				</div>
 				
 				<!-- Valor da Receita -->
-			 	<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+			 	<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
 					<label for="cr_valor_receita" style="font-size: 18px; font-weight: bold; color: #b1463c;">
-						<strong>Valor da Receita</strong>
-					</label> 
-					<input disabled type="text" class="form-control" name="cr_valor_receita"  id="cr_valor_receita" 
-					style="border:none; background: #FFFFFF; font-size: 18px; text-align: center;">									
+						<strong><i class="fas fa-dollar-sign"></i> Valor da Receita</strong>
+					</label> 					
+					<div class="cr_valor_receita" id="cr_valor_receita" style="font-size: 18px;">	
+					</div> 								
 				</div>
 		   </div>
 			
@@ -449,12 +468,11 @@
 			<div class="row mt-3 justify-content-between">			
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">						
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">		
-						<label for="cr_ingrediente_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
+						<label for="cr_ingrediente_receita" style="font-size: 20px; font-weight: bold; background: #FFFFFF; color: #b1463c;">
 							<strong>Ingredientes</strong>
-						</label> 						
-						<textarea disabled type="textarea" class="form-control" name="cr_ingrediente_receita" 
-						id="cr_ingrediente_receita" rows="" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
-						</textarea> 
+						</label>					
+						<div class="cr_ingrediente_receita" id="cr_ingrediente_receita" style="font-size: 18px;">	
+						</div>							 					
 					</div>										
 				</div>			
 			</div>
@@ -466,20 +484,19 @@
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
 							<label for="cr_modo_preparo_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
 								<strong>Modo de preparo</strong>
-							</label> 
-							<textarea disabled type="textarea" class="form-control" name="cr_modo_preparo_receita" 
-							id="cr_modo_preparo_receita" rows="" style="border:none; resize: none; background: #FFFFFF; font-size: 18px;">
-							</textarea> 
+							</label> 						
+							<div class="cr_modo_preparo_receita" id="cr_modo_preparo_receita" style="font-size: 18px;">	
+							</div>
 						</div>				
 					</div>					
 				</div>				
 			</div>
 			
 			<!-- Modo de preparo da Receita -->
-			<div class="mt-3 d-flex justify-content-end">
+			<div class="row mt-3 d-flex justify-content-end">
 			  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 ml-auto text-right">	
-			    <button type="button" class="btn btn-lg btn-block" data-toggle="modal" id="btnCompra" data-target="#modalCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #b1463c;">
-			     	<strong>Comprar Ingredientes</strong>
+			    <button type="button" class="btn btn-lg btn-block" data-toggle="modal" id="btnCompra" data-target="#modalCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;">
+			     	<strong><i class="fas fa-shopping-basket"></i> Comprar Ingredientes</strong>
 			    </button>
 			  </div>												
 			</div>
