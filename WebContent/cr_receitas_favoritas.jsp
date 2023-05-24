@@ -209,34 +209,44 @@
 				);				
 			}
 		}
-			
+		
+		function desfavoritarReceitaModal(cr_id_receita){
+			var id = '<%=cuserid%>';
+			if(id == 0){
+				$("#mensagemSucessoDesfavoritar").text('Faça o login antes de prosseguir!');
+		        $("#modalSucessoDesfavoritar").modal('show');
+				return false;
+			}else{
+				$("#btnSimConfirm").val(cr_id_receita);
+				$("#mensagemConfirm").text('Deseja desfavoritar essa receita?');
+		        $("#modalConfirm").modal('show');
+				return false;
+			}
+		}
+		
 		//Função do efeito favotitar receita no icone Hearth
 		function desfavoritarReceita(cr_id_receita){
-			var id = '<%=cuserid%>';
+			
+			$("#modalConfirm").modal('hide');
 			var opc_favorito = "desfavoritar";
-			
-			if(id == 0){
-				alert("Faça o login antes de prosseguir!");
-				return false;
-			}				
-			
-			if(confirm("Deseja desfavoritar essa receita?")){					
-				$.postJSON("./jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
-					function(data,status){
-						if(data.retorno == -1){
-							alert("Erro ao "+opc_favorito+" receita!");						
-						}else{						
-							alert("Receita desfavoritada com sucesso!");
-							carregaListaReceitasFav(id);
-						}
+			var id = '<%=cuserid%>';
+			$.postJSON("./jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
+				function(data,status){
+					if(data.retorno == -1){
+						$("#mensagemSucessoDesfavoritar").text("Erro ao "+opc_favorito+" receita!");
+				        $("#modalSucessoDesfavoritar").modal('show');					
+					}else{						
+						$("#mensagemSucessoDesfavoritar").text("Receita desfavoritada com sucesso!");
+				        $("#modalSucessoDesfavoritar").modal('show');	
+						carregaListaReceitasFav(id);
 					}
-				);
-			}
+				}
+			);
 		}	
 		
 		function createDesfavoritarReceitaFunction(idReceita) {
 		    return function() {
-		        desfavoritarReceita(idReceita);
+		        desfavoritarReceitaModal(idReceita);
 		    };
 		}
 		
@@ -340,5 +350,47 @@
 		      &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
 		    </div>
   		</footer> -->
+  		
+  		<!-- Modal de mensagem de tratamento de Sucesso -->
+		<div class="modal fade" id="modalSucessoDesfavoritar" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalSucessoLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemSucessoDesfavoritar"></p>			         
+		      </div>
+		      <div class="modal-footer sucesso">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
+		 
+		 <!-- Modal de mensagem de Confirmação --> 
+		<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true"> 
+		  <div class="modal-dialog" role="document"> 
+		    <div class="modal-content"> 
+		      <div class="modal-header text-white" style="background-color:#636f61;"> 
+		        <h5 class="modal-title" id="modalErroLabel">Confirma?</h5> 
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"> 
+		          <span aria-hidden="true" class="text-white">&times;</span> 
+		        </button> 
+		      </div> 
+		      <div class="mt-3 modal-body"> 
+	       		 <p id="mensagemConfirm"></p> 
+		      </div> 
+		      <div class="modal-footer confirm"> 
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Não</button> 
+		        <button type="button" class="btn btn-dark" id="btnSimConfirm" value="0" onclick="desfavoritarReceita(this.value)">Sim</button> 
+		      </div> 
+		    </div> 
+		   </div> 
+		 </div> 
+			 
 </body>
 </html>

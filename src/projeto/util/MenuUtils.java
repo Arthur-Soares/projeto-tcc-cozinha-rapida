@@ -24,8 +24,8 @@ public class MenuUtils {
 							"			$('#frmchama').submit(); " +
 							"		} " +
 							"		function sair(){ " +
-							"			$(\"#mensagemSucesso\").text('Deseja realmente sair?'); " +
-							"			$(\"#modalSucesso\").modal('show');" +
+							"			$(\"#mensagemSucessoLogin\").text('Deseja realmente sair?'); " +
+							"			$(\"#modalSucessoLogin\").modal('show');" +
 							"			" +
 							"			" +
 							"			return false;" +
@@ -216,7 +216,7 @@ public class MenuUtils {
 	                		"   <button class=\"pagar\">Pagar</button> " +
 	                		"</div> ";
                 menuHtml += "<!-- Modal de mensagem de tratamento de Alerta --> " +
-                		"		<div class=\"modal fade\" id=\"modalSucesso\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
+                		"		<div class=\"modal fade\" id=\"modalSucessoLogin\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
                 		"		  <div class=\"modal-dialog\" role=\"document\"> " +
                 		"		    <div class=\"modal-content\"> " +
                 		"		      <div class=\"modal-header text-white\" style=\"background-color:#636f61;\"> " +
@@ -226,7 +226,7 @@ public class MenuUtils {
                 		"		        </button> " +
                 		"		      </div> " +
                 		"		      <div class=\"mt-3 modal-body\"> " +
-                		"	       		 <p id=\"mensagemSucesso\"></p> " +
+                		"	       		 <p id=\"mensagemSucessoLogin\"></p> " +
                 		"		      </div> " +
                 		"		      <div class=\"modal-footer\"> " +
                 	    "		        <button type=\"button\" class=\"btn btn-outline-dark\" data-dismiss=\"modal\">Não</button> " +
