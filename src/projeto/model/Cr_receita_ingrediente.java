@@ -196,7 +196,10 @@ public class Cr_receita_ingrediente {
 		
 		String sql = " SELECT " +
 					 " cr_ingredientes.cr_id_ingrediente, " +
-					 " cr_ingredientes.cr_desc_ingrediente " +
+					 " cr_ingredientes.cr_ingrediente_nome_img, " +
+					 " cr_ingredientes.cr_desc_ingrediente, " +
+					 " cr_ingredientes.cr_valor_ingrediente, " +
+					 " cr_ingredientes.cr_nome_fornecedor " +
 					 " from cr_ingredientes " +
 					 " left outer join cr_receita_ingrediente on cr_receita_ingrediente.cr_id_ingrediente = cr_ingredientes.cr_id_ingrediente " +					 
 					 " where cr_receita_ingrediente.cr_id_receita = "+id_receita;
@@ -220,16 +223,18 @@ public class Cr_receita_ingrediente {
 							jsonObj.put(rsmd.getColumnLabel(xc), "");
 						} 
 					}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
-						java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
-						java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
-						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+							java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
+							java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
+							java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+					}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
+						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
 					}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
 						jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
 					}else{
-						jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));	
+						jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
 					}
 				}
 				arrayRetorno.put(jsonObj);

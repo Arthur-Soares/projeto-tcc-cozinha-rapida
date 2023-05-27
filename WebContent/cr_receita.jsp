@@ -121,7 +121,7 @@
 			    padding-bottom: 56.25%; /* proporção 16:9 (ou 9:16 para retrato) */
 			    overflow: hidden; /* esconder a parte da imagem que exceder a div */
 			}
-			.img_receita iframe {
+			.img_receita img {
 			    position: absolute; /* definir posição absoluta para a imagem ficar no topo */
 			    top: 0;
 			    left: 0;
@@ -150,6 +150,14 @@
 				border: none;						
 				color: #FFFFFF;				
 				border-radius: 40px;
+				transition: 0.2s;
+				cursor: pointer;			
+				transition: 0.2s;
+				font-size: 20px;
+			}
+			#btnAddCarrinho {	
+				border: none;						
+				color: #FFFFFF;								
 				transition: 0.2s;
 				cursor: pointer;			
 				transition: 0.2s;
@@ -352,6 +360,7 @@
 						
 						somaView(idrec, cr_receita_view);
 						pintarCoracao(cr_id_receita);
+						carregaListaIngredientes(cr_id_receita);
 					}
 				);
 			}else{								
@@ -378,26 +387,127 @@
 					}
 				}
 			);
-
-			
 		}
-		function Menos(id) {
-	        var quantidade = parseInt($("#" + id).text());
-	        if (quantidade > 1) {
-	            var menos = quantidade - 1;
-	            $("#" + id).text(menos);
-	            totalItem();
-	        } else {
-	            return false;
-	        }
-	    }
+	    
+	    function carregaListaIngredientes(cr_id_receita) {
+		    var num = 1;
+		    var div_ingredientes_receita = $(".div_ingredientes_receita");
 
-	    function Mais(id) {
-	        var quantidade = parseInt($("#" + id).text());
-	        quantidade++;
-	        $("#" + id).text(quantidade);
-	        totalItem();
-	    }
+		    $.postJSON("./jsonservlet",{opc_servlet:'find_receita_ingrediente',cr_id_receita:cr_id_receita}, function(datalin, statuslin) {
+		        if (datalin.length > 0) {
+		            // Limpa o conteúdo existente dentro da div caso seja chamada novamente
+		            div_ingredientes_receita.empty();
+
+		            for (var cx = 0; cx < datalin.length; cx++) {
+		                var cr_id_ingrediente = datalin[cx].cr_id_ingrediente;
+		                var cr_ingrediente_nome_img = datalin[cx].cr_ingrediente_nome_img;
+		            	var cr_desc_ingrediente = datalin[cx].cr_desc_ingrediente;
+		            	var cr_valor_ingrediente = datalin[cx].cr_valor_ingrediente;
+
+		                var divContainer = $("<div>").addClass("container align-items-center justify-content-center");
+		                var divRow = $("<div>").addClass("row align-items-center justify-content-center").css({
+	                	  borderRadius: "10px",
+	                	  border: "rgba(99, 111, 97, .4) 1px solid",
+	                	  padding: "10px" // Adicione a margem interna desejada aqui
+	                	});
+
+		                
+		                var divColQtd = $("<div>").addClass("mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 justify-content-center align-items-center")
+
+		                var inputGroup = $("<div>").addClass("input-group mb-3 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12");
+		                var decreaseButton = $("<button>").addClass("btn btn-danger").attr("type", "button").attr("id", "cr_qtd_menos_" + num).append("<i class=\"fas fa-minus\"></i>").click(createMenos( num ));
+	                	var increaseButton = $("<button>").addClass("btn btn-danger").attr("type", "button").attr("id", "cr_qtd_mais_" + num).append("<i class=\"fas fa-plus\"></i>").click(createMais( num ));
+	                	var inputElement = $("<input>").addClass("form-control").attr({
+                		  type: "text",
+                		  value: "1",
+                		  "aria-label": "",
+                		  "aria-describedby": "basic-addon1",
+                		  inputmode: "numeric",
+                		  pattern: "[0-9]*",
+                		  "data-valor": cr_valor_ingrediente, // Adicione o atributo data-valor com o valor do ingrediente
+                		}).attr("id", "cr_qtd_receita_" + num).css({
+                		  textAlign: "center"
+                		}).on("input", function() {
+                		  var sanitizedValue = $(this).val().replace(/\D/g, "");
+                		  $(this).val(sanitizedValue);
+                		});
+
+
+		                inputGroup.append(
+		                  $("<div>").addClass("input-group-prepend").append(decreaseButton),
+		                  inputElement,
+		                  $("<div>").addClass("input-group-append").append(increaseButton)
+		                );
+
+		                divColQtd.append(inputGroup);		               
+		                
+		                var divColImg = $("<div>").addClass("col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12").attr("id", "cr_ingrediente_nome_img_" + num).css("border-radius", "30px");
+		                var divColTitulo = $("<div>").addClass("mt-3 mt-md-0 col-xl-4 col-lg-4 col-md-4 col-sm-10 col-10").attr("id", "cr_desc_ingrediente_" + num).css({
+		                    border: "none",
+		                    background: "transparent",		                    
+		                    textAlign: "left",
+		                    fontWeight: "bold",		                    
+		                    pointerEvents: "none" // Desabilita eventos de clique
+		                });	                		             		              
+		                divColTitulo.append("<span style='color: #b1463c; font-size: 20px;'>" + cr_desc_ingrediente + "</span> <br> <span style='font-size: 15px;'>R$ " + cr_valor_ingrediente + "</span>");	
+		                
+		                var hrElement = $("<hr>").addClass("dashed-hr");		                	                   		                		              
+		                
+		                divRow.append(divColQtd, divColImg, divColTitulo);
+		                divContainer.append(divRow,hrElement);
+		                div_ingredientes_receita.append(divContainer);		              		               
+	                    
+		                // Adiciona a imagem
+		                var imgElement = $(cr_ingrediente_nome_img).css("max-width", "60%");
+		                $("#cr_ingrediente_nome_img_" + num).html(imgElement);
+
+		                num++;
+		            }
+		        }else{
+		        	div_ingredientes_receita.empty();
+		        }
+		        AtualizarValorTotal();
+		    });
+		}
+	    
+	    function createMenos(num_input) {
+		    return function() {
+		    	Menos(num_input);
+		    };
+		}
+	    
+	    function createMais(num_input) {
+		    return function() {
+		    	Mais(num_input);
+		    };
+		}
+	    
+	    function Menos(num_input) {
+    	  var inputElement = $("#cr_qtd_receita_" + num_input);
+    	  var currentValue = parseInt(inputElement.val());
+    	  if (currentValue > 0) {
+    	    inputElement.val(currentValue - 1);
+    	    AtualizarValorTotal();
+    	  }
+    	}
+
+    	function Mais(num_input) {
+    	  var inputElement = $("#cr_qtd_receita_" + num_input);
+    	  var currentValue = parseInt(inputElement.val());
+    	  inputElement.val(currentValue + 1);
+    	  AtualizarValorTotal();
+    	}
+    	
+    	function AtualizarValorTotal() {
+   		  var valorTotal = 0;
+   		  $("input[id^='cr_qtd_receita_']").each(function() {
+   		    var quantidade = parseInt($(this).val());
+   		    var valorIngrediente = parseFloat($(this).attr("data-valor").replace(",", ".")); // Substituir vírgula por ponto
+   		    valorTotal += quantidade * valorIngrediente;
+   		  });
+   		  $(".valor_total_ingredientes").text("R$ " + valorTotal.toFixed(2));
+   		}
+      
 	</script>
 	
 
@@ -457,7 +567,7 @@
 				<!-- Valor da Receita -->
 			 	<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">
 					<label for="cr_valor_receita" style="font-size: 18px; font-weight: bold; color: #b1463c;">
-						<strong><i class="fas fa-dollar-sign"></i> Valor da Receita</strong>
+						<strong><i class="fas fa-dollar-sign"></i> Custo Médio</strong>
 					</label> 					
 					<div class="cr_valor_receita" id="cr_valor_receita" style="font-size: 18px;">	
 					</div> 								
@@ -472,7 +582,7 @@
 							<strong>Ingredientes</strong>
 						</label>					
 						<div class="cr_ingrediente_receita" id="cr_ingrediente_receita" style="font-size: 18px;">	
-						</div>							 					
+						</div>													 				
 					</div>										
 				</div>			
 			</div>
@@ -503,100 +613,36 @@
  			<br>		 	
  			
 	 		<!-- Modal -->
-			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog"
-				aria-labelledby="Modal" aria-hidden="true">
-				<div class="modal-dialog modal-xl modal-dialog-centered "
+			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered "
 					role="document">
 					<div class="modal-content" style="display: flex; flex-wrap: wrap;">
-						<div class="modal-header">
-							<div class="row justify-content-between" style="margin: auto">
-								<div class="col-xl-2 col-lg-2 col-md-2 spc" style="text-align: center; width: 300px"></div>
-								
-								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 spco"
-									style="text-align: right; width: 300px">
-									<img alt="IngIcon" src="imagens\ingIcon.png">
-								</div>
-								
-								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 ">
-									<h5 class="modal-title" id="ModalTitle" style="text-align: center; font-size: 30px; font-weight: bold; color: #b1463c">
-										Ingredientes</h5>
-								</div>
-								
-								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 spco"
-									style="text-align: left; width: 300px">
-									<img alt="IngIcon" src="imagens\ingIcon.png">
-								</div>
-								
-								<div class="col-xl-2 col-lg-2 col-md-2 spc" style="text-align: center; width: 300px"></div>
+						<div class="modal-header" style="border: none;">
+							<div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center text-center">																																				
+								<img alt="IngIcon" src="imagens\ingIcon.png">
+								<h2 class="modal-title" id="ModalTitle" style="margin-left: 8px; margin-right: 8px; font-weight: 800; color: #e97500;">Ingredientes</h2>
+								<img alt="IngIcon" src="imagens\ingIcon.png">								
 							</div>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Fechar">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						
-
-							<div class="modal-body" style="display: flex; flex-wrap: wrap;">
-							<div class="row">
-								<%
-						        int quantidade = 5; // Defina o número de repetições desejado
-						        String divId; //declarando variavel para ser utilizada fora do loop;
-						        for (int i = 0; i < quantidade; i++) {
-						        	divId = "div_"+i; // Gera um ID único para cada div
-						        
-						        %>						        <!-- Botões de somar e subtrair ingredientes -->
-							    <div class="col-xl-3 col-lg-2 col-md-4 col-sm-12 col-12 ingQtd"> 
-							        <div class="row">
-							            <button type="button" onclick="Menos('<%= divId %>')" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white; background-color: #b1463c">
-							                -
-							            </button>
-							            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" id="<%= divId %>" style="border: solid 1px black; text-align: center; font-size: 30px;">
-							                5
-							            </div>
-							            <button type="button" onclick="Mais('<%= divId %>')" class="btn col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" style="text-align: center; font-size: 30px; font-weight: bold; color: white;background-color: #b1463c">
-							                +
-							            </button>
-							        </div>
-							    </div>
-													         
-						         <!-- Imagem do ingrediente -->
-								<div class="col-xl-4 col-lg-5 col-md-8 col-sm-12 col-12 ingImg">
-								
-									<div class="row"> 
-										<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-8"
-											style="text-align: center; margin: auto;">
-											<img alt="IngIcon" src="imagens\ingIcon.png" height="150px">
-										</div>
-									</div>
-								</div>
-								
-								<!-- Descrição do ingrediente -->
-								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 ingDsc spc" style="margin-bottom: 20px;"> 
-									
-									<h4 style="text-align: center; font-size: 15px; font-weight: bold; color: #b1463c"> Descrição </h4>
-									
-									<div class="row" style="margin-top:15px"> 
 										
-										<textarea class="form-control" name="cr_desc_receita_modal" 
-										id="cr_desc_receita_modal" rows="5" style="resize: none; font-size: 18px;">Frango assado </textarea> 	
-									</div>
-								</div>
-								
-								<!-- Linha divisória-->
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr-line"></div>
-								
-						        <%
-						        }
-						        %>
-        					</div>
-        					
-    						</div>
-						
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Cancelar</button>
-							<button type="button" class="btn btn-primary">Finalizar
-								compra</button>
+						<div class="modal-body justify-content-center" style="display: flex; flex-wrap: wrap;">
+							 <div class="div_ingredientes_receita row justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+							 </div>
+							 <div class="div_ingredientes_receita_total row justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">  
+								 <div class="container align-items-center justify-content-center">																											
+									<h4 class="modal-title" id="ModalTitle" style="margin-left: 8px; margin-right: 8px; font-weight: 800; color: #B1463C;">Valor Total:</h4>
+									<div class="valor_total_ingredientes" style="font-size: 20px; font-weight: 800;"> R$ 1000,00</div>
+								</div>									   								
+								<hr class="dashed-hr">		 
+							</div> 										
+   						</div>
+   												
+						<div class="modal-footer justify-content-center text-center" style="border: none;">														
+							<button type="button" class="btn btn-lg btn-block" id="btnAddCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;"><strong>Adicionar ao Carrinho <i class="fas fa-cart-plus"></i></strong></button>							
 						</div>
 					</div>
 				</div>
@@ -633,10 +679,10 @@
 		    </div>
 		   </div>
 		 </div>			
-  <footer class="bg-dark text-light">	    
-    <div class="text-center" style="background-color: #636f61; padding: 20px;margin-top: 5px" >
-      &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
-    </div>
-  </footer>
+	  <footer class="bg-dark text-light">	    
+	    <div class="text-center" style="background-color: #636f61; padding: 20px;margin-top: 5px" >
+	      &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>
+	    </div>
+	  </footer>
 </body>
 </html>

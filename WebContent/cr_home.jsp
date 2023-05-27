@@ -160,15 +160,17 @@
 			/* 
 			float: center; */
 		}
-		.card-body{		  		  
-		  background-color: rgba(99, 111, 97, 0.9);	
+		.card-body {
+		  background-color: rgba(99, 111, 97, 0.9);
 		  backdrop-filter: blur(40px);
-		  -webkit-backdrop-filter: blur(40px);		   
-		  border-radius: 11px;			  		  
-		}	
+		  -webkit-backdrop-filter: blur(40px);
+		  border-radius: 0 0 11px 11px; /* Define o border-radius apenas nas pontas inferiores */
+		  border-top: 6px solid #323232; /* Adiciona uma borda preta na parte superior */
+		}
+
 		.card {
 		  position: flex;			  
-		  background-color: rgba(99, 111, 97, 0.9);		  			  	
+		  background-color: #323232;		  			  	
 		  border-radius: 11px;	
 		  height: 60vh;   		 
 		  margin-bottom: 30px;
@@ -182,15 +184,16 @@
 		  position: relative;
 		  height: 200px; /* ajuste a altura da imagem de acordo com suas necessidades */
 		  border: 6px solid #323232; /* adiciona uma borda preta de 2px */
-		  border-radius: 8px;
+		  border-bottom: none;
+		  border-radius: 8px 8px 0px 0px;
   		  box-sizing: border-box; /* inclui a largura da borda no cálculo do tamanho do iframe */  		   		 
 		}
-		.img_receita iframe {
+		.img_receita img {
 		  position: absolute;
 		  top: 0;
 		  left: 0;
 		  width: 100%;
-		  height: 100%;
+		  height: 90%;
 	      object-fit: cover;		           	    
 		}
 		.arrow-icon {

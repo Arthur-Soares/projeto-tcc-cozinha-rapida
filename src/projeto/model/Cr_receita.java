@@ -581,9 +581,23 @@ public class Cr_receita {
 			while(r.next()) {
 				JSONObject jsonObj = new JSONObject();
 				if("S".equals(opcaoSelect)){
-					String titulo_receita = (null!=r.getObject(2)?r.getString(2).trim():"");
-					String valor_receita = (null!=r.getObject(7)?r.getString(7).trim():"");					
-					jsonObj.put("text", titulo_receita+" R$ "+valor_receita);
+					String titulo_receita = (null!=r.getObject(2)?r.getString(2).trim():"");					
+					String cr_receita_nome_img = (null!=r.getObject(8)?r.getString(8).trim():"");	
+					jsonObj.put("text", 
+								"<div class=\"row mt-3 mt-md-0 align-items-center justify-content-center\" style='padding:0px'> " +
+								"  <div class=\"col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 text-center div_auto\"> " +
+								"    <div class=\"div_image_autocomplete\"> "
+										+cr_receita_nome_img+							
+								"    </div> " +
+								"  </div> " +
+								"  <div class=\"mt-3 mt-md-0 col-xl-6 col-lg-6 col-md-6 col-sm-10 col-10 div_auto\" style=\"color:#b1463c;font-weight:800; font-size:12px;\"> "
+										+titulo_receita+
+								"  </div> " +
+								"  <div class=\"mt-3 mt-md-0 col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1\" style=\"color:#b1463c;font-weight:800; font-size:12px;\"> "
+										+"<i class=\"fas fa-chevron-right fa-lg\"></i> "+
+								"  </div> " +
+								"</div> "				
+						);
 					jsonObj.put("value", (null!=r.getObject(1)?r.getString(1).trim():""));
 					arrayRetorno.put(jsonObj);
 				}else {

@@ -134,6 +134,19 @@ public class MenuUtils {
 							"					width: 500px; " +
 							"				} " +
 							"			} "+
+							" 			.div_image_autocomplete img {" +
+							" 				width: 80%;" +
+							" 				height: auto;" +
+							" 				object-fit: cover;" +
+							" 				border-radius: 10px;" +
+							//"				padding:40px; "+
+							" 			}" +
+						  //"			.bootstrap-autocomplete .dropdown-item:hover { " +
+						  //"  				background-color: #636f61; " +
+						  //"			} " +
+						  	"			.div_auto {" +
+						  	"				margin: 0;"+
+						  	"			}"+
 							"	</style> " +
 							"	<form id='frmchama' method='post' action=''> " +
 							"	</form> " +								 							

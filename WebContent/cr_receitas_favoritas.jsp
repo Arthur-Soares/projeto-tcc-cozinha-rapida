@@ -90,30 +90,7 @@
         			display: none;
     			}
 			}
-			
-			.img_receita {
-			    position: relative; /* definir posição relativa para que a imagem possa ser centralizada verticalmente */
-			    height: 0; /* definir altura inicial como 0 para o aspect-ratio funcionar */
-			    padding-bottom: 20%; /* proporção 16:9 (ou 9:16 para retrato) */
-			    overflow: hidden; /* esconder a parte da imagem que exceder a div */
-			}
-			
-			.img_receita iframe {
-			    position: absolute; /* definir posição absoluta para a imagem ficar no topo */
-			    top: 0;
-			    left: 0;
-			    width: 100%; /* ajustar a largura para 100% */
-			    height: 100%; /* ajustar a altura para 100% */
-			    border: 0; /* remover a borda */
-			    object-fit: cover; /* fazer a imagem se ajustar ao tamanho da div pai */
-			    background-color: transparent;
-			}
-			
-			.img_receita iframe img {
-			  width: 100%;
-			  height: 100%;
-			  object-fit: cover;
-			}
+					
 
 			#btnCompra {	
 				border: none;						
@@ -293,7 +270,7 @@
 		                }).css({
 		                    border: "none",
 		                    background: "transparent",
-		                    fontSize: "18px",
+		                    fontSize: "20px",
 		                    textAlign: "left",
 		                    fontWeight: "bold",
 		                    color: "#b1463c",
@@ -320,7 +297,10 @@
 		                }
 
 		                // Adiciona a imagem
-		                var imgElement = $(cr_receita_nome_img).css("max-width", "100%");
+		                var imgElement = $(cr_receita_nome_img).css({
+						  "max-width": "100%",
+						  "border-radius": "30px"
+						});
 		                $("#cr_receita_nome_img_" + num).html(imgElement);
 
 		                num++;
@@ -357,6 +337,7 @@
 							</div>
 							<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
 							</div>
+							<br>							
 						</div>
 					</div>
 				</div>
