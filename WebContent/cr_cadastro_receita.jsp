@@ -402,11 +402,7 @@
 					</button>			           
 				 </div>
 				  <div class="modal-body">
-					<div class="row text-center">
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-							<button class="btn btn-success" type="button" onclick="javascript:adicionarIngredientes();"><strong><i class="fas fa-plus"></i> Adicionar Ingredientes Selecionados</strong></button>
-						</div>
-					</div>
+					
 						<br>
 					   <div class="row mt-3">
 							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -423,6 +419,7 @@
 				  </div>
 				  <div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Fechar</strong></button>
+						<button class="btn btn-success" type="button" onclick="javascript:adicionarIngredientes();"><strong><i class="fas fa-plus"></i> Adicionar Ingredientes Selecionados</strong></button>
 				  </div>
 			</div>
 		  </div>
