@@ -32,14 +32,14 @@
 		<link rel="icon" href="imagens/cr_logo_guia_ret_arredondado.png" type="image/png">			
 		<title>Cozinha Rápida - Receita</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="fontawesome/css/all.min.css" rel="stylesheet">
-		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
+		<link href="fontawesome/css/all.min.css" rel="stylesheet">		
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
 		<script type="text/javascript" src="./js/bootstrap-autocomplete.js"></script>
-		<script type="text/javascript" src="./js/popper.js"></script>
+		<script type="text/javascript" src="./js/carrinho.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">		
 		<script src="./js/bootstrap-datepicker.min.js"></script>
 		<script src="./js/bootstrap-datepicker.pt-BR.min.js"></script>
 		<!-- <script src="js/jquery.maskMoney.min.js" type="text/javascript"></script>       
@@ -162,7 +162,16 @@
 				cursor: pointer;			
 				transition: 0.2s;
 				font-size: 20px;
-			}					
+			}	
+			html {
+			  scroll-behavior: smooth;
+			  transition-duration: 1.0s;
+			}
+			
+			#modalConfirm, #modalSucessoDesfavoritar, #modalErro {
+			  z-index: 9999; /* Valor alto para garantir que fique acima dos outros modais */
+			}							
+
 		</style>		
 	</head>
 
@@ -178,6 +187,7 @@
 		$(document).ready(function() {				
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
+			carregaListaCarrinhodeCompras('<%=cuserid%>');
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
@@ -253,7 +263,7 @@
 			var id = '<%=cuserid%>';
 			
 			if(id == 0){
-				$("#mensagemErro").text('Faça o login antes de prosseguir!');
+				$("#mensagemErro").text('Faça o login para favoritar a receita!');
 			    $("#modalErro").modal('show');
 			    return false;
 			}
@@ -360,7 +370,7 @@
 						
 						somaView(idrec, cr_receita_view);
 						pintarCoracao(cr_id_receita);
-						carregaListaIngredientes(cr_id_receita);
+						carregaListaIngredientes(cr_id_receita);						
 					}
 				);
 			}else{								
@@ -389,6 +399,7 @@
 			);
 		}
 	    
+		var Num_ingredientes = 0;
 	    function carregaListaIngredientes(cr_id_receita) {
 		    var num = 1;
 		    var div_ingredientes_receita = $(".div_ingredientes_receita");
@@ -411,6 +422,7 @@
 	                	  padding: "10px" // Adicione a margem interna desejada aqui
 	                	});
 
+		                var inputIdIng = $("<input>").addClass("form-control id_ingrediente_"+num).attr("id", cr_id_ingrediente).attr({type: "hidden"});
 		                
 		                var divColQtd = $("<div>").addClass("mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 justify-content-center align-items-center")
 
@@ -453,7 +465,7 @@
 		                
 		                var hrElement = $("<hr>").addClass("dashed-hr");		                	                   		                		              
 		                
-		                divRow.append(divColQtd, divColImg, divColTitulo);
+		                divRow.append(divColQtd, divColImg, divColTitulo,inputIdIng);
 		                divContainer.append(divRow,hrElement);
 		                div_ingredientes_receita.append(divContainer);		              		               
 	                    
@@ -462,11 +474,12 @@
 		                $("#cr_ingrediente_nome_img_" + num).html(imgElement);
 
 		                num++;
-		            }
+		            }		          
 		        }else{
 		        	div_ingredientes_receita.empty();
 		        }
-		        AtualizarValorTotal();
+		        AtualizarValorTotalIngrediente();
+		        Num_ingredientes = num;
 		    });
 		}
 	    
@@ -487,7 +500,7 @@
     	  var currentValue = parseInt(inputElement.val());
     	  if (currentValue > 0) {
     	    inputElement.val(currentValue - 1);
-    	    AtualizarValorTotal();
+    	    AtualizarValorTotalIngrediente();
     	  }
     	}
 
@@ -495,10 +508,10 @@
     	  var inputElement = $("#cr_qtd_receita_" + num_input);
     	  var currentValue = parseInt(inputElement.val());
     	  inputElement.val(currentValue + 1);
-    	  AtualizarValorTotal();
+    	  AtualizarValorTotalIngrediente();
     	}
     	
-    	function AtualizarValorTotal() {
+    	function AtualizarValorTotalIngrediente() {
    		  var valorTotal = 0;
    		  $("input[id^='cr_qtd_receita_']").each(function() {
    		    var quantidade = parseInt($(this).val());
@@ -508,10 +521,70 @@
    		  $(".valor_total_ingredientes").text("R$ " + valorTotal.toFixed(2));
    		}
       
+    	function addCarrinho() {
+			var id = '<%=cuserid%>';			
+			if(id == 0){
+				$("#modalIngredientes").modal('hide');			
+				$("#mensagemErro").text('Faça o login para comprar os ingredientes!');
+			    $("#modalErro").modal('show');
+			    return false;
+			}else{			    	
+	    	    $("#modalIngredientes").modal('hide');
+	    	    $("#modalCarrinho").modal('show');    
+	    	    adicionaIngredientesCarrinho();
+			}
+    	}
+    	
+    	    	
+    	function adicionaIngredientesCarrinho(){
+    		var  cr_id_usuario = '<%=cuserid%>';
+    		var  p_cr_id_receita = '<%=p_cr_id_receita%>';
+    		var	 arrayIdIngredientes = []; 
+    		var	 arrayQtdIngredientes = []; 
+		    var num = 1;
+		    console.log("Num_ingredientes :: "+Num_ingredientes);    		    	
+   			var elemento = "";  
+   			var id_ing = "";   			
+   			var quantidade_receita = "";   	   			
+    		for(var cx = 0; cx < Num_ingredientes; cx++){    			    	
+    			if($("#cr_qtd_receita_"+num).val() > 0){
+    				//Pegando a quantidade do ingrediente
+    				quantidade_receita = $("#cr_qtd_receita_"+num).val();
+    				arrayQtdIngredientes.push(quantidade_receita);
+    				//console.log(arrayQtdIngredientes.toString());
+    				
+    				//Pegando o ID do ingrediente
+    				elemento = $(".id_ingrediente_" + num);
+    				id_ing = elemento.attr("id");    				
+    				arrayIdIngredientes.push(id_ing);    				
+    				//console.log(arrayIdIngredientes.toString());
+        		}
+    			num++;
+    		}
+    		var qtds_ingredientes = arrayQtdIngredientes.toString();
+    		var ids_ingredientes = arrayIdIngredientes.toString();
+	       	$("#ids_ingredientes").val(ids_ingredientes);	
+	       		       	
+	       		   
+	       	console.log("qtds_ingredientes :: "+arrayQtdIngredientes.length);
+	       	if(qtds_ingredientes.length > 0){
+		       	$.postJSON("./jsonservlet",{opc_servlet:'insert_carrinho_usuario',cr_id_usuario:cr_id_usuario,p_cr_id_receita:p_cr_id_receita,ids_ingredientes:ids_ingredientes,qtds_ingredientes:qtds_ingredientes},
+	       			function(data,status){
+						if(data.retorno_insert_car!="-1"){												
+								//console.log("Ingredientes adicionados com sucesso!");						
+								carregaListaCarrinhodeCompras(cr_id_usuario);
+						}else{
+								console.log("Problema ao adicionar ingredientes!");	
+						}
+					}
+				);	
+	       	}
+    	}    	    
 	</script>
 	
 
-	<body>		
+	<body>
+	<div id="topo_invisivel" class="topo_invisivel"></div>	
 	<%=MenuUtils.buildMenu("receita", cru)%>
 									
 	<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
@@ -519,6 +592,7 @@
 	</form>									
 	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">
 			<input type="hidden" id="cr_id_receita" name="cr_id_receita" value="0"/>
+			<input type="hidden" id="ids_ingredientes" name="ids_ingredientes" value="0"/>
 			<input type="hidden" id="opc_servlet" name="opc_servlet" value="salva_receita"/>
 			
 		<div class="container" style="margin-top: 100px">					
@@ -605,27 +679,24 @@
 			<!-- Modo de preparo da Receita -->
 			<div class="row mt-3 d-flex justify-content-end">
 			  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 ml-auto text-right">	
-			    <button type="button" class="btn btn-lg btn-block" data-toggle="modal" id="btnCompra" data-target="#modalCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;">
+			    <button type="button" class="btn btn-lg btn-block" data-toggle="modal" id="btnCompra" data-target="#modalIngredientes" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;">
 			     	<strong><i class="fas fa-shopping-basket"></i> Comprar Ingredientes</strong>
 			    </button>
 			  </div>												
 			</div>
  			<br>		 	
  			
-	 		<!-- Modal -->
-			<div class="modal" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-centered "
-					role="document">
+	 		<!-- MODAL INGREDIENTES -->
+			<div class="modal fade bd-example-modal-lgmodal fades" id="modalIngredientes" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered modal-notify modal-info modal-fluid 1" role="document">
 					<div class="modal-content" style="display: flex; flex-wrap: wrap;">
 						<div class="modal-header" style="border: none;">
-							<div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center text-center">																																				
-								<img alt="IngIcon" src="imagens\ingIcon.png">
-								<h2 class="modal-title" id="ModalTitle" style="margin-left: 8px; margin-right: 8px; font-weight: 800; color: #e97500;">Ingredientes</h2>
-								<img alt="IngIcon" src="imagens\ingIcon.png">								
+							<div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center text-center">																																												
+								<h2 class="modal-title" id="ModalTitle" style="margin-left: 8px; margin-right: 8px; font-weight: 800; color: #e97500;">Ingredientes</h2>								
 							</div>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Fechar">
-								<span aria-hidden="true">&times;</span>
+								<span aria-hidden="true"><i class="fas fa-times"></i></span>
 							</button>
 						</div>
 										
@@ -635,20 +706,19 @@
 							 <div class="div_ingredientes_receita_total row justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">  
 								 <div class="container align-items-center justify-content-center">																											
 									<h4 class="modal-title" id="ModalTitle" style="margin-left: 8px; margin-right: 8px; font-weight: 800; color: #B1463C;">Valor Total:</h4>
-									<div class="valor_total_ingredientes" style="font-size: 20px; font-weight: 800;"> R$ 1000,00</div>
+									<div class="valor_total_ingredientes" style="font-size: 20px; font-weight: 800;"></div>
 								</div>									   								
 								<hr class="dashed-hr">		 
 							</div> 										
    						</div>
    												
 						<div class="modal-footer justify-content-center text-center" style="border: none;">														
-							<button type="button" class="btn btn-lg btn-block" id="btnAddCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;"><strong>Adicionar ao Carrinho <i class="fas fa-cart-plus"></i></strong></button>							
+							<button type="button" class="btn btn-lg btn-block" id="btnAddCarrinho" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;" onclick="javascript:addCarrinho();"><strong>Adicionar ao Carrinho <i class="fas fa-cart-plus"></i></strong></button>							
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-
+		</div>			
 					
 		<div id="div_loading">
 			<div class="row h-100">
@@ -660,7 +730,7 @@
 			</div>
 		</div>
 	</form>	
-	<!-- Modal de mensagem de tratamento de Alerta -->
+		<!-- Modal de mensagem de tratamento de Alerta -->
 		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
@@ -678,7 +748,48 @@
 		      </div>
 		    </div>
 		   </div>
-		 </div>			
+		 </div>
+		 
+		 <!-- Modal de mensagem de tratamento de Sucesso -->
+		<div class="modal fade" id="modalSucessoDesfavoritar" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalSucessoLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemSucessoDesfavoritar"></p>			         
+		      </div>
+		      <div class="modal-footer sucesso">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
+		 
+	 	 <!-- Modal de mensagem de Confirmação --> 
+		<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true"> 
+		  <div class="modal-dialog" role="document"> 
+		    <div class="modal-content"> 
+		      <div class="modal-header text-white" style="background-color:#636f61;"> 
+		        <h5 class="modal-title" id="modalErroLabel">Confirma?</h5> 
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"> 
+		          <span aria-hidden="true" class="text-white">&times;</span> 
+		        </button> 
+		      </div> 
+		      <div class="mt-3 modal-body"> 
+	       		 <p id="mensagemConfirm"></p> 
+		      </div> 
+		      <div class="modal-footer confirm"> 
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Não</button> 
+		        <button type="button" class="btn btn-dark" id="btnSimConfirm" value="0" onclick="ApagarIngredienteCarrinho(this.value)">Sim</button> 
+		      </div> 
+		    </div> 
+		   </div> 
+		 </div> 			
 	  <footer class="bg-dark text-light">	    
 	    <div class="text-center" style="background-color: #636f61; padding: 20px;margin-top: 5px" >
 	      &copy 2023 Copyright: <a href="#" style="color:white">Cozinha Rapida</a>

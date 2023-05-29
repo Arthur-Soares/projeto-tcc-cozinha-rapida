@@ -9,10 +9,11 @@ public class MenuUtils {
 		
 		String nome_usuario = "Fazer login";
 		String tipo_acesso = "";			
-		
+		int id_user_nav = 0;
 		if(cru != null) {
 			tipo_acesso = cru.getCr_nivel_usuario();
-			int indiceEspaco = cru.getCr_nome_completo_usuario().indexOf(" ");			
+			int indiceEspaco = cru.getCr_nome_completo_usuario().indexOf(" ");
+			id_user_nav = cru.getCr_id_usuario();
 			nome_usuario = (indiceEspaco != -1) ? cru.getCr_nome_completo_usuario().substring(0, indiceEspaco) : cru.getCr_nome_completo_usuario();			
 			//System.out.println("Vendo se está pegando apenas o primeiro nome do usuário :: "+nome_usuario);
 		}
@@ -33,96 +34,70 @@ public class MenuUtils {
 							"		function redirecionarHome() { " +
 							"   		 return window.location.href = \"cr_home.jsp?logoff=S\"; " +
 							"  		} " +
+							"		function redirecionarPagamento() { " +
+							"			var id = "+id_user_nav+"; " +
+							"			if(id == 0){ " +
+							"    			$(\"#mensagemErro\").text('Faça o login para realizar a compra!'); " +
+							"    			$(\"#modalErro\").modal('show'); " +
+							"    			return false; " +
+							"			}else if(valor_total_carrinho_global == 0){ " +
+							"				$(\"#mensagemErro\").text('Carrinho de compras vazio!'); " +
+							"				$(\"#modalErro\").modal('show'); " +
+							"				return false; " +							
+							"			}else{ " +
+							"				return window.location.href = \"cr_pagamento.jsp\"; " +
+							"			} "+
+							"  		} " +
 							"	</script> " +	
 							"	<style> " +	
 							" " +
-							"			* { " +
-							"			 margin: 0; " +
-							"			 padding: 0; " +
-							"			 box-sizing: border-box; " +
-							"			} " +
+							"	* { " +
+							"		margin: 0; " +
+							"		padding: 0; " +
+							"		box-sizing: border-box; " +
+							"	} " +
 							" " +
-							"			.carrinho { " +
-							"			  position: fixed; " +
-							"			  top: 0; " +
-							"			  right: -400px; " +
-							"			  width: 400px; " +
-							"			  height: 100vh; " +
-							"			  background-color: rgba(0, 0, 0, 0.7); " +
-							"			  padding: 35px; " +
-							"			  transition: right 0.3s ease-in-out; " +
-							"			  display: flex; " +
-							"			  flex-direction: column; " +
-							"			  justify-content: space-between; " +
-							"			} " +
+							".modal-direita { " +
+							"  position: fixed; " +
+							"  top: 0; " +
+							"  right: 0; " +
+							"  bottom: 0; " +
+							"  z-index: 9998; " +
+							"  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); " +
+							"  -webkit-backdrop-filter: blur(40px); " +
+							"  backdrop-filter: blur(40px); " +
+							"  display: none; " +
+							"  overflow-y: auto; " +
+							"} " +
 							" " +
-							"			.carrinho.aberto { " +
-							"			  right: 0; " +
-							"			} " +
+							".conteudinho { " +
+							"  position: relative; " +
+							"  background-color: #fff; " +
+							"  border-radius: 5px; " +
+							"  max-height: calc(100% - 40px); /* Defina uma altura máxima para o modal */ " +
+							"  overflow-y: auto; /* Adicione a propriedade de rolagem apenas ao conteúdo */ " +
+							"} " +
 							" " +
-							"			.carrinho .cabecalho-carrinho { " +
-							"			  display: flex; " +
-							"			  justify-content: space-between; " +
-							"			  align-items: center; " +
-							"			  margin-bottom: 20px; " +
-							"			} " +
+							"	#modalSucessoCarrinho, #modalErro { " +
+							"  		z-index: 9999; /* Valor alto para garantir que fique acima dos outros modais */ " +
+							"	} "+
 							" " +
-							"			.carrinho .cabecalho-carrinho h3 { " +
-							"			  color: #fff; " +
-							"			  font-size: 1.2rem; " +
-							"			} " +
+							".modalCarrinho{ " +
+							"  background-color: rgba(0, 0, 0, 0.5)  !important; " +
+							" } " +
 							" " +
-							"			.carrinho .cabecalho-carrinho button { " +
-							"			  color: #fff; " +
-							"			  font-size: 1.2rem; " +
-							"			  background-color: transparent; " +
-							"			  border: none; " +
-							"			  cursor: pointer; " +
-							"			} " +
-							" " +
-							"			.carrinho .conteudo-carrinho { " +
-							"			  margin: 50px; " +
-							"			  display: flex; " +
-							"			  flex-direction: column; " +
-							"			  justify-content: center; " +
-							"			  align-items: center; " +
-							"			  color: #fff; " +
-							"			  flex-grow: 1; " +
-							"			  margin-bottom: 20px; " +
-							"			} " +
-							" " +
-							"			.carrinho .conteudo-carrinho h4 { " +
-							"			  margin-bottom: 10px; " +
-							"			} " +
-							" " +
-							"			.carrinho .conteudo-carrinho .lista-produtos { " +
-							"			  list-style: none; " +
-							"			  padding-left: 0; " +
-							"			} " +
-							" " +
-							"			.carrinho .conteudo-carrinho .lista-produtos li { " +
-							"			  margin-bottom: 10px; " +
-							"			} " +
-							" " +
-							"			.carrinho .pagar { " +
-							"			  display: block; " +
-							"			  width: 100%; " +
-							"			  padding: 10px; " +
-							"			  border: none; " +
-							"			  border-radius: 50px; " +
-							"			  background-color: red; " +
-							"			  color: #fff; " +
-							"			  font-weight: bold; " +
-							"			  text-align: center; " +
-							"			  cursor: pointer; " +
-							"			  transition: background-color 0.3s; " +
-							"			  align-self: flex-end; " +
-							"			} " +
-							" " +
-							"			.carrinho .conteudo-carrinho .pagar:hover { " +
-							"			  background-color: #cc0000; " +							
-							"			} "+
-							" " +
+							" .circulo { " +
+							"    width: 50px; " +
+							"    height: 50px; " +
+							"    border-radius: 50%; " +
+							"    overflow: hidden; " +
+							"    float: left; " +
+							"    margin: 15px; " +
+							"    transition: 0.3s ease; " +
+							"    background-color: #fff; " +
+							"    text-align: center; " +
+							"    line-height: 50px; /* Igual à altura da div */ " +
+							" } "+
 							"			.elemento_navbar { " +
 							"  				background-color: rgba(99, 111, 97, 0.9); " +	
 							"			    backdrop-filter: blur(40px); "+
@@ -147,6 +122,14 @@ public class MenuUtils {
 						  	"			.div_auto {" +
 						  	"				margin: 0;"+
 						  	"			}"+
+						  	"	#btncomprarIngredientes { " +
+						  	"		border: none; " +
+						  	"		color: #FFFFFF; " +
+						  	"		transition: 0.2s; " +
+						  	"		cursor: pointer; " +
+						  	"		transition: 0.2s; " +
+						  	"		font-size: 20px; " +
+						  	"	} "+
 							"	</style> " +
 							"	<form id='frmchama' method='post' action=''> " +
 							"	</form> " +								 							
@@ -196,7 +179,9 @@ public class MenuUtils {
 			}
 			
 				menuHtml += "						<li class='nav-item mt-3 mt-md-0 "+(pagAtual.equals("carrinho")?"active":"")+"'> " +
-							"							<a id='abrir-carrinho' class='nav-link' href='#'><i class='fas fa-shopping-cart fa-lg'></i></a> " +
+							"  							<button class='nav-link btn' id='abrir-carrinho' data-toggle='modal' data-target='#modalCarrinho'> " +
+							"    							<i class='fas fa-shopping-cart fa-lg'></i> " +
+							"  							</button> " +
 							"						</li> ";													
 			if(cru != null && "1".equals(tipo_acesso)) {			        			            	
 				menuHtml += "						<li class='nav-item "+(pagAtual.equals("receita")?"active":"")+"'> " +
@@ -209,25 +194,36 @@ public class MenuUtils {
 						    " 	</nav>"+
 							"	<!-- Fim Navbar Projeto --> ";
                 
-                menuHtml += "<div class=\"carrinho\" style=\"position: absolute; z-index: 9999;\"> " +
-	                		"   <div class=\"cabecalho-carrinho\"> " +
-	                		"     <h3>Carrinho de Compras</h3> " +
-	                		"     <button id=\"fechar-carrinho\">&times;</button> " +
-	                		"   </div> " +
-	                		"   <div class=\"conteudo-carrinho\"> " +
-	                		"     <!-- Conteúdo do carrinho de compras --> " +
-	                		"     <ul class=\"lista-produtos\"> " +
-	                		"       <li> " +
-	                		"           <p class=\"produto\">Produto 1</p> " +
-	                		"           <p class=\"preco\">R$10,00</p> " +
-	                		"           <i>............................................................</i> " +
-	                		"       </li> " +
-	                		"     </ul> " +
-	                		"   </div> " +
-	                		"   <div class=\"total\"> " +
-	                		"       <p id=\"total\">Total: </p> " +
-	                		"   </div> " +
-	                		"   <button class=\"pagar\">Pagar</button> " +
+                menuHtml += "<!-- MODAL CARRINHO --> " +
+	                		"<div class=\"modal-direita\" id=\"modalCarrinho\"> " +
+	                		"	<div class=\"modal-dialog modal-md modal-dialog-centered modal-notify modal-info modal-fluid 1\" role=\"document\"> " +
+	                		"		<div class=\"modal-content conteudinho\" style=\"display: flex; flex-wrap: wrap; background-color:transparent; border: none;\"> " +
+	                		"			<div class=\"modal-header\" style=\"border: none;\"> " +
+	                		"			  <div class=\"row col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 justify-content-center text-center\"> " +
+	                		"					<h5 class=\"modal-title\" id=\"ModalTitle\" style=\"font-weight: 800; color: #fff;\"><i class='fas fa-shopping-cart fa-lg'></i> Carrinho de Compras</h5> " +
+	                		"				</div> " +
+	                		"				<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Fechar\" style=\"color: #fff;\"> " +
+	                		"					<span aria-hidden=\"true\"><i class=\"fas fa-times\"></i></span> " +
+	                		"				</button> " +
+	                		"			</div> " +
+	                		" " +
+	                		"			<div class=\"modal-body justify-content-center\" style=\"display: flex; flex-wrap: wrap;\"> " +
+	                		"				 <div class=\"div_carrinho_compra row justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12\"> " +
+	                		"				 </div> " +
+	                		"				 <div class=\"div_carrinho_compra_total row justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12\"> " +
+	                		"					 <div class=\"container align-items-center justify-content-center\"> " +
+	                		"						<h4 class=\"modal-title\" id=\"ModalTitle\" style=\"margin-left: 8px; margin-right: 8px; font-weight: 800; color: #B1463C;\">Valor Total:</h4> " +
+	                		"						<div class=\"valor_total_carrinho_compra\" style=\"font-size: 20px; font-weight: 800; color: #FFF; \"></div> " +
+	                		"					</div> " +
+	                		"					<hr class=\"dashed-hr\"> " +
+	                		"				</div> " +
+	                		"			</div> " +
+	                		" " +
+	                		"			<div class=\"modal-footer justify-content-center text-center\" style=\"border: none;\"> " +
+	                		"				<button type=\"button\" class=\"btn btn-lg btn-block\" id=\"btncomprarIngredientes\" style=\"padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;\" onclick=\"redirecionarPagamento()\"><strong>Finalizar Compra <i class=\"bi bi-cash-coin\"></i></strong></button> " +
+	                		"			</div> " +
+	                		"		</div> " +
+	                		"	</div> " +
 	                		"</div> ";
                 menuHtml += "<!-- Modal de mensagem de tratamento de Alerta --> " +
                 		"		<div class=\"modal fade\" id=\"modalSucessoLogin\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
@@ -248,7 +244,28 @@ public class MenuUtils {
                 	    "		      </div> " +
                 		"		    </div> " +
                 		"		   </div> " +
-                		"		 </div> ";
+                		"		 </div> "+
+		                "<!-- Modal de mensagem de tratamento de Alerta Carrinho --> " +
+		        		"		<div class=\"modal fade\" id=\"modalSucessoCarrinho\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
+		        		"		  <div class=\"modal-dialog\" role=\"document\"> " +
+		        		"		    <div class=\"modal-content\"> " +
+		        		"		      <div class=\"modal-header text-white\" style=\"background-color:#636f61;\"> " +
+		        		"		        <h5 class=\"modal-title\" id=\"modalErroLabel\">Alerta</h5> " +
+		        		"		        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Fechar\"> " +
+		        		"		          <span aria-hidden=\"true\" class=\"text-white\">&times;</span> " +
+		        		"		        </button> " +
+		        		"		      </div> " +
+		        		"		      <div class=\"mt-3 modal-body\"> " +
+		        		"	       		 <p id=\"mensagemSucessoCarrinho\"></p> " +
+		        		"		      </div> " +
+		        		"		      <div class=\"modal-footer\"> " +
+		        	    "		        <button type=\"button\" class=\"btn btn-outline-dark\" data-dismiss=\"modal\">Não</button> " +
+		        	    "				<button type=\"button\" class=\"btn btn-dark\" id=\"btnSimConfirm\" value=\"0\" onclick=\"ApagarIngredienteCarrinho(this.value)\">Sim</button> "+
+		        	    "		      </div> " +
+		        		"		    </div> " +
+		        		"		   </div> " +
+		        		"		 </div> ";
+                
 			 return menuHtml;		
 	}
 	

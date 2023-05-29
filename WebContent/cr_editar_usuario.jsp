@@ -7,7 +7,7 @@
 <html>
 	<%	
 	Cr_usuario cru = null!=session.getAttribute(AppSecrets.USER_KEY)?(Cr_usuario)session.getAttribute(AppSecrets.USER_KEY):null;
-	int p_cr_id_usuario = null!=cru?cru.getCr_id_usuario():0;
+	int cuserid = null!=cru?cru.getCr_id_usuario():0;
 	String cuseradmin = null!=cru?cru.getCr_nivel_usuario():"";
 	String cusername = null!=cru?cru.getCr_nome_completo_usuario():"";
 	String redir = null!=request.getParameter("redir")?request.getParameter("redir"):"";
@@ -22,9 +22,9 @@
 		session.setAttribute("projeto.model.Cr_usuario", null);			
 	}
 	
-	//String p_cr_id_usuario = null!=request.getParameter("cr_id_usuario")?request.getParameter("cr_id_usuario"):"";
+	//String cuserid = null!=request.getParameter("cr_id_usuario")?request.getParameter("cr_id_usuario"):"";
 	
-	System.out.println("p_cr_id_usuario :: "+p_cr_id_usuario);
+	System.out.println("cuserid :: "+cuserid);
 	%>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -40,6 +40,8 @@
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="./js/carrinho.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 		<script type="text/javascript" src="js/popper.js"></script>
 		<script src="js/bootstrap-datepicker.min.js"></script>
 		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>
@@ -296,7 +298,8 @@
 		    div_cadastro_tres.hide();	
 		    div_cadastro_sucesso.hide();	
 		    
-			carregaUsuario('<%=p_cr_id_usuario%>');
+			carregaUsuario('<%=cuserid%>');
+			carregaListaCarrinhodeCompras('<%=cuserid%>');
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'

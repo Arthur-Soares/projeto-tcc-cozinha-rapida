@@ -10,14 +10,16 @@
 		<link href="css/cr_login.css" rel="stylesheet">
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="fontawesome/css/all.min.css" rel="stylesheet">
-		<meta http-equiv="Content-Type" content="text/html; charset:iso-88590-1">
+		<meta http-equiv="Content-Type" content="text/html; charset:iso-88590-1">		
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>		 
+		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>		
+		<script type="text/javascript" src="./js/carrinho.js"></script> 
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="js/bootstrap-dialog.min.js"></script>
 		<script type="text/javascript" src="js/popper.js"></script>
 		<script src="./js/bootstrap-datepicker.min.js"></script>
@@ -323,6 +325,7 @@
 			%>
 			
 			carregalistaTopReceitas();
+			carregaListaCarrinhodeCompras('<%=cuserid%>');
 			
 			//ESCONDENDO DIV DO CARD DE RECEITAS
 			var div_home = $('.div_home');
@@ -843,5 +846,25 @@
 		    </div>
 		   </div>
 		 </div>	
+		 
+ 		<!-- Modal de mensagem de tratamento de Alerta -->
+		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header text-white" style="background-color:#636f61;">
+		        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="mt-3 modal-body">    			      	   	  		        			    
+	       		 <p id="mensagemErro"></p>			         
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+		      </div>
+		    </div>
+		   </div>
+		 </div>
 	</body>
 </html>

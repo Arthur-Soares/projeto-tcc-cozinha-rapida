@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
+import projeto.model.Cr_carrinho;
 import projeto.model.Cr_ingredientes;
 import projeto.model.Cr_receita;
 import projeto.model.Cr_receita_ingrediente;
@@ -176,7 +177,26 @@ public class JsonServlet extends HttpServlet {
 			jsonObj= new JSONObject();
 			JSONArray arrayJson = Cr_receita_ingrediente.listarJSON(cr_id_receita);
 			out = response.getWriter();
-   		out.print(arrayJson);
+			out.print(arrayJson);
+		}else if("apaga_ingrediente_carrinho".equals(opcServlet)) {
+			int cr_id_carrinho = null!=request.getParameter("cr_id_carrinho")?Cast.toInt(request.getParameter("cr_id_carrinho")):0;
+			Cr_carrinho cri = new Cr_carrinho();
+			int retorno_carrinho = cri.apaga_registro(cr_id_carrinho);
+			jsonObj = new JSONObject();	
+			if(retorno_carrinho == -1) {
+				jsonObj.put("ERRO", "Erro ao apagar ingrediente do carrinho!");
+			}else{
+				jsonObj.put("ERRO", "");
+			}			
+			out = response.getWriter();
+    		out.print(jsonObj);
+		}else if("find_carrinho_usuario".equals(opcServlet)) {
+			int cr_id_usuario = null!=request.getParameter("cr_id_usuario")?Cast.toInt(request.getParameter("cr_id_usuario")):0;
+			jsonObj= new JSONObject();						
+			jsonArray = Cr_carrinho.listarJSONCarrinho(cr_id_usuario); 
+			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			out = response.getWriter();
+			out.print(jsonArray);
 		}else if("list_receitas".equals(opcServlet)) {	
 			jsonArray = Cr_receita.listarJSON(new Object[0], new Object[0]);
 			out = response.getWriter();
@@ -204,8 +224,7 @@ public class JsonServlet extends HttpServlet {
 			//Salvando Relacionamento entre Receita e Ingredientes
 			String ids_ingredientes = null!=request.getParameter("ids_ingredientes")?request.getParameter("ids_ingredientes"):"";
 			Cr_receita_ingrediente cri = new Cr_receita_ingrediente();			
-			cri.salvaRelacionamento(ids_ingredientes, id_receita);
-			
+			cri.salvaRelacionamento(ids_ingredientes, id_receita);			
 			jsonObj= new JSONObject();
 			jsonObj.put("id_receita", id_receita);
 			out = response.getWriter();
@@ -216,6 +235,19 @@ public class JsonServlet extends HttpServlet {
 			values[0]= cr_id_receita;
 			jsonArray = Cr_receita.listarJSON(params,values); 
 			jsonObj = !jsonArray.isEmpty()?jsonArray.getJSONObject(0):new JSONObject();
+			out = response.getWriter();
+			out.print(jsonObj);
+	   }else if("insert_carrinho_usuario".equals(opcServlet)) { 
+		   	int cr_id_usuario = null!=request.getParameter("cr_id_usuario")?Cast.toInt(request.getParameter("cr_id_usuario")):0;
+		   	int p_cr_id_receita = null!=request.getParameter("p_cr_id_receita")?Cast.toInt(request.getParameter("p_cr_id_receita")):0;		   	
+		   
+			//Inserindo ingredientes marcados pelo usuário, na tabela de carrinho
+			String ids_ingredientes = null!=request.getParameter("ids_ingredientes")?request.getParameter("ids_ingredientes"):"";
+			String qtds_ingredientes = null!=request.getParameter("qtds_ingredientes")?request.getParameter("qtds_ingredientes"):"";
+			Cr_carrinho crc = new Cr_carrinho();			
+			int retorno_insert_car = crc.salvaCarrinho(cr_id_usuario, p_cr_id_receita, ids_ingredientes, qtds_ingredientes);			
+			jsonObj= new JSONObject();
+			jsonObj.put("retorno_insert_car", retorno_insert_car);
 			out = response.getWriter();
 			out.print(jsonObj);
 	   }else if("list_receitas_favoritas".equals(opcServlet)) { 

@@ -30,7 +30,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" href="imagens/cr_logo_guia_ret_arredondado.png" type="image/png">			
-		<title>Cozinha Rápida - Receita Favoritas</title>
+		<title>Cozinha Rápida - Pagamento</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="fontawesome/css/all.min.css" rel="stylesheet">
 		<link href="css/bootstrap-datepicker.css" rel="stylesheet"/>
@@ -105,6 +105,18 @@
 			}
 			.div-com-fundo-transparente {
 			  background-color: rgba(0, 0, 0, 0.4); /* Valor alfa de 0.5 representa 50% de transparência */
+			}
+			
+			#img_pix {
+			  max-width: 30%;
+			  border-radius: 30px;
+			}
+			
+			@media (max-width: 1000px) {
+			  #img_pix {
+			  	max-width: 100%;
+			 	border-radius: 30px;
+			}
 			}
 										
 		</style>		
@@ -333,13 +345,23 @@
 							<br>
 							<div class="row mt-3">
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" align="center">
-									<h1>
-										Receitas Favoritas
-									</h1>
+									<h1>Pagamento</h1>
+									
+									<img src="imagens/PIX_COZINHA_RAPIDA.jpg" alt="Pix_CR" id="img_pix" border="0">
+									
+									<div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10" align="center">
+									<h6>Foi enviado um recibo com os ingredientes para o seu email, caso queira finalizar o pagamento
+										escaneie o QRCODE acima e efetue o pagamento.<br><br>
+										<strong>Obrigado por usar o Cozinha Rápida!<strong>
+									</h6>
+									</div>
 								</div>
 							</div>
-							<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
-							</div>
+							
+							<!-- 
+								<div class="div_receitas_favoritas row mt-3 justify-content-center text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+								</div>
+							 -->
 							<br>							
 						</div>
 					</div>

@@ -18,6 +18,8 @@
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="fontawesome/js/all.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap-autocomplete.js"></script>
+		<script type="text/javascript" src="./js/carrinho.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 		<script type="text/javascript" src="js/popper.js"></script>
 		<script src="js/bootstrap-datepicker.min.js"></script>
 		<script src="js/bootstrap-datepicker.pt-BR.min.js"></script>
@@ -104,6 +106,7 @@
 				}
 			); 
 			carregaListaReceitas('');
+			carregaListaCarrinhodeCompras('<%=cuserid%>');
 			$("#div_loading").hide();	
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
