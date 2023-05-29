@@ -96,7 +96,7 @@
 		}  
 		
 		function ApagarIngredienteCarrinhoModal(cr_id_carrinho){			
-			$("#btnSimConfirm").val(cr_id_carrinho);
+			$("#btnSimConfirmCarrinho").val(cr_id_carrinho);
 			$("#mensagemConfirmCarrinho").text('Deseja apagar esse ingrediente do Carrinho?');
 		    $("#modalConfirmCarrinho").modal('show');
 			return false;		

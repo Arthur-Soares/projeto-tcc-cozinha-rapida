@@ -260,7 +260,7 @@ public class MenuUtils {
 		        		"		      </div> " +
 		        		"		      <div class=\"modal-footer\"> " +
 		        	    "		        <button type=\"button\" class=\"btn btn-outline-dark\" data-dismiss=\"modal\">Não</button> " +
-		        	    "				<button type=\"button\" class=\"btn btn-dark\" id=\"btnSimConfirm\" value=\"0\" onclick=\"ApagarIngredienteCarrinho(this.value)\">Sim</button> "+
+		        	    "				<button type=\"button\" class=\"btn btn-dark\" id=\"btnSimConfirmCarrinho\" value=\"0\" onclick=\"ApagarIngredienteCarrinho(this.value)\">Sim</button> "+
 		        	    "		      </div> " +
 		        		"		    </div> " +
 		        		"		   </div> " +
