@@ -97,8 +97,8 @@
 		
 		function ApagarIngredienteCarrinhoModal(cr_id_carrinho){			
 			$("#btnSimConfirm").val(cr_id_carrinho);
-			$("#mensagemSucessoCarrinho").text('Deseja apagar esse ingrediente do Carrinho?');
-		    $("#modalSucessoCarrinho").modal('show');
+			$("#mensagemConfirmCarrinho").text('Deseja apagar esse ingrediente do Carrinho?');
+		    $("#modalConfirmCarrinho").modal('show');
 			return false;		
 		}
 		
@@ -106,7 +106,7 @@
 		function ApagarIngredienteCarrinho(cr_id_carrinho){
 			var  cr_id_usuario = id_usuario_global;
 			
-			$("#modalSucessoCarrinho").modal('hide');
+			$("#modalConfirmCarrinho").modal('hide');
 			$.postJSON("./jsonservlet",{opc_servlet:'apaga_ingrediente_carrinho',cr_id_carrinho:cr_id_carrinho},
 				function(data,status){
 					if(data.ERRO != ""){	

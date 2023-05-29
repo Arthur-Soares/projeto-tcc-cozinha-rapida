@@ -78,7 +78,7 @@ public class MenuUtils {
 							"  overflow-y: auto; /* Adicione a propriedade de rolagem apenas ao conteúdo */ " +
 							"} " +
 							" " +
-							"	#modalSucessoCarrinho, #modalErro { " +
+							"	#modalSucessoCarrinho, #modalConfirmCarrinho, #modalErro { " +
 							"  		z-index: 9999; /* Valor alto para garantir que fique acima dos outros modais */ " +
 							"	} "+
 							" " +
@@ -245,8 +245,8 @@ public class MenuUtils {
                 		"		    </div> " +
                 		"		   </div> " +
                 		"		 </div> "+
-		                "<!-- Modal de mensagem de tratamento de Alerta Carrinho --> " +
-		        		"		<div class=\"modal fade\" id=\"modalSucessoCarrinho\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
+		                "<!-- Modal de mensagem de tratamento de Alerta Confirmação --> " +
+		        		"		<div class=\"modal fade\" id=\"modalConfirmCarrinho\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalErroLabel\" aria-hidden=\"true\"> " +
 		        		"		  <div class=\"modal-dialog\" role=\"document\"> " +
 		        		"		    <div class=\"modal-content\"> " +
 		        		"		      <div class=\"modal-header text-white\" style=\"background-color:#636f61;\"> " +
@@ -256,7 +256,7 @@ public class MenuUtils {
 		        		"		        </button> " +
 		        		"		      </div> " +
 		        		"		      <div class=\"mt-3 modal-body\"> " +
-		        		"	       		 <p id=\"mensagemSucessoCarrinho\"></p> " +
+		        		"	       		 <p id=\"mensagemConfirmCarrinho\"></p> " +
 		        		"		      </div> " +
 		        		"		      <div class=\"modal-footer\"> " +
 		        	    "		        <button type=\"button\" class=\"btn btn-outline-dark\" data-dismiss=\"modal\">Não</button> " +
@@ -264,7 +264,26 @@ public class MenuUtils {
 		        	    "		      </div> " +
 		        		"		    </div> " +
 		        		"		   </div> " +
-		        		"		 </div> ";
+		        		"		 </div> "+
+		        		"<!-- Modal de mensagem de tratamento de Sucesso --> " +
+		        		"<div class=\"modal fade\" id=\"modalSucessoCarrinho\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalSucessoLabel\" aria-hidden=\"true\"> " +
+		        		"  <div class=\"modal-dialog\" role=\"document\"> " +
+		        		"    <div class=\"modal-content\"> " +
+		        		"      <div class=\"modal-header text-white\" style=\"background-color:#636f61;\"> " +
+		        		"        <h5 class=\"modal-title\" id=\"modalSucessoLabel\">Alerta</h5> " +
+		        		"        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Fechar\"> " +
+		        		"          <span aria-hidden=\"true\" class=\"text-white\">&times;</span> " +
+		        		"        </button> " +
+		        		"      </div> " +
+		        		"      <div class=\"mt-3 modal-body\"> " +
+		        		"  		 <p id=\"mensagemSucessoCarrinho\"></p> " +
+		        		"      </div> " +
+		        		"      <div class=\"modal-footer sucesso\"> " +
+		        		"        <button type=\"button\" class=\"btn btn-outline-dark\" data-dismiss=\"modal\">Fechar</button> " +
+		        		"      </div> " +
+		        		"    </div> " +
+		        		"   </div> " +
+		        		" </div> ";
                 
 			 return menuHtml;		
 	}
