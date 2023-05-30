@@ -92,7 +92,7 @@ public class MenuUtils {
 							"    border-radius: 50%; " +
 							"    overflow: hidden; " +
 							"    float: left; " +
-							"    margin: 15px; " +
+							//"    margin: 15px; " +
 							"    transition: 0.3s ease; " +
 							"    background-color: #fff; " +
 							"    text-align: center; " +

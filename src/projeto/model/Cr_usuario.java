@@ -630,6 +630,55 @@ public class Cr_usuario {
 		return idRetorno;
 	}
 	
+	public static int verificaEmailRecibo(String email) {
+		int idRetorno = 0;
+		String emailSql = "";
+		String emailRetorno = "";
+		String nomeRetorno = "";
+		
+		emailSql =  " SELECT " +									
+					" cr_email_usuario, " +			
+					" cr_nome_completo_usuario " +
+					" FROM cr_usuario " +
+					" where 1=1"+
+					" and cr_email_usuario = '"+email+"'";
+		
+		try {
+			Connection c = ProjetoDatabase.getConnection();
+			Statement st = c.createStatement();
+			ResultSet rs = st.executeQuery(emailSql);
+			if(rs.next()) {
+				emailRetorno = null!=rs.getObject(1)?rs.getString(1).trim():"";	
+				nomeRetorno = null!=rs.getObject(2)?rs.getString(2).trim():"";	
+			}
+			System.out.println("@@@@@ VENDO SE O DADO ESTÁ DENTRO DO EMAIL RETORNO :: "+emailRetorno);
+			if(!emailRetorno.equals("")) {
+				idRetorno = 0;
+				EmailEsqueciSenha ees = new EmailEsqueciSenha(); 
+				ees.envioEmailReciboIngredientes(email, nomeRetorno);
+				System.out.println("Não está vazio :: "+idRetorno);
+			}else {
+				idRetorno = -1;		
+				System.out.println("Está vazio :: "+idRetorno);
+			}
+			if(null!=rs) {
+				rs.close();
+				rs=null;
+			}
+			if(null!=st) {
+				st.close();
+				st=null;
+			}										
+			if(null!=c) {
+				c.close();
+				c=null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return idRetorno;
+	}
+	
 	public static int atualizaSenha(int id_usuario, String senha, String opc_senha_alterada) {
 		int idRetorno = 0;
 

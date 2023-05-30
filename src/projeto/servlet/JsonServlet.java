@@ -129,6 +129,12 @@ public class JsonServlet extends HttpServlet {
 			out = response.getWriter();
 			jsonObj.put("retorno",retornoemail);
         	out.print(jsonObj);    		
+		}else if("envia_email_recibo_ingredientes".equals(opcServlet)) {			
+			String email_usuario = null!=request.getParameter("email_usuario")?Cast.toString(request.getParameter("email_usuario")):"";
+			int retornoemail = Cr_usuario.verificaEmailRecibo(email_usuario);
+			out = response.getWriter();
+			jsonObj.put("retorno",retornoemail);
+        	out.print(jsonObj);    		
 		}else if("atualiza_senha".equals(opcServlet)) {			
 			int id_usuario = userLogado.getCr_id_usuario();		
 			String senha = null!=request.getParameter("senha")?Cast.toString(request.getParameter("senha")):"";

@@ -11,6 +11,7 @@
 	int cuserid = null!=cru?cru.getCr_id_usuario():0;
 	String cuseradmin = null!=cru?cru.getCr_nivel_usuario():"";
 	String cusername = null!=cru?cru.getCr_nome_completo_usuario():"";
+	String cuseremail = null!=cru?cru.getCr_email_usuario():"";
 	String redir = null!=request.getParameter("redir")?request.getParameter("redir"):"";
 	String opclogoff = null!=request.getParameter("logoff")?request.getParameter("logoff"):"";
 	//logoff=S
@@ -116,7 +117,17 @@
 			  #img_pix {
 			  	max-width: 100%;
 			 	border-radius: 30px;
+				}
 			}
+			
+			#copyButton {	
+				border: none;						
+				color: #FFFFFF;				
+				border-radius: 40px;
+				transition: 0.2s;
+				cursor: pointer;			
+				transition: 0.2s;
+				font-size: 20px;
 			}
 										
 		</style>		
@@ -134,8 +145,8 @@
 		$(document).ready(function() {				
 			$("#div_loading").hide();			
 			
-			carregaListaReceitasFav('<%=cuserid%>');
 			carregaListaCarrinhodeCompras('<%=cuserid%>');
+			//enviaEmailReciboIngredientes();
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
@@ -188,145 +199,53 @@
 		        carrinho.hide();
 		    });
 		});
-		
-		function pintarCoracao(cr_id_receita){
-			var id = '<%=cuserid%>';
-			if(id != 0){
-				$.postJSON("./jsonservlet",{opc_servlet:'pintar_coracao',cr_id_receita:cr_id_receita},
-					function(data,status){
-						if(data.retorno == ""){
-							alert("Erro ao pintar o coracao");						
-						}else if(data.retorno == "favorita"){
-								document.getElementById('btnFavoritar').className = 'btn btn-link bi bi-heart-fill';
-						}else if(data.retorno == "desfavorita"){
-								document.getElementById('btnFavoritar').className == 'btn btn-link bi bi-heart';
-						}
-					}	
-				);				
-			}
-		}
-		
-		function desfavoritarReceitaModal(cr_id_receita){
-			var id = '<%=cuserid%>';
-			if(id == 0){
-				$("#mensagemSucessoDesfavoritar").text('Faça o login antes de prosseguir!');
-		        $("#modalSucessoDesfavoritar").modal('show');
-				return false;
-			}else{
-				$("#btnSimConfirm").val(cr_id_receita);
-				$("#mensagemConfirm").text('Deseja desfavoritar essa receita?');
-		        $("#modalConfirm").modal('show');
-				return false;
-			}
-		}
-		
-		//Função do efeito favotitar receita no icone Hearth
-		function desfavoritarReceita(cr_id_receita){
 			
-			$("#modalConfirm").modal('hide');
-			var opc_favorito = "desfavoritar";
-			var id = '<%=cuserid%>';
-			$.postJSON("./jsonservlet",{opc_servlet:'favoritar_receita',opc_favorito:opc_favorito,cr_id_receita:cr_id_receita},
-				function(data,status){
-					if(data.retorno == -1){
-						$("#mensagemSucessoDesfavoritar").text("Erro ao "+opc_favorito+" receita!");
-				        $("#modalSucessoDesfavoritar").modal('show');					
-					}else{						
-						$("#mensagemSucessoDesfavoritar").text("Receita desfavoritada com sucesso!");
-				        $("#modalSucessoDesfavoritar").modal('show');	
-						carregaListaReceitasFav(id);
-					}
+		function enviaEmailReciboIngredientes(email_usuario){			
+			
+			$.postJSON("./jsonservlet",{opc_servlet:'envia_email_recibo_ingredientes',email_usuario:email_usuario},
+				function(emailretorno){				
+					var retorno = emailretorno.retorno;
+					if(retorno == 0){											        										      					 					
+					    // Remove o elemento de mensagem de sucesso existente
+					    $(".success-message").remove();
+					    
+					 	// Cria um elemento para exibir a mensagem de sucesso
+					 	$("#email_esqueci_senha").val("");
+					 	var successElement = $('<div class="success-message">Pronto! Siga os passos que foram enviados para o seu email para prosseguir com a redefinição da sua senha.</div>');
+					  	$("#email_esqueci_senha_error").parent().append(successElement);									        
+					}else{	
+						// Remove a classe input-error se já estiver presente
+					  	$("#email_esqueci_senha").removeClass('input-error');
+
+					  	// Adiciona a classe input-error para acionar a animação e destaque vermelho
+					  	$("#email_esqueci_senha").addClass('input-error');
+
+					  	// Foca no input de email
+					  	$("#email_esqueci_senha").focus();
+						
+					    // Remove o elemento de mensagem de erro existente
+					    $(".error-message").remove();
+					    
+					 	// Cria um elemento para exibir a mensagem de erro
+					 	var errorElement = $('<div class="error-message">Erro! O email informado não está cadastrado!</div>');
+					  	$("#email_esqueci_senha_error").parent().append(errorElement);														        									
+					}											        		
 				}
-			);
-		}	
-		
-		function createDesfavoritarReceitaFunction(idReceita) {
-		    return function() {
-		        desfavoritarReceitaModal(idReceita);
-		    };
+			);	
 		}
 		
-		function createVerReceitaFunction(idReceita) {
-		    return function() {
-		    	verReceita(idReceita);
-		    };
-		}
+	    function copyTextToClipboard(text) {
+	        const textarea = document.createElement('textarea');
+	        textarea.value = text;
+	        document.body.appendChild(textarea);
+	        textarea.select();
+	        document.execCommand('copy');
+	        document.body.removeChild(textarea);
+	        //alert('Texto copiado para a área de transferência: ' + text);
+	        $("#mensagemSucessoDesfavoritar").text('Chave PIX copiada para a área de transferência!');
+	        $("#modalSucessoDesfavoritar").modal('show');
+	    }
 		
-		function verReceita(cr_id_receita){									
-			$("#cr_id_receita").val(cr_id_receita);
-			$("#frmreceita").submit();		
-		}
-		
-		function carregaListaReceitasFav(cuserid) {
-		    var num = 1;
-		    var div_receitas_favoritas = $(".div_receitas_favoritas");
-
-		    $.postJSON("./jsonservlet", { opc_servlet: 'list_receitas_favoritas', cuserid: cuserid }, function(datalin, statuslin) {
-		        if (datalin.length > 0) {
-		            // Limpa o conteúdo existente dentro da div caso seja chamada novamente
-		            div_receitas_favoritas.empty();
-
-		            for (var cx = 0; cx < datalin.length; cx++) {
-		                var cr_id_receita = datalin[cx].cr_id_receita;
-		            	var cr_titulo_receita = datalin[cx].cr_titulo_receita;
-		                var cr_receita_nome_img = datalin[cx].cr_receita_nome_img;
-
-		                var divContainer = $("<div>").addClass("container");
-		                var divRow = $("<div>").addClass("row mt-3 align-items-center");
-		                var divColImg = $("<div>").addClass("col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num).css("border-radius", "30px");
-		                var divColTitulo = $("<div>").addClass("col-xl-6 col-lg-6 col-md-6 col-sm-9 col-9").attr("id", "cr_titulo_receita_" + num).click(createVerReceitaFunction(cr_id_receita));
-		                var inputTitulo = $("<input>").attr({
-		                    type: "text",
-		                    class: "form-control",
-		                    name: "cr_titulo_receita",
-		                    id: "cr_titulo_receita_input_" + num,
-		                    readonly: "readonly",
-		                    onfocus: "this.blur();"
-		                }).css({
-		                    border: "none",
-		                    background: "transparent",
-		                    fontSize: "20px",
-		                    textAlign: "left",
-		                    fontWeight: "bold",
-		                    color: "#b1463c",
-		                    pointerEvents: "none" // Desabilita eventos de clique
-		                }).val(cr_titulo_receita);
-		                divColTitulo.append(inputTitulo);
-
-		                var divColHeart = $("<div>").addClass("col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2").attr("id", "cr_heart_" + num);
-		                var divHeartIcon = $("<div>").addClass("btn btn-link bi bi-heart-fill").css({
-		                    color: "#b1463c",
-		                    fontSize: "50px",
-		                    border: "none"
-		                }).click(createDesfavoritarReceitaFunction(cr_id_receita));
-
-		                divColHeart.append(divHeartIcon);
-		                divRow.append(divColImg, divColTitulo, divColHeart);
-		                divContainer.append(divRow);
-		                div_receitas_favoritas.append(divContainer);
-
-		                // Adiciona um HR pontilhado
-		                if (cx < datalin.length - 1) {
-		                    var hrElement = $("<hr>").addClass("dashed-hr");
-		                    div_receitas_favoritas.append(hrElement);
-		                }
-
-		                // Adiciona a imagem
-		                var imgElement = $(cr_receita_nome_img).css({
-						  "max-width": "100%",
-						  "border-radius": "30px"
-						});
-		                $("#cr_receita_nome_img_" + num).html(imgElement);
-
-		                num++;
-		            }
-		        }else{
-		        	div_receitas_favoritas.empty();
-		        }
-
-		    });
-		}
-
 	</script>
 
 	<body>		
@@ -351,9 +270,20 @@
 									
 									<div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10" align="center">
 									<h6>Foi enviado um recibo com os ingredientes para o seu email, caso queira finalizar o pagamento
-										escaneie o QRCODE acima e efetue o pagamento.<br><br>
-										<strong>Obrigado por usar o Cozinha Rápida!<strong>
+										escaneie o QRCODE acima ou copie a chave PIX abaixo, e efetue o pagamento.																													
 									</h6>
+																	
+									<h4 style="color: #FF8100;"><strong>79e765ef-df91-489e-819d-c70962393f4b</strong></h4>						            
+									
+									<div class="row mt-3 justify-content-center text-center">
+										<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">		
+											 <button type="button" class="btn btn-lg btn-block" id="copyButton" onclick="copyTextToClipboard('79e765ef-df91-489e-819d-c70962393f4b')" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;">
+										     	<strong><i class="fas fa-copy"></i> Copiar chave PIX</strong>
+										    </button>	
+										</div>
+									</div>	
+									 <br>			
+									 <h6><strong>Obrigado por usar o sistema Cozinha Rápida!</strong></h6>	
 									</div>
 								</div>
 							</div>

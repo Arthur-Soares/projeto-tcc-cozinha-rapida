@@ -24,19 +24,19 @@
 		            	var cr_desc_ingrediente = datalin[cx].cr_desc_ingrediente;
 		            	var cr_valor_total = datalin[cx].cr_valor_total;
 		
-		                var divContainer = $("<div>").addClass("container align-items-center justify-content-center");
-		                var divRow = $("<div>").addClass("row align-items-center justify-content-center").css({
+		                var divContainer = $("<div>").addClass("container");
+		                var divRow = $("<div>").addClass("row").css({
 		            	  borderRadius: "10px",
 		            	  border: "rgba(99, 111, 97, .4) 1px solid",
 		            	  padding: "10px" // Adicione a margem interna desejada aqui
 		            	});		               
 		                
-		                var divColQtd = $("<div>").addClass("mt-3 mt-md-0 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 justify-content-center align-items-center")		             		              
+		                var divColQtd = $("<div>").addClass("col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 justify-content-left align-items-left")		             		              
 		                var inputElement = $("<div>").addClass("circulo");		                
 		                inputElement.append("<strong>"+cr_quantidade+"</strong>");		                
 		                divColQtd.append(inputElement);
 		                
-		                var divColTitulo = $("<div>").addClass("mt-3 mt-md-0 col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7").attr("id", "cr_desc_ingrediente_" + num).css({
+		                var divColTitulo = $("<div>").addClass("col-xl-8 col-lg-8 col-md-8 col-sm-7 col-7").attr("id", "cr_desc_ingrediente_" + num).css({
 		                    border: "none",
 		                    background: "transparent",		                    
 		                    textAlign: "left",
