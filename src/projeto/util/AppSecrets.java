@@ -42,6 +42,6 @@ public interface AppSecrets {
 	
 	//CAMINHOS DE PASTA DO SISTEMA
 	static final String PATH_IMG = "//www//cozinharapida//img//";
-	 */
+	*/
 	
 }

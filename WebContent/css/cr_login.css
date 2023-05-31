@@ -86,7 +86,23 @@
     background: #636f61;
     color: #fff;
     padding: 10px 20px;
-    margin-top: 30px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+    transition: 0.5s;
+    width: 100%;
+  }
+  
+  .btn_apagar {
+    display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	text-decoration: none;
+    background: #C82333;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 10px;
     border-radius: 5px;
     border: none;
     text-decoration: none;
@@ -106,6 +122,12 @@
     background: #fff;
     color: #222;
   }
+  
+  .btn_apagar:hover {
+    background: #fff;
+    color: #222;
+  }
+  
   .login-box .btn_entrar span {
 	display: inline-block;	
 	margin-right: 5px;	

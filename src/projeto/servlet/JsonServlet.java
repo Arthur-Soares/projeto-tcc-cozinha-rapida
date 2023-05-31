@@ -84,9 +84,9 @@ public class JsonServlet extends HttpServlet {
 			out = response.getWriter();
     		out.print(jsonObj);
 		}else if("apaga_usuario".equals(opcServlet)) {
-			int id_usuario = null!=request.getParameter("id_usuario")?Cast.toInt(request.getParameter("id_usuario")):0;
+			int cr_id_usuario = null!=request.getParameter("cr_id_usuario")?Cast.toInt(request.getParameter("cr_id_usuario")):0;
 			Cr_usuario cru = new Cr_usuario();
-			int retorno_login = cru.apaga_registro(id_usuario);
+			int retorno_login = cru.apaga_registro(cr_id_usuario);
 			jsonObj = new JSONObject();	
 			if(retorno_login == -1) {
 				jsonObj.put("ERRO", "Erro ao apagar usuário!");
