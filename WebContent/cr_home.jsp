@@ -267,6 +267,18 @@
 		   height:100px;
 		   
 		}
+		/*
+		@media (max-width: 1000px) {
+		   .item_card_7,
+		   .item_card_8,
+		   .item_card_9,
+		   .item_card_10,
+		   .item_card_11 {
+		      display: none !important;
+		      visibility: hidden;
+		   }
+		}
+		*/
 		</style>
 	</head>	 
 		
@@ -636,7 +648,7 @@
 					</div>			
 					<br>					
 					<div class="owl-carousel">
-				        <div class="item">
+				        <div class="item item_card_0">
 						    <div class="card" id="cr_receita_card_0">
 						        <div class="img_receita" id="cr_receita_nome_img_0"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -651,7 +663,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_1">
 						    <div class="card" id="cr_receita_card_1">
 						        <div class="img_receita" id="cr_receita_nome_img_1"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -666,7 +678,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_2">
 						    <div class="card" id="cr_receita_card_2">
 						        <div class="img_receita" id="cr_receita_nome_img_2"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -681,7 +693,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_3">
 						    <div class="card" id="cr_receita_card_3">
 						        <div class="img_receita" id="cr_receita_nome_img_3"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -696,7 +708,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_4">
 						    <div class="card" id="cr_receita_card_4">
 						        <div class="img_receita" id="cr_receita_nome_img_4"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -711,7 +723,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_5">
 						    <div class="card" id="cr_receita_card_5">
 						        <div class="img_receita" id="cr_receita_nome_img_5"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -726,7 +738,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_6">
 						    <div class="card" id="cr_receita_card_6">
 						        <div class="img_receita" id="cr_receita_nome_img_6"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -741,7 +753,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_7">
 						    <div class="card" id="cr_receita_card_7">
 						        <div class="img_receita" id="cr_receita_nome_img_7"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -756,7 +768,7 @@
 						        </div>
 						    </div>
 						</div>
-				       <div class="item">
+				       <div class="item item_card_8">
 						    <div class="card" id="cr_receita_card_8">
 						        <div class="img_receita" id="cr_receita_nome_img_8"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -771,7 +783,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_9">
 						    <div class="card" id="cr_receita_card_9">
 						        <div class="img_receita" id="cr_receita_nome_img_9"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -786,7 +798,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_10">
 						    <div class="card" id="cr_receita_card_10">
 						        <div class="img_receita" id="cr_receita_nome_img_10"></div>							          
 						        <div class="card-body d-flex flex-column">
@@ -801,7 +813,7 @@
 						        </div>
 						    </div>
 						</div>
-				        <div class="item">
+				        <div class="item item_card_11">
 						    <div class="card" id="cr_receita_card_11">
 						        <div class="img_receita" id="cr_receita_nome_img_11"></div>							          
 						        <div class="card-body d-flex flex-column">

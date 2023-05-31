@@ -286,7 +286,7 @@
 		    var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
 		    var cr_cpf_usuario = $("#cr_cpf_usuario").val();
 		    var cr_telefone_usuario = $("#cr_telefone_usuario").val();
-		    var nomeRegex = /^[A-Za-z]+([\ A-Za-z]+)*$/; //expressão regular para nome
+		    var nomeRegex = /^[\p{L}\s]+$/u;
 		    
 		    if (cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == "") {
 		    	$("#mensagemErro").text('Preencha todos os campos!');
@@ -728,7 +728,7 @@
 				<div class="login-box">			
 					 <h2><strong>Bem vindo <br> de volta!</strong></h2>									
 						<div class="user-box">
-							<input type="text" name="cr_email_usuario_login" id="cr_email_usuario_login" placeholder="&nbsp;"/>							
+							<input type="email" name="cr_email_usuario_login" id="cr_email_usuario_login" placeholder="&nbsp;"/>							
 							<label for="cr_email_usuario_login">Email</label> 
 						</div>
 						

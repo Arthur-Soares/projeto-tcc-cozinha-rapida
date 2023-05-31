@@ -416,7 +416,7 @@
 		    var cr_nome_completo_usuario = $("#cr_nome_completo_usuario").val();
 		    var cr_cpf_usuario = $("#cr_cpf_usuario").val();
 		    var cr_telefone_usuario = $("#cr_telefone_usuario").val();
-		    var nomeRegex = /^[A-Za-z]+([\ A-Za-z]+)*$/; //expressão regular para nome
+		    var nomeRegex = /^[\p{L}\s]+$/u;
 		    
 		    if (cr_nome_completo_usuario == "" || cr_cpf_usuario == "" || cr_telefone_usuario == "") {
 		    	$("#mensagemErro").text('Preencha todos os campos!');
@@ -703,7 +703,35 @@
 		//Retira a máscara do valor de cpf_cnpj
 		function retira_mascara(cpf_cnpj) {
 		    return cpf_cnpj.replace(/\./g,'').replace(/-/g,'').replace(/\//g,'')
-		}		
+		}
+		
+		function excluirContaModal(cr_id_carrinho){						
+			$("#mensagemConfirm").text('Tem certeza que deseja excluir a sua conta?');
+		    $("#modalConfirm").modal('show');
+			return false;		
+		}
+		
+		function excluir_conta(){
+			var  cr_id_usuario = '<%=cuserid%>';
+			
+			$("#modalConfirm").modal('hide');
+			$.postJSON("./jsonservlet",{opc_servlet:'apaga_usuario',cr_id_usuario:cr_id_usuario},
+				function(data,status){
+					if(data.ERRO != ""){	
+						$("#mensagemErro").text(data.ERRO);
+				        $("#modalErro").modal('show');				
+					}else{						
+						$("#mensagemSucessoExcluirUsuario").text("Usuário apagado com sucesso!");
+				        $("#modalSucessoExcluirUsuario").modal('show');	
+				        
+				        setTimeout(function() {
+				            // Redirecionar para a página desejada
+				        	window.location.href = "cr_home.jsp?logoff=S";
+			         	}, 3000); // 3000 milissegundos = 3 segundos						
+					}
+				}
+			);		
+		}
 	</script>
 
 	<body>	
@@ -827,7 +855,17 @@
 								Atualizar&nbsp;<i class="fa fa-save" aria-hidden="true"></i>
 							</button> 
 						</div>																												
-					</div>					
+					</div>	
+					
+					<hr noshade="noshade" style="border: 0.5px solid; color: #636f61;">
+					
+					<div class="row">																		
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<button type="button" class="btn_apagar" onclick="excluirContaModal();">
+								<i class="fas fa-trash-alt"></i>&nbsp;Excluir Conta?
+							</button> 
+						</div>																												
+					</div>				
 				</div>
 			</div>														
 			
@@ -850,7 +888,48 @@
 			    </div>
 			   </div>
 			 </div>
-			
+			 
+			 	<!-- Modal de mensagem de Confirmação --> 
+				<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true"> 
+				  <div class="modal-dialog" role="document"> 
+				    <div class="modal-content"> 
+				      <div class="modal-header text-white" style="background-color:#b1463c;"> 
+				        <h5 class="modal-title" id="modalErroLabel">Confirma?</h5> 
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"> 
+				          <span aria-hidden="true" class="text-white">&times;</span> 
+				        </button> 
+				      </div> 
+				      <div class="mt-3 modal-body"> 
+			       		 <p id="mensagemConfirm"></p> 
+				      </div> 
+				      <div class="modal-footer confirm"> 
+				        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Não</button> 
+				        <button type="button" class="btn btn-dark" id="btnSimConfirm" onclick="excluir_conta()">Sim</button> 
+				      </div> 
+				    </div> 
+				   </div> 
+				 </div> 
+				 
+			 <!-- Modal de mensagem de tratamento de Sucesso -->
+			<div class="modal fade" id="modalSucessoExcluirUsuario" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header text-white" style="background-color:#636f61;">
+			        <h5 class="modal-title" id="modalSucessoLabel">Alerta</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+			          <span aria-hidden="true" class="text-white">&times;</span>
+			        </button>
+			      </div>
+			      <div class="mt-3 modal-body">    			      	   	  		        			    
+		       		 <p id="mensagemSucessoExcluirUsuario"></p>			         
+			      </div>
+			      <div class="modal-footer sucesso">
+			        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+			      </div>
+			    </div>
+			   </div>
+			 </div>
+					
 			<!-- DIV CADASTRO CONTA - CONTA CRIADA COM SUCESSO -->
 			<div class="div_cadastro_sucesso">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
@@ -867,26 +946,6 @@
 					</font>				
 				</div>
 			</div>					
-		</form>
-		
-		<!-- Modal de mensagem de tratamento de Alerta -->
-		<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header text-white" style="background-color:#b1463c;">
-		        <h5 class="modal-title" id="modalErroLabel">Alerta</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-		          <span aria-hidden="true" class="text-white">&times;</span>
-		        </button>
-		      </div>
-		      <div class="mt-3 modal-body">    			      	   	  		        			    
-	       		 <p id="mensagemErro"></p>			         
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
-		      </div>
-		    </div>
-		   </div>
-		 </div>
+		</form>		
 	</body>
 </html>
