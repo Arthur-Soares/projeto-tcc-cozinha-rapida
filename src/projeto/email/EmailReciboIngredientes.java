@@ -213,7 +213,7 @@ public class EmailReciboIngredientes {
 				htmlCorpo+=		"									 <tr> " +
 					    		"                                        <td style=\"text-align:center;\">"+cr_quantidade+"</td>" +
 					    		"                                        <td style=\"text-align:center;\">"+cr_desc_ingrediente+"</td>" +
-					    		"                                        <td style=\"text-align:center;\">"+cr_valor_total+"</td>" +
+					    		"                                        <td style=\"text-align:center;\">R$ "+cr_valor_total+"</td>" +
 								"									</tr> " ;
 				}
 					
