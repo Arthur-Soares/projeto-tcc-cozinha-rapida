@@ -261,7 +261,7 @@
 
 		                var divContainer = $("<div>").addClass("container");
 		                var divRow = $("<div>").addClass("row mt-3 align-items-center");
-		                var divColImg = $("<div>").addClass("col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num).css("border-radius", "30px");
+		                var divColImg = $("<div>").addClass("col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num).css("border-radius", "30px").click(createVerReceitaFunction(cr_id_receita));
 		                var divColTitulo = $("<div>").addClass("col-xl-6 col-lg-6 col-md-6 col-sm-9 col-9").attr("id", "cr_titulo_receita_" + num).click(createVerReceitaFunction(cr_id_receita));
 		                var inputTitulo = $("<input>").attr({
 		                    type: "text",

@@ -501,6 +501,74 @@ public class Cr_receita {
 			return arrayRetorno;
 		}
 		
+		
+		public static JSONArray listarJSONRecSugestoes(int cr_id_receita) {
+			JSONArray arrayRetorno = new JSONArray();
+			String sql = " select distinct " +
+						 " cr_receita.cr_id_receita, " +
+						 " cr_receita.cr_titulo_receita, " +
+						 " cr_receita.cr_receita_nome_img " +
+						 " from cr_receita " +
+						 " left outer join cr_receita_ingrediente on cr_receita_ingrediente.cr_id_receita = cr_receita.cr_id_receita " +
+						 " where cr_receita_ingrediente.cr_id_ingrediente in (select " +
+						 " cr_ingredientes.cr_id_ingrediente " +
+						 " from cr_ingredientes " +
+						 " inner join cr_receita_ingrediente on cr_receita_ingrediente.cr_id_ingrediente = cr_ingredientes.cr_id_ingrediente " +
+						 " where cr_receita_ingrediente.cr_id_receita = "+cr_id_receita+") and cr_receita_ingrediente.cr_id_receita <> "+cr_id_receita+" LIMIT 2 ";						
+			
+			System.out.println("listarJSONRecFavoritas Query="+sql);
+			try {
+				Connection c = ProjetoDatabase.getConnection();
+				PreparedStatement p = c.prepareStatement(sql);				
+				
+				ResultSet r = p.executeQuery();
+				ResultSetMetaData rsmd = r.getMetaData();
+				int cols =	rsmd.getColumnCount();
+				while(r.next()) {
+					JSONObject jsonObj = new JSONObject();
+					for(int xc = 1;xc<=cols;xc++){
+						if(java.sql.Types.TIMESTAMP== rsmd.getColumnType(xc)){
+							try {
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=Cast.toDate(r.getObject(xc))?FormatUtils.dataHoraMinutoSegundoBr(r.getObject(xc)):"");
+							}catch(Exception e) {
+								jsonObj.put(rsmd.getColumnLabel(xc), "");
+							} 
+						}else if(java.sql.Types.VARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.CHAR == rsmd.getColumnType(xc)||		
+								java.sql.Types.LONGVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.NVARCHAR == rsmd.getColumnType(xc)||
+								java.sql.Types.LONGNVARCHAR == rsmd.getColumnType(xc)){
+								jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?r.getString(xc).trim():"");
+						}else if(java.sql.Types.DECIMAL == rsmd.getColumnType(xc) || java.sql.Types.DOUBLE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.formataValorDigitos(r.getObject(xc),2):"");
+						}else if(java.sql.Types.DATE == rsmd.getColumnType(xc)){
+							jsonObj.put(rsmd.getColumnLabel(xc), null!=r.getObject(xc)?FormatUtils.dateformat(r.getString(xc)):"");
+						}else{
+							jsonObj.put(rsmd.getColumnLabel(xc), r.getObject(xc));
+						}
+					}
+					arrayRetorno.put(jsonObj);
+				}
+				if(null!=r) {
+					r.close();
+					r=null;
+				}
+				if(null!=p) {
+					p.close();
+					p=null;
+				}
+				if(null!=c) {
+					c.close();
+					c=null;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+
+			return arrayRetorno;
+		}
+		
 		/*public static Map<Integer,List<List>> listarJSONRecFavoritas(int id_usuario_logado) {		
 			Map<Integer,List<List>> Map_dados_rec_favoritas = new LinkedHashMap<Integer,List<List>>();
 			

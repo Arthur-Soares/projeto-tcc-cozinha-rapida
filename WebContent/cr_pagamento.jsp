@@ -146,7 +146,7 @@
 			$("#div_loading").hide();			
 			
 			carregaListaCarrinhodeCompras('<%=cuserid%>');
-			//enviaEmailReciboIngredientes();
+			enviaEmailReciboIngredientes('<%=cuseremail%>');
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
@@ -201,34 +201,15 @@
 		});
 			
 		function enviaEmailReciboIngredientes(email_usuario){			
-			
+			var id_usuario = '<%=cuserid%>';
 			$.postJSON("./jsonservlet",{opc_servlet:'envia_email_recibo_ingredientes',email_usuario:email_usuario},
 				function(emailretorno){				
 					var retorno = emailretorno.retorno;
 					if(retorno == 0){											        										      					 					
-					    // Remove o elemento de mensagem de sucesso existente
-					    $(".success-message").remove();
-					    
-					 	// Cria um elemento para exibir a mensagem de sucesso
-					 	$("#email_esqueci_senha").val("");
-					 	var successElement = $('<div class="success-message">Pronto! Siga os passos que foram enviados para o seu email para prosseguir com a redefinição da sua senha.</div>');
-					  	$("#email_esqueci_senha_error").parent().append(successElement);									        
+						console.log("Email enviado, tudo certo!");
+						carregaListaCarrinhodeCompras(id_usuario);									        
 					}else{	
-						// Remove a classe input-error se já estiver presente
-					  	$("#email_esqueci_senha").removeClass('input-error');
-
-					  	// Adiciona a classe input-error para acionar a animação e destaque vermelho
-					  	$("#email_esqueci_senha").addClass('input-error');
-
-					  	// Foca no input de email
-					  	$("#email_esqueci_senha").focus();
-						
-					    // Remove o elemento de mensagem de erro existente
-					    $(".error-message").remove();
-					    
-					 	// Cria um elemento para exibir a mensagem de erro
-					 	var errorElement = $('<div class="error-message">Erro! O email informado não está cadastrado!</div>');
-					  	$("#email_esqueci_senha_error").parent().append(errorElement);														        									
+						console.log("Erro ao enviar Email!");													        								
 					}											        		
 				}
 			);	

@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import br.com.neorelato.util.Cast;
 import projeto.email.EmailEsqueciSenha;
+import projeto.email.EmailReciboIngredientes;
 import projeto.util.FormatUtils;
 import projeto.util.ProjetoDatabase;
 
@@ -633,10 +634,12 @@ public class Cr_usuario {
 	public static int verificaEmailRecibo(String email) {
 		int idRetorno = 0;
 		String emailSql = "";
+		int idUsuarioRetorno = 0;
 		String emailRetorno = "";
 		String nomeRetorno = "";
 		
-		emailSql =  " SELECT " +									
+		emailSql =  " SELECT " +	
+					" cr_id_usuario, " +
 					" cr_email_usuario, " +			
 					" cr_nome_completo_usuario " +
 					" FROM cr_usuario " +
@@ -648,14 +651,15 @@ public class Cr_usuario {
 			Statement st = c.createStatement();
 			ResultSet rs = st.executeQuery(emailSql);
 			if(rs.next()) {
-				emailRetorno = null!=rs.getObject(1)?rs.getString(1).trim():"";	
-				nomeRetorno = null!=rs.getObject(2)?rs.getString(2).trim():"";	
+				idUsuarioRetorno = null!=rs.getObject(1)?rs.getInt(1):0;
+				emailRetorno = null!=rs.getObject(2)?rs.getString(2).trim():"";	
+				nomeRetorno = null!=rs.getObject(3)?rs.getString(3).trim():"";	
 			}
 			System.out.println("@@@@@ VENDO SE O DADO ESTÁ DENTRO DO EMAIL RETORNO :: "+emailRetorno);
 			if(!emailRetorno.equals("")) {
 				idRetorno = 0;
-				EmailEsqueciSenha ees = new EmailEsqueciSenha(); 
-				ees.envioEmailReciboIngredientes(email, nomeRetorno);
+				EmailReciboIngredientes eri = new EmailReciboIngredientes(); 
+				eri.enviarRecibo(email, nomeRetorno, idUsuarioRetorno);
 				System.out.println("Não está vazio :: "+idRetorno);
 			}else {
 				idRetorno = -1;		

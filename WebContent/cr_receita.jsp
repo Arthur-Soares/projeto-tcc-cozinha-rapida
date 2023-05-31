@@ -187,6 +187,7 @@
 		$(document).ready(function() {				
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
+			carregaListaReceitasSug('<%=p_cr_id_receita%>');
 			carregaListaCarrinhodeCompras('<%=cuserid%>');
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
@@ -579,7 +580,82 @@
 					}
 				);	
 	       	}
-    	}    	    
+    	}    
+    	
+    	function carregaListaReceitasSug(cr_id_receita) {
+		    var num = 1;
+		    var div_receitas_sugestoes = $(".div_receitas_sugestoes");
+
+		    $.postJSON("./jsonservlet", { opc_servlet: 'list_sugestoes_receitas', cr_id_receita: cr_id_receita }, function(datalin, statuslin) {
+		        if (datalin.length > 0) {
+		            // Limpa o conteúdo existente dentro da div caso seja chamada novamente
+		            div_receitas_sugestoes.empty();
+
+		            for (var cx = 0; cx < datalin.length; cx++) {
+		                var cr_id_receita = datalin[cx].cr_id_receita;
+		            	var cr_titulo_receita = datalin[cx].cr_titulo_receita;
+		                var cr_receita_nome_img = datalin[cx].cr_receita_nome_img;
+
+		                var divContainer = $("<div>").addClass("container");
+		                var divRow = $("<div>").addClass("row align-items-center");
+		                var divColImg = $("<div>").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12").attr("id", "cr_receita_nome_img_" + num).css("border-radius", "10px").click(createVerReceitaFunction(cr_id_receita));;
+		                var divColTitulo = $("<div>").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12").attr("id", "cr_titulo_receita_" + num).click(createVerReceitaFunction(cr_id_receita));
+		                var inputTitulo = $("<input>").attr({
+		                    type: "text",
+		                    class: "form-control",
+		                    name: "cr_titulo_receita",
+		                    id: "cr_titulo_receita_input_" + num,
+		                    readonly: "readonly",
+		                    onfocus: "this.blur();"
+		                }).css({
+		                    border: "none",
+		                    background: "transparent",
+		                    fontSize: "15px",
+		                    textAlign: "center",
+		                    fontWeight: "bold",
+		                    color: "#b1463c",
+		                    pointerEvents: "none" // Desabilita eventos de clique
+		                }).val(cr_titulo_receita);
+		                divColTitulo.append(inputTitulo);
+		                
+		                divRow.append(divColImg, divColTitulo);
+		                divContainer.append(divRow);
+		                div_receitas_sugestoes.append(divContainer);
+
+		                // Adiciona um HR pontilhado
+		                if (cx < datalin.length - 1) {
+		                    var hrElement = $("<hr>").addClass("dashed-hr");
+		                    div_receitas_sugestoes.append(hrElement);
+		                }
+
+		                // Adiciona a imagem
+		                var imgElement = $(cr_receita_nome_img).css({
+						  "max-width": "100%",
+						  "border-radius": "10px"
+						});
+		                $("#cr_receita_nome_img_" + num).html(imgElement);
+
+		                num++;
+		            }
+		        }else{
+		        	div_receitas_sugestoes.empty();
+		        }
+
+		    });
+		}
+    	
+		function createVerReceitaFunction(idReceita) {
+		    return function() {
+		    	verReceita(idReceita);
+		    };
+		}
+		
+		function verReceita(cr_id_receita){									
+			$("#cr_id_receita").val(cr_id_receita);
+			$("#frmreceita").submit();		
+		}		
+    	
+    	
 	</script>
 	
 
@@ -617,8 +693,10 @@
 				<!-- Div de sugestão a ser implementado -->
 				<div class="sugestao" style="border-radius: 20px; border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
 					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
-						<strong>Sugestões:</strong>
+						<strong>Sugestões:</strong>						
 					</label> 
+					<div class="div_receitas_sugestoes col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+					</div>
 				</div>
 			</div>
 			
