@@ -253,7 +253,7 @@
 			var cr_email_usuario_login = $("#cr_email_usuario_login").val();
 			var cr_senha_usuario_login = $("#cr_senha_usuario_login").val();
 			var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; //expressão regular para email
-			var senhaRegex = /^\w{6,}$/;                 //expressão regular para senha
+			var senhaRegex = /^.{6}$/; // Expressão regular para verificar se a senha tem 6 caracteres, incluindo caracteres especiais
 			
 			if(cr_email_usuario_login == ""){
 				$("#mensagemErro").text('Digite o Email!');
@@ -270,13 +270,12 @@
 			    $("#modalErro").modal('show');
 			    $("#cr_email_usuario_login").focus();
 			    return false;
-			}else if(!senhaRegex.test(cr_senha_usuario_login)){
+			}else if(senhaRegex.test(cr_senha_usuario_login)){
 			    $("#mensagemErro").text('Senha inválida! A senha deve ter no mínimo 6 caracteres Alfanumericos!');
 			    $("#modalErro").modal('show');
 			    $("#cr_senha_usuario_login").focus();
 			    return false;
-			  }
-			else{
+			}else{
 				$("#login_cadastro").submit();
 			}			
 						
@@ -353,9 +352,9 @@
 			var cr_email_usuario = $("#cr_email_usuario").val();
 			var cr_senha_usuario = $("#cr_senha_usuario").val();
 			var cr_senha_usuario_confirm = $("#cr_senha_usuario_confirm").val();	
-			var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; //expressão regular para email
-			var senhaRegex = /^\w{6,}$/; //expressão regular para senha
-			  
+			var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; //expressão regular para email	
+			var senhaRegex = /^.{6}$/; // Expressão regular para verificar se a senha tem 6 caracteres, incluindo caracteres especiais
+
 			
 			if(cr_email_usuario == "" || cr_senha_usuario == ""){
 				$("#mensagemErro").text('Preencha todos os campos!');
@@ -364,12 +363,12 @@
 				return false;
 			}
 			if(!emailRegex.test(cr_email_usuario)){
-				$("#mensagemErro").text('Insira um email Valido!');
+				$("#mensagemErro").text('Insira um email válido!');
 		        $("#modalErro").modal('show');
 				$("#cr_email_usuario").focus();
 				return false;
 			}
-			if(!senhaRegex.test(cr_senha_usuario) && !senhaRegex.test(cr_senha_usuario_confirm)){
+			if(senhaRegex.test(cr_senha_usuario) && senhaRegex.test(cr_senha_usuario_confirm)){
 				$("#mensagemErro").text('Senha de no minimo 6 caracteres!');
 		        $("#modalErro").modal('show');
 				$("#cr_email_usuario").focus();
@@ -673,6 +672,31 @@
 		    $(".error-message").remove();
 		    $(".success-message").remove();
 		}
+		
+		 function togglePasswordVisibility(num_input_senha) {
+            var passwordInput = "";     
+            var toggleButton = "";
+            if(num_input_senha == 1){
+            	passwordInput = document.getElementById("cr_senha_usuario_login");
+            	toggleButton = document.querySelector(".toggle-password_1");
+            }else if(num_input_senha == 2){
+            	passwordInput = document.getElementById("cr_senha_usuario");
+            	toggleButton = document.querySelector(".toggle-password_2");
+            }else{
+            	passwordInput = document.getElementById("cr_senha_usuario_confirm");
+            	toggleButton = document.querySelector(".toggle-password_3");
+            }                       
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.classList.add("show-password");
+                toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+            } else {
+                passwordInput.type = "password";
+                toggleButton.classList.remove("show-password");
+                toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+        }
 			
 	</script>
 		
@@ -732,10 +756,15 @@
 							<label for="cr_email_usuario_login">Email</label> 
 						</div>
 						
-						<div class="user-box">
-							<input type="password" name="cr_senha_usuario_login" id="cr_senha_usuario_login" placeholder="&nbsp;"/>
-							<label for="cr_senha_usuario_login">Senha</label> 
-						</div>			
+					  	<div class="user-box password-container" style="width: 100%;">
+					        <div class="input-group">
+					            <input type="password" name="cr_senha_usuario_login" id="cr_senha_usuario_login" placeholder="&nbsp;" style="width: 100%;">
+					            <label for="cr_senha_usuario_login">Senha</label>
+					            <div class="input-group-append">
+					                <span class="toggle-password_1" onclick="togglePasswordVisibility(1)"><i class="fas fa-eye-slash"></i></span>
+					            </div>
+					        </div>
+					    </div>		
 																
 						<a class="esquecer_senha" data-toggle="modal" href="#modalsenha" onclick="limpaError();">Esqueceu sua senha?</a>
 						
@@ -852,16 +881,26 @@
 						<input type="email" name="cr_email_usuario" id="cr_email_usuario" placeholder="&nbsp;"/>
 						<label for="cr_cep_usuario">Email</label> 						
 					</div>					
-					 
-					<div class="user-box">												
-						<input type="password" name="cr_senha_usuario" id="cr_senha_usuario" placeholder="&nbsp;"/>					
-						<label for="cr_senha_usuario">Senha</label> 							 																																										  															
-					</div>
+					 					
+					<div class="user-box password-container" style="width: 100%;">
+				        <div class="input-group">
+				            <input type="password" name="cr_senha_usuario" id="cr_senha_usuario" placeholder="&nbsp;" style="width: 100%;">
+				            <label for="cr_senha_usuario_login">Senha</label>
+				            <div class="input-group-append">
+				                <span class="toggle-password_2" onclick="togglePasswordVisibility(2)"><i class="fas fa-eye-slash"></i></span>
+				            </div>
+				        </div>
+				    </div>						
 					
-					<div class="user-box">																								
-						<input type="password" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" placeholder="&nbsp;"/>						
-						<label for="cr_senha_usuario_confirm">Confirme a Senha</label> 						 																																											  														
-					</div>									
+					<div class="user-box password-container" style="width: 100%;">
+				        <div class="input-group">
+				            <input type="password" name="cr_senha_usuario_confirm" id="cr_senha_usuario_confirm" placeholder="&nbsp;" style="width: 100%;">
+				            <label for="cr_senha_usuario_login">Confirme a Senha</label>
+				            <div class="input-group-append">
+				                <span class="toggle-password_3" onclick="togglePasswordVisibility(3)"><i class="fas fa-eye-slash"></i></span>
+				            </div>
+				        </div>
+				    </div>									
 														
 					<hr noshade="noshade" style="border: 0.5px solid; color: #636f61;">
 					

@@ -266,7 +266,7 @@ public class JsonServlet extends HttpServlet {
 			jsonArray = Cr_receita.listarJSONRecSugestoes(cr_id_receita); 			
 			out = response.getWriter();
 			out.print(jsonArray);
-	   }else if("list_top_receitas".equals(opcServlet)) {	
+	   }else if("list_top_receitas".equals(opcServlet)) {			   
 			jsonArray = Cr_receita.listaTopViews(new Object[0], new Object[0]);
 			out = response.getWriter();
 			out.print(jsonArray);

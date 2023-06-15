@@ -292,31 +292,7 @@
 		
 		//Inicia assim que a tela abre
 		$(document).ready(function() {
-			 $('.owl-carousel').owlCarousel({
-		            loop: true,
-		            margin: 10,
-		            responsiveClass: true,
-		            responsive: {
-		                0: {
-		                    items: 1,
-		                    nav: true
-		                },
-		                560: {
-		                    items: 2,
-		                    nav: true
-		                },
-		                800: {
-		                    items: 3,
-		                    nav: true
-		                },
-		                1000: {
-		                    items: 4,
-		                    nav: true,
-		                    loop: false
-		                }
-		            },
-		            navText: ["<span class='custom-prev-button'></span>", "<span class='custom-next-button'></span>"]
-		        });	
+			carregalistaTopReceitas();				
 		
 			var logoff = '<%=opclogoff%>';
 			if(logoff == "S"){
@@ -336,16 +312,13 @@
 			}
 			%>
 			
-			carregalistaTopReceitas();
 			carregaListaCarrinhodeCompras('<%=cuserid%>');
 			
 			//ESCONDENDO DIV DO CARD DE RECEITAS
 			var div_home = $('.div_home');
 			div_home.show();
 			var div_card_receita = $('.div_card_receita');
-			div_card_receita.hide();
-			
-			
+			div_card_receita.hide();					
 			
 			//Isto está definido diretamente no nosso <select> e tem o objetivo de carregar as possíveis opções do nosso autocomplete
 			//data-url='./jsonservlet?opc_servlet=sel_pesquisa_receita'
@@ -413,12 +386,47 @@
 			$(".div_home").slideDown(200);
 		}
 		
-		function carregalistaTopReceitas(){						
-			$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+		/* FORMA QUE TINHA FEITO QUE DIMINUI A QUANTIDADE DE CARDS QUE APARECEM NO CELULAR:
+		function carregalistaTopReceitas(){		
+			// limite o número de caracteres para exibir no modo de preparo e a Quantidade de Cards
+			var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+			console.log("Largura da tela: " + larguraDaTela);
+
+			//Desenhando os cards do Carrosel:
+		  	var div_carrosel = $(".owl-carousel");
+            div_carrosel.empty(); // Limpa o conteúdo do carrossel antes de adicionar os novos cards
+            var cards_carrosel = ""; // Variável para armazenar os cards HTML
+            var qtd_cards = 11;
+            
+            if(larguraDaTela < 1000){
+            	qtd_cards = 5;
+            }
+            						
+			for (var cards = 0; cards <= qtd_cards; cards++) {						    						    						
+			    var card_carrosel = "<div class=\"item item_card_"+cards+"\"> " +
+								    "    <div class=\"card\" id=\"cr_receita_card_"+cards+"\"> " +
+								    "        <div class=\"img_receita\" id=\"cr_receita_nome_img_"+cards+"\"></div> " +
+								    "        <div class=\"card-body d-flex flex-column\"> " +
+								    "            <h6 class=\"card-title\" id=\"tit_receita_card_"+cards+"\"></h6> " +
+								    "            <p class=\"card-text\" id=\"cr_modo_preparo_card_"+cards+"\"></p> " +
+								    "            <div class=\"mt-auto\"> " +
+								    "                <input type=\"hidden\" id=\"card_id_receita_"+cards+"\" name=\"card_id_receita_"+cards+"\"/> " +
+								    "                <button type=\"button\" class=\"btn btn-success btn-lg\" id=\"btnReceita\" onclick=\"verReceita('"+cards+"');\"> " +
+								    "                    <strong>Ver</strong> " +
+								    "                </button> " +
+								    "            </div> " +
+								    "        </div> " +
+								    "    </div> " +
+								    "</div> ";								    
+			    cards_carrosel += card_carrosel; // Concatena o card_carrosel na variável cards_carrosel			
+			}			            					
+            div_carrosel.append(cards_carrosel); // Adiciona todos os cards ao carrossel
+            
+			$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas',largura_tela:larguraDaTela},
 				function(datalin,statuslin){
 					if(datalin.length > 0){
-						var num = 0;					
-						for(var cx=0;cx<datalin.length;cx++){
+						var num = 0;										         				
+						for(var cx=0;cx <= qtd_cards;cx++){
 													
 							var cr_id_receita = datalin[cx].cr_id_receita;
 							var cr_titulo_receita = datalin[cx].cr_titulo_receita;	
@@ -427,12 +435,7 @@
 							
 							var div_image = $("#cr_receita_nome_img_"+num);							
 							div_image.append(cr_receita_nome_img);													
-							
-							// limite o número de caracteres para exibir no modo de preparo
-							var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-
-							//console.log("Largura da tela: " + larguraDaTela);
-
+														
 							var limite_caracteres = 30;
 							
 							if(larguraDaTela == 960){
@@ -455,6 +458,129 @@
 							num++;
 						}
 					}
+					 $('.owl-carousel').owlCarousel({
+				            loop: true,
+				            margin: 10,
+				            responsiveClass: true,
+				            responsive: {
+				                0: {
+				                    items: 1,
+				                    nav: true
+				                },
+				                560: {
+				                    items: 2,
+				                    nav: true
+				                },
+				                800: {
+				                    items: 3,
+				                    nav: true
+				                },
+				                1000: {
+				                    items: 4,
+				                    nav: true,
+				                    loop: false
+				                }
+				            },
+				            navText: ["<span class='custom-prev-button'></span>", "<span class='custom-next-button'></span>"]
+				        });	
+				}
+			);
+		}	
+		*/
+		
+		//FORMA QUE CARREGA TODOS OS CARDS E IMPLEMENTA A BIBLIOTECA DO CARROUSEL DEPOIS
+		function carregalistaTopReceitas(){		
+			// limite o número de caracteres para exibir no modo de preparo
+			var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+			console.log("Largura da tela: " + larguraDaTela);
+
+			//Desenhando os cards do Carrosel:
+		  	var div_carrosel = $(".owl-carousel");
+            div_carrosel.empty(); // Limpa o conteúdo do carrossel antes de adicionar os novos cards
+            var cards_carrosel = ""; // Variável para armazenar os cards HTML
+            var qtd_cards = 11;
+            					
+			for (var cards = 0; cards <= qtd_cards; cards++) {						    						    						
+			    var card_carrosel = "<div class=\"item item_card_"+cards+"\"> " +
+								    "    <div class=\"card\" id=\"cr_receita_card_"+cards+"\"> " +
+								    "        <div class=\"img_receita\" id=\"cr_receita_nome_img_"+cards+"\"></div> " +
+								    "        <div class=\"card-body d-flex flex-column\"> " +
+								    "            <h6 class=\"card-title\" id=\"tit_receita_card_"+cards+"\"></h6> " +
+								    "            <p class=\"card-text\" id=\"cr_modo_preparo_card_"+cards+"\"></p> " +
+								    "            <div class=\"mt-auto\"> " +
+								    "                <input type=\"hidden\" id=\"card_id_receita_"+cards+"\" name=\"card_id_receita_"+cards+"\"/> " +
+								    "                <button type=\"button\" class=\"btn btn-success btn-lg\" id=\"btnReceita\" onclick=\"verReceita('"+cards+"');\"> " +
+								    "                    <strong>Ver</strong> " +
+								    "                </button> " +
+								    "            </div> " +
+								    "        </div> " +
+								    "    </div> " +
+								    "</div> ";								    
+			    cards_carrosel += card_carrosel; // Concatena o card_carrosel na variável cards_carrosel			
+			}			            					
+            div_carrosel.append(cards_carrosel); // Adiciona todos os cards ao carrossel
+            
+			$.postJSON("./jsonservlet",{opc_servlet:'list_top_receitas'},
+				function(datalin,statuslin){
+					if(datalin.length > 0){
+						var num = 0;										         				
+						for(var cx=0;cx <= qtd_cards;cx++){
+													
+							var cr_id_receita = datalin[cx].cr_id_receita;
+							var cr_titulo_receita = datalin[cx].cr_titulo_receita;	
+							var cr_modo_preparo_receita = datalin[cx].cr_modo_preparo_receita;	
+							var cr_receita_nome_img = datalin[cx].cr_receita_nome_img;													
+							
+							var div_image = $("#cr_receita_nome_img_"+num);							
+							div_image.append(cr_receita_nome_img);													
+														
+							var limite_caracteres = 30;
+							
+							if(larguraDaTela == 960){
+								limite_caracteres = 20;
+							}
+							if(larguraDaTela == 1280){
+								limite_caracteres = 40;
+							}
+							if(larguraDaTela >= 1300){
+								limite_caracteres = 50;
+							}
+							
+							// obtém a substring do modo de preparo com limite de caracteres
+							var cr_modo_preparo_resumido = cr_modo_preparo_receita.slice(0, limite_caracteres) + '...';
+																				
+							$("#tit_receita_card_"+num).text(cr_titulo_receita);
+							$("#cr_modo_preparo_card_"+num).text(cr_modo_preparo_resumido);
+							$("#card_id_receita_"+num).val(cr_id_receita);
+							
+							num++;
+						}
+					}
+					 $('.owl-carousel').owlCarousel({
+				            loop: true,
+				            margin: 10,
+				            responsiveClass: true,
+				            responsive: {
+				                0: {
+				                    items: 1,
+				                    nav: true
+				                },
+				                560: {
+				                    items: 2,
+				                    nav: true
+				                },
+				                800: {
+				                    items: 3,
+				                    nav: true
+				                },
+				                1000: {
+				                    items: 4,
+				                    nav: true,
+				                    loop: false
+				                }
+				            },
+				            navText: ["<span class='custom-prev-button'></span>", "<span class='custom-next-button'></span>"]
+				        });	
 				}
 			);
 		}	
@@ -647,187 +773,8 @@
 						<h4><strong>Receitas mais pesquisadas</strong></h4>
 					</div>			
 					<br>					
-					<div class="owl-carousel">
-				        <div class="item item_card_0">
-						    <div class="card" id="cr_receita_card_0">
-						        <div class="img_receita" id="cr_receita_nome_img_0"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_0"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_0"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_0" name="card_id_receita_0"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('0');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_1">
-						    <div class="card" id="cr_receita_card_1">
-						        <div class="img_receita" id="cr_receita_nome_img_1"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_1"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_1"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_1" name="card_id_receita_1"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('1');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_2">
-						    <div class="card" id="cr_receita_card_2">
-						        <div class="img_receita" id="cr_receita_nome_img_2"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_2"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_2"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_2" name="card_id_receita_2"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('2');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_3">
-						    <div class="card" id="cr_receita_card_3">
-						        <div class="img_receita" id="cr_receita_nome_img_3"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_3"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_3"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_3" name="card_id_receita_3"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('3');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_4">
-						    <div class="card" id="cr_receita_card_4">
-						        <div class="img_receita" id="cr_receita_nome_img_4"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_4"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_4"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_4" name="card_id_receita_4"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('4');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_5">
-						    <div class="card" id="cr_receita_card_5">
-						        <div class="img_receita" id="cr_receita_nome_img_5"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_5"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_5"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_5" name="card_id_receita_5"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('5');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_6">
-						    <div class="card" id="cr_receita_card_6">
-						        <div class="img_receita" id="cr_receita_nome_img_6"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_6"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_6"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_6" name="card_id_receita_6"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('6');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_7">
-						    <div class="card" id="cr_receita_card_7">
-						        <div class="img_receita" id="cr_receita_nome_img_7"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_7"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_7"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_7" name="card_id_receita_7"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('7');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				       <div class="item item_card_8">
-						    <div class="card" id="cr_receita_card_8">
-						        <div class="img_receita" id="cr_receita_nome_img_8"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_8"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_8"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_8" name="card_id_receita_8"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('8');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_9">
-						    <div class="card" id="cr_receita_card_9">
-						        <div class="img_receita" id="cr_receita_nome_img_9"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_9"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_9"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_9" name="card_id_receita_9"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('9');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_10">
-						    <div class="card" id="cr_receita_card_10">
-						        <div class="img_receita" id="cr_receita_nome_img_10"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_10"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_10"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_10" name="card_id_receita_10"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('10');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-				        <div class="item item_card_11">
-						    <div class="card" id="cr_receita_card_11">
-						        <div class="img_receita" id="cr_receita_nome_img_11"></div>							          
-						        <div class="card-body d-flex flex-column">
-						            <h6 class="card-title" id="tit_receita_card_11"></h6>
-						            <p class="card-text" id="cr_modo_preparo_card_11"></p>
-						            <div class="mt-auto">
-						                <input type="hidden" id="card_id_receita_11" name="card_id_receita_11"/>
-						                <button type="button" class="btn btn-success btn-lg" id="btnReceita" onclick="verReceita('11');">
-						                    <strong>Ver</strong> 
-						                </button>
-						            </div>
-						        </div>
-						    </div>
-						</div>
+					<div class="owl-carousel">	
+						<!-- CARROSEL COM 12 CARDS DA RECEITAS MAIS PESQUISADAS -->				       
 					</div>
 			     </div>
 			</div>

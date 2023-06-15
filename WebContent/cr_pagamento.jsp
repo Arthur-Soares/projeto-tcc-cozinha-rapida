@@ -226,6 +226,11 @@
 	        $("#mensagemSucessoDesfavoritar").text('Chave PIX copiada para a área de transferência!');
 	        $("#modalSucessoDesfavoritar").modal('show');
 	    }
+	    
+	  	
+		function voltarHome(){   								
+			$("#tela_home").submit();			    
+		}
 		
 	</script>
 
@@ -234,7 +239,9 @@
 									
 	<form id="frmreceita" name="frmreceita" method="post" action="cr_receita.jsp">
 		<input type="hidden" id="cr_id_receita" name="cr_id_receita"/>
-	</form>									
+	</form>	
+	<form id="tela_home" name="tela_home" method="post" action="cr_home.jsp">
+	</form>								
 	<form id="frm_tela_receita" name="frm_tela_receita" method="post" action="cr_lista_receitas.jsp">	
 			
 		<div id="div_tela">
@@ -253,13 +260,18 @@
 									<h6>Foi enviado um recibo com os ingredientes para o seu email, caso queira finalizar o pagamento
 										escaneie o QRCODE acima ou copie a chave PIX abaixo, e efetue o pagamento.																													
 									</h6>
-																	
+									<br>							
 									<h4 style="color: #FF8100;"><strong>79e765ef-df91-489e-819d-c70962393f4b</strong></h4>						            
 									
 									<div class="row mt-3 justify-content-center text-center">
-										<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">		
+										<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">		
 											 <button type="button" class="btn btn-lg btn-block" id="copyButton" onclick="copyTextToClipboard('79e765ef-df91-489e-819d-c70962393f4b')" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #e97500;">
 										     	<strong><i class="fas fa-copy"></i> Copiar chave PIX</strong>
+										    </button>	
+										</div>
+										<div class="mt-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center">		
+											 <button type="button" class="btn btn-lg btn-block" id="copyButton" onclick="voltarHome();" style="padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; background-color: #636f61;">
+										     	<strong><i class="fas fa-home"></i> Voltar para Home</strong>
 										    </button>	
 										</div>
 									</div>	

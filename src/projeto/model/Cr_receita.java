@@ -850,8 +850,8 @@ public class Cr_receita {
 				sql += " and "+params[ob]+" = ?";
 			}
 		}
-		sql+= " order by cr_receita_view desc " +
-			  "LIMIT 12; ";
+		sql+= " order by cr_receita_view desc ";		
+		sql+= " LIMIT 12; ";		
 		System.out.println("Query="+sql);
 		try {
 			Connection c = ProjetoDatabase.getConnection();

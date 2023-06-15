@@ -91,9 +91,17 @@
 				color: #b1463c;
 			}
 			
+			   	
+  			.sugestao_mobile {
+      			display: none;
+  			}			
+			
 			@media(max-width: 1000px) {
     			.sugestao {
         			display: none;
+    			}
+    			.sugestao_mobile {
+        			display: block;
     			}
 			}
 			
@@ -184,7 +192,7 @@
 	 	});	
 		
 		//Inicia assim que a tela abre
-		$(document).ready(function() {				
+		$(document).ready(function() {						
 			$("#div_loading").hide();
 			carregaReceita('<%=p_cr_id_receita%>');
 			carregaListaReceitasSug('<%=p_cr_id_receita%>');
@@ -584,8 +592,13 @@
     	
     	function carregaListaReceitasSug(cr_id_receita) {
 		    var num = 1;
+		    var larguraDaTela = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		    var div_receitas_sugestoes = $(".div_receitas_sugestoes");
 
+		    if(larguraDaTela < 1000){
+		    	div_receitas_sugestoes = $(".div_receitas_sugestoes_mobile");
+            }
+            			   
 		    $.postJSON("./jsonservlet", { opc_servlet: 'list_sugestoes_receitas', cr_id_receita: cr_id_receita }, function(datalin, statuslin) {
 		        if (datalin.length > 0) {
 		            // Limpa o conteúdo existente dentro da div caso seja chamada novamente
@@ -622,12 +635,13 @@
 		                divContainer.append(divRow);
 		                div_receitas_sugestoes.append(divContainer);
 
-		                // Adiciona um HR pontilhado
+		                /* Adiciona um HR pontilhado
 		                if (cx < datalin.length - 1) {
-		                    var hrElement = $("<hr>").addClass("dashed-hr");
+		                    var hrElement = $("<hr>")
 		                    div_receitas_sugestoes.append(hrElement);
 		                }
-
+						*/
+						
 		                // Adiciona a imagem
 		                var imgElement = $(cr_receita_nome_img).css({
 						  "max-width": "100%",
@@ -688,13 +702,14 @@
 				<!-- Imagem da Receita -->
 				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12"> 
 					<div class="img_receita" id="cr_receita_nome_img" style="border-radius: 20px;"></div>		
-				</div>	
-							
-				<!-- Div de sugestão a ser implementado -->
+				</div>							
+				<!-- Div de sugestão -->
 				<div class="sugestao" style="border-radius: 20px; border: rgba(99, 111, 97, .4) 1px solid; width: 300px;">
-					<label for="cr_rendimento_receita" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
-						<strong>Sugestões:</strong>						
-					</label> 
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
+						<label for="cr_sugestoes" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
+							<strong>Sugestões:</strong>						
+						</label>
+					</div> 
 					<div class="div_receitas_sugestoes col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
 					</div>
 				</div>
@@ -742,7 +757,7 @@
 			<!-- Modo de preparo da Receita -->
 			<div class="row mt-3 justify-content-between">			
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
-					<div class="mt-3 justify-content-md-center">
+					<div class="justify-content-md-center">
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
 							<label for="cr_modo_preparo_receita" style="font-size: 20px; font-weight: bold; color: #b1463c;">
 								<strong>Modo de preparo</strong>
@@ -761,8 +776,22 @@
 			     	<strong><i class="fas fa-shopping-basket"></i> Comprar Ingredientes</strong>
 			    </button>
 			  </div>												
-			</div>
- 			<br>		 	
+			</div> 
+			<br>			
+ 			<div class="mt-3 sugestao_mobile">			
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">		
+		 			<div style="border-radius: 20px; border: rgba(99, 111, 97, .4) 1px solid;">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">	
+							<label for="cr_sugestoes" style="padding: 10px; font-size: 20px; font-weight: bold; color: #b1463c;">
+								<strong>Sugestões:</strong>						
+							</label>
+						</div> 
+						<div class="div_receitas_sugestoes_mobile col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">				
+						</div>
+					</div>
+				</div>
+			</div>	
+			<br>		 	
  			
 	 		<!-- MODAL INGREDIENTES -->
 			<div class="modal fade bd-example-modal-lgmodal fades" id="modalIngredientes" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">

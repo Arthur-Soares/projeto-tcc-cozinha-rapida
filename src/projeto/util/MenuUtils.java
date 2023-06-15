@@ -130,6 +130,10 @@ public class MenuUtils {
 						  	"		transition: 0.2s; " +
 						  	"		font-size: 20px; " +
 						  	"	} "+
+						  	"	"+
+						  	"	li:hover { " +
+						  	"  	cursor: pointer; " +
+						  	"	} "+
 							"	</style> " +
 							"	<form id='frmchama' method='post' action=''> " +
 							"	</form> " +								 							
@@ -169,7 +173,7 @@ public class MenuUtils {
 			            	"								    <i class='fas fa-edit'></i> Editar Dados</a> " +
 			            	"							    </li> " +
 			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"javascript:chamaMenu('cr_receitas_favoritas.jsp');\"> " +
-			            	"								    <i class='fas fa-heart'></i> Receitas Salvas</a> " +
+			            	"								    <i class='fas fa-heart'></i> Favoritas</a> " +
 			            	"							    </li> " +
 			            	"							    <li class='nav-item'><a class='dropdown-item' onclick=\"sair();\">" +
 			            	"								    <i class='fas fa-sign-out-alt'></i> Sair</a> " +

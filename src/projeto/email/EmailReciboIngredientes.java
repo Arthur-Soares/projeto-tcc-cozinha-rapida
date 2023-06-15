@@ -117,6 +117,14 @@ public class EmailReciboIngredientes {
 			    cr_nrmcasa_usuario = null!=rs.getObject(11)?rs.getString(11):"";
 				cr_endcomplemento_usuario = null!=rs.getObject(12)?rs.getString(12):"";
 				cr_pontoreferencia_usuario = null!=rs.getObject(13)?rs.getString(13):"";
+				
+				if(cr_endcomplemento_usuario.equals("")) {
+					cr_endcomplemento_usuario = "Em Branco";
+				}
+				
+				if(cr_pontoreferencia_usuario.equals("")) {
+					cr_pontoreferencia_usuario = "Em Branco";
+				}
 							
 				dados.add(cr_quantidade);				
 				dados.add(cr_desc_ingrediente);
@@ -221,8 +229,16 @@ public class EmailReciboIngredientes {
 								"                            </table> " +
 								" <div text-align=\"center\"> " +
 								" 	<h3 style=\"padding-bottom:20px; font-size:20px; text-align: center;\"><strong>Valor Total Recibo:</strong> <span style=\"color: #ff7f00;\"> R$ "+FormatUtils.formataValorDigitos(valor_total_recibo, 2)+"</span></h3> "+
-								" </div>" ;
-				
+								" </div>" +
+								" <div text-align=\"center\"> " +
+								"   <h2 style=\"margin-top:25px; border-bottom: 1px solid #d6d8db; text-align: center; color: #ff7f00;\"> Informações de Endereço</h2> " +
+								" </div>" +
+								" <div text-align=\"left\"> " +
+								"   <p style=\"padding-bottom:4px; font-size:17px\"><span style=\"color: #ff7f00;\"><b>CEP:</b></span> "+cr_cep_usuario+"</p> " +
+								"   <p style=\"padding-bottom:4px; font-size:17px\"><span style=\"color: #ff7f00;\"><b>Endereço:</b></span> "+cr_endereco_usuario+" <span style=\"color: #ff7f00;\"><b>Nº:</b></span> "+cr_nrmcasa_usuario+"</p> " +
+								"   <p style=\"padding-bottom:4px; font-size:17px\"><span style=\"color: #ff7f00;\"><b>Complemento:</b></span> "+cr_endcomplemento_usuario+"</p> " +
+								"   <p style=\"padding-bottom:4px; font-size:17px\"><span style=\"color: #ff7f00;\"><b>Ponto de Refêrencia:</b></span> "+cr_pontoreferencia_usuario+"</p> " +
+								" </div>" ;				
 		String htmlEmailFim =	"	</body>" +
 								"</html>";
 
@@ -315,9 +331,9 @@ public class EmailReciboIngredientes {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		EmailReciboIngredientes ees = new EmailReciboIngredientes();		
+		//EmailReciboIngredientes ees = new EmailReciboIngredientes();		
 		
-		ees.enviarRecibo("arthur.arthur10@outlook.com","Arthur Soares da Silva", 6);
+		//ees.enviarRecibo("arthur.arthur10@outlook.com","Arthur Soares da Silva", 6);
 		
 
 	}
